@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:track/l10n/l10n.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      //language switching (manual)
+      //locale: Locale.fromSubtags(languageCode: 'es'),
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -69,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -98,6 +105,9 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
+            Text(AppLocalizations.of(context)!.helloWorld),
+                        Text(l10n.helloWorld),
+
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
