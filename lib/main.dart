@@ -1,9 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/theme/app_theme.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -39,6 +48,15 @@ class _AppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+var db = FirebaseFirestore.instance;
+
+ db.collection("users").get().then((event) {
+  for (var doc in event.docs) {
+    print("${doc.id} => ${doc.data()}");
+  }
+});
+
+
     return MaterialApp(
       //todo uncomment when complete
       //debugShowCheckedModeBanner: false,
