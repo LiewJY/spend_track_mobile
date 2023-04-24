@@ -14,6 +14,16 @@ class AppTheme {
       scaffoldBackgroundColor: colorScheme.background,
       //highlightColor: Colors.transparent,
       //focusColor: focusColor,
+
+      //text field
+      inputDecorationTheme: InputDecorationTheme(
+          border: const OutlineInputBorder(),
+      )
+      
+
+
+
+
     );
   }
 }

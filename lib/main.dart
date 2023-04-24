@@ -9,6 +9,7 @@ import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
+  //firebase integration code
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -27,8 +28,9 @@ class MyApp extends StatefulWidget {
 class _AppState extends State<MyApp> {
   bool useMaterial3 = true;
   ThemeMode themeMode = ThemeMode.system;
-  // ColorSeed colorSelected = ColorSeed.baseColor;
 
+  //todo
+  //theme switching
   bool get useLightMode {
     switch (themeMode) {
       case ThemeMode.system:
