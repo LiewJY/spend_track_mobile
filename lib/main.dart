@@ -6,6 +6,7 @@ import 'package:track/theme/app_theme.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,14 +49,23 @@ class _AppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-var db = FirebaseFirestore.instance;
+    var db = FirebaseFirestore.instance;
 
- db.collection("users").get().then((event) {
-  for (var doc in event.docs) {
-    print("${doc.id} => ${doc.data()}");
-  }
-});
+    //firestore demo
+    db.collection("users").get().then((event) {
+      for (var doc in event.docs) {
+        print("${doc.id} => ${doc.data()}");
+      }
+    });
 
+    //firebase auth demo
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
 
     return MaterialApp(
       //todo uncomment when complete
