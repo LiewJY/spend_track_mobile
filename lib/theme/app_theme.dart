@@ -15,9 +15,10 @@ class AppTheme {
       //highlightColor: Colors.transparent,
       //focusColor: focusColor,
 
-      //text field
+      //input field --> text, & others
       inputDecorationTheme: InputDecorationTheme(
           border: const OutlineInputBorder(),
+          errorStyle: TextStyle(color: colorScheme.error)
       )
       
 

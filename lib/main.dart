@@ -149,6 +149,14 @@ class _MyPage extends State<MyPage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const TextField(
+              decoration: InputDecoration(
+                hintText: "hint text",
+                errorText: "error text"
+              ),
+              
+              
+            ),
           ],
         ),
       ),
