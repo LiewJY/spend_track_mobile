@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:track/blocs/auth/auth_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/theme/app_theme.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> main() async {
   //firebase integration code
@@ -78,7 +81,18 @@ class _AppState extends State<MyApp> {
       darkTheme: AppTheme.darkThemeData,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const MyPage(title: 'Flutter Demo Home Page'),
+      home: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          
+
+
+
+
+
+
+        },
+        child: Container(),
+      )
     );
   }
 }
