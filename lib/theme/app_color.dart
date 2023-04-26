@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 
 class AppColors {
-  final TonalPalette base = toTonalPalette(0xAA20426F);
-  final TonalPalette primary = toTonalPalette(0xAA20426F);
-  final TonalPalette secondary = toTonalPalette(0xAA7C869A);
-  final TonalPalette tertiary = toTonalPalette(0xAA977D9F);
-  final TonalPalette error = toTonalPalette(0xAAFE4C44);
-  final TonalPalette neutral = toTonalPalette(0xAA858589);
-  final TonalPalette neutralVariant = toTonalPalette(0xAA82868E);
+  static final TonalPalette base = toTonalPalette(0xAA20426F);
+  static final TonalPalette primary = toTonalPalette(0xAA20426F);
+  static final TonalPalette secondary = toTonalPalette(0xAA7C869A);
+  static final TonalPalette tertiary = toTonalPalette(0xAA977D9F);
+  static final TonalPalette error = toTonalPalette(0xAAFE4C44);
+  static final TonalPalette neutral = toTonalPalette(0xAA858589);
+  static final TonalPalette neutralVariant = toTonalPalette(0xAA82868E);
   
   //base #20426F
   //primary #20426F

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:track/blocs/auth/auth_bloc.dart';
 import 'package:track/l10n/l10n.dart';
+import 'package:track/presentation/home_screen.dart';
+import 'package:track/presentation/login_screen.dart';
+import 'package:track/repository/auth_repository.dart';
 import 'package:track/theme/app_theme.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -56,129 +59,64 @@ class _AppState extends State<MyApp> {
   Widget build(BuildContext context) {
     var db = FirebaseFirestore.instance;
 
-    //firestore demo
-    db.collection("users").get().then((event) {
-      for (var doc in event.docs) {
-        print("${doc.id} => ${doc.data()}");
-      }
-    });
+    // //firestore demo
+    // db.collection("users").get().then((event) {
+    //   for (var doc in event.docs) {
+    //     print("${doc.id} => ${doc.data()}");
+    //   }
+    // });
 
-    //firebase auth demo
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-      }
-    });
+    // //firebase auth demo
+    // FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    //   if (user == null) {
+    //     print('User is currently signed out!');
+    //   } else {
+    //     print('User is signed in!');
+    //   }
+    // });
 
-    return MaterialApp(
-      //todo uncomment when complete
-      //debugShowCheckedModeBanner: false,
-      title: 'track',
-      themeMode: themeMode,
-      theme: AppTheme.lightThemeData,
-      darkTheme: AppTheme.darkThemeData,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          
-
-
-
-
-
-
-        },
-        child: Container(),
-      )
-    );
-  }
-}
-
-class MyPage extends StatefulWidget {
-  const MyPage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyPage> createState() => _MyPage();
-}
-
-class _MyPage extends State<MyPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    final l10n = context.l10n;
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    return RepositoryProvider(
+      //access auth repo
+      create: (context) => AuthRepository(),
+      child: BlocProvider(
+        //access auth bloc
+        create: (context) => AuthBloc(
+            authRepository: RepositoryProvider.of<AuthRepository>(context)),
+        child: MaterialApp(
+          //todo uncomment when complete
+          //debugShowCheckedModeBanner: false,
+          title: 'track',
+          //todo change to changeble --> themeMode
+          themeMode: ThemeMode.light,
+          theme: AppTheme.lightThemeData,
+          darkTheme: AppTheme.darkThemeData,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              //authenticated & success
+              if (state is Authenticated) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HomeScreen()));
+              }
+              //error in authentication
+              if (state is AuthError) {
+                //todo error snack bar
+              }
+            },
+            child: BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is Authenticated) {
+                  return const Login();
+                }
+                return const Login();
+              },
             ),
-            Text(l10n.helloWorld),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const TextField(
-              decoration: InputDecoration(
-                hintText: "hint text",
-                errorText: "error text"
-              ),
-              
-              
-            ),
-          ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
