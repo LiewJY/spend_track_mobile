@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/app/repo/auth_repository.dart';
+import 'package:track/bloc_observer.dart';
 import 'package:track/login/login.dart';
 import '../../home/home.dart';
 import '../../l10n/l10n.dart';
@@ -17,11 +18,16 @@ class App extends StatelessWidget {
     //create single instance of authrepo
     final authRepository = AuthRepository();
 
+    //bloc
+    Bloc.observer = AppBlocObserver();
+
     return RepositoryProvider.value(
-        value: authRepository,
-        child: BlocProvider(
-            create: (_) => AppBloc(authRepository: authRepository),
-            child: const AppView()));
+      value: authRepository,
+      child: BlocProvider(
+        create: (_) => AppBloc(authRepository: authRepository),
+        child: const AppView(),
+      ),
+    );
   }
 }
 
