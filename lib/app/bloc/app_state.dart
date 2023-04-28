@@ -15,4 +15,9 @@ class Authenticated extends AppState {}
 
 class Unauthenticated extends AppState {}
 
+class AuthError extends AppState {
+  
+}
+
+
 ///class AppInitial extends AppState {}

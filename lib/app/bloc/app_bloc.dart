@@ -14,21 +14,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     //login
     on<LoginRequest>((event, emit) async {
       try {
-        log("login req");
-        //emit(Loading());
         await authRepository.login(
             email: event.email, password: event.password);
         emit(Authenticated());
       } catch (e) {
-        log("error $e");
-
-        //emit(AuthError(e.toString()));
+        emit(AuthError());
         emit(Unauthenticated());
       }
-    });
-
-    on<AppEvent>((event, emit) {
-      // TODO: implement event handler
     });
   }
 }

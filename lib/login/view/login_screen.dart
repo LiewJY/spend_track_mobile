@@ -64,5 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
         LoginRequest(_emailController.text, _passwordController.text),
       );
     }
+        //AppSnackBar.success(context, "d");
+        
+
   }
 }
