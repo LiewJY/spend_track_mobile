@@ -39,10 +39,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     PasswordField(controller: _passwordController),
                     Constant.sizedBoxSpace,
                     FilledButton(
+                      style: Constant.fullWidthButton,
                       onPressed: () => login(context),
                       child: Text(l10n.login),
                     ),
                     OutlinedButton(
+                        style: Constant.fullWidthButton,
                         onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) => SignUpScreen())),
