@@ -5,7 +5,14 @@
 
   "email": "Email",
   "password": "Password",
-  "login": "Login"
+  "login": "Login",
+  "signUp": "Sign Up",
+
+
+  "invalidEmail": "Invalid email address",
+  "pleaseEnterEmail": "Please enter a valid email address",
+  "passwordAtLeast6": "Password must be at least 6 characters"
+
 
 
 

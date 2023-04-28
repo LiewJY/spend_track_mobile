@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
-
+import 'package:track/sign_up/sign_up.dart';
+import 'package:track/widgets/widgets.dart';
 import '../../uitls/constant.dart';
-import '../../uitls/validation.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,8 +14,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  //for password
-  bool obscurePassword = true;
   //for form
   final loginForm = GlobalKey<FormState>();
 
@@ -38,41 +34,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: loginForm,
                 child: Column(
                   children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "${l10n.email}*",
-                      ),
-                      controller: _emailController,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: Validation.emailValidator,
-                    ),
+                    EmailField(controller: _emailController),
                     Constant.sizedBoxSpace,
-                    TextFormField(
-                      obscureText: obscurePassword,
-                      decoration: InputDecoration(
-                          labelText: "${l10n.password}*",
-                          suffixIcon: IconButton(
-                            icon: Icon(obscurePassword
-                                ? Icons.visibility
-                                : Icons.visibility_off),
-                            onPressed: () {
-                              setState(() {
-                                obscurePassword = !obscurePassword;
-                              });
-                            },
-                          )),
-                      controller: _passwordController,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.visiblePassword,
-                      validator: Validation.passwordValidator,
-                    ),
+                    PasswordField(controller: _passwordController),
                     Constant.sizedBoxSpace,
-                    ElevatedButton(
-                        onPressed: () {
-                          login(context);
-                        },
-                        child: Text(l10n.login))
+                    FilledButton(
+                      onPressed: () => login(context),
+                      child: Text(l10n.login),
+                    ),
+                    OutlinedButton(
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen())),
+                        child: Text(l10n.signUp)),
                   ],
                 ))
           ],

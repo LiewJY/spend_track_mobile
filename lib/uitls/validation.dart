@@ -1,3 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:track/l10n/l10n.dart';
+
+/*
+  *error
+  depreciated - remove when complete
+*/
 class Validation {
   static String? emailValidator(value) {
     if (value.isEmpty) {
@@ -23,6 +30,4 @@ class Validation {
       return 'Enter minimum 6 characters';
     }
   }
-
-
 }
