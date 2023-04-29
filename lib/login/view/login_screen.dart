@@ -8,6 +8,8 @@ import '../../uitls/constant.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+  //for routing
+  static Page<void> page() => const MaterialPage<void>(child: LoginScreen());
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -59,13 +61,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //Actions
   login(context) {
-    if (loginForm.currentState!.validate()) {
-      BlocProvider.of<AppBloc>(context).add(
-        LoginRequest(_emailController.text, _passwordController.text),
-      );
-    }
-        //AppSnackBar.success(context, "d");
-        
-
+    // if (loginForm.currentState!.validate()) {
+    //   BlocProvider.of<AppBloc>(context).add(
+    //     (_emailController.text, _passwordController.text),
+    //   );
+    // }
+    //AppSnackBar.success(context, "d");
   }
 }

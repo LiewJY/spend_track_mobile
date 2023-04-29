@@ -39,6 +39,8 @@ dependencies:
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
   meta: ^1.8.0
+  # bloc auth routing
+  flow_builder: ^0.0.9
 
   # firebase
   firebase_auth: ^4.4.1

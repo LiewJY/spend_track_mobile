@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/app/bloc/app_bloc.dart';
-import 'package:track/app/repo/auth_repository.dart';
+import 'package:track/repositories/repos/auth_repository.dart';
 import 'package:track/bloc_observer.dart';
 import 'package:track/login/login.dart';
 import '../../home/home.dart';
@@ -15,7 +15,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //create single instance of authrepo
+    //create single instance of auth repo
     final authRepository = AuthRepository();
 
     //bloc
@@ -65,26 +65,44 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        //todo uncomment when complete
-        //debugShowCheckedModeBanner: false,
-        title: 'track',
-        //todo change to changeble --> themeMode
-        themeMode: ThemeMode.light,
-        theme: AppTheme.lightThemeData,
-        darkTheme: AppTheme.darkThemeData,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: pageRoute());
+      //todo uncomment when complete
+      //debugShowCheckedModeBanner: false,
+      title: 'track',
+      //todo change to changeble --> themeMode
+      themeMode: ThemeMode.light,
+      theme: AppTheme.lightThemeData,
+      darkTheme: AppTheme.darkThemeData,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: pageRoute(),
+    );
   }
+
+  pageRoute() {
+    return FlowBuilder<AppStatus>(
+      state: context.select((AppBloc bloc) => bloc.state.status),
+      onGeneratePages: routes,
+    );
+  }
+
+  // return StreamBuilder(
+  //     stream: FirebaseAuth.instance.userChanges(),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.hasData) {
+  //         return HomeScreen();
+  //       }
+  //       return LoginScreen();
+  //     });
 }
 
-pageRoute() {
-  return StreamBuilder(
-      stream: FirebaseAuth.instance.userChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return HomeScreen();
-        }
-        return LoginScreen();
-      });
+List<Page> routes(
+  AppStatus state,
+  List<Page<dynamic>> pages,
+) {
+  switch (state) {
+    case AppStatus.authenticated:
+      return [HomeScreen.page()];
+    case AppStatus.unauthenticated:
+      return [LoginScreen.page()];
+  }
 }

@@ -2,7 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../app/repo/auth_repository.dart';
+import 'package:track/repositories/repos/auth_repository.dart';
+
 //import 'package:meta/meta.dart';
 
 part 'auth_event.dart';
@@ -42,7 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       //logout request
       on<LogoutRequest>((event, emit) async {
         emit(Loading());
-        await authRepository.signOut();
+        await authRepository.logout();
         emit(UnAuthenticated());
       });
       

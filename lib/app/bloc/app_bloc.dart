@@ -1,26 +1,35 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:track/app/repo/auth_repository.dart';
+import 'package:track/repositories/models/user.dart';
+import 'package:track/repositories/repos/auth_repository.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   final AuthRepository authRepository;
+  StreamSubscription<User>? userSubscription;
 
-  AppBloc({required this.authRepository}) : super(Unauthenticated()) {
-    //login
-    on<LoginRequest>((event, emit) async {
-      try {
-        await authRepository.login(
-            email: event.email, password: event.password);
-        emit(Authenticated());
-      } catch (e) {
-        emit(AuthError());
-        emit(Unauthenticated());
-      }
-    });
+  AppBloc({required this.authRepository})
+      //check if the there are logged in user
+      : super(authRepository.currentUser.isNotEmpty
+            ? AppState.authenticated(authRepository.currentUser)
+            : const AppState.unauthenticated()) {
+    //user change
+    on<AppUserChanged>((event, emit) => {
+          emit(event.user.isNotEmpty
+              ? AppState.authenticated(event.user)
+              : const AppState.unauthenticated())
+        });
+
+    //logout
+    on<AppLogoutRequested>(
+        (event, emit) => {
+          //use unawaited --> no need to wait for completion
+          unawaited(authRepository.logout())
+        });
   }
 }
