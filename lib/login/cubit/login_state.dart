@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'login_cubit.dart';
 
 enum LoginStatus { initial, loading, success, failure }
@@ -27,7 +26,7 @@ class LoginState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => [status, error];
 
   // List<Object> get props => [email, password, status];
 

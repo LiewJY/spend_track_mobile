@@ -26,14 +26,18 @@ class LoginCubit extends Cubit<LoginState> {
     if (state.status == LoginStatus.loading) return;
     emit(state.copyWith(status: LoginStatus.loading));
     try {
+      //fixme
       await authRepository.loginWithCredentials(
           email: email, password: password);
+                emit(state.copyWith(
+        status: LoginStatus.success,
+      ));
           try{
                  // await authRepository.aa();
 
-      emit(state.copyWith(
-        status: LoginStatus.success,
-      ));
+      // emit(state.copyWith(
+      //   status: LoginStatus.success,
+      // ));
           } catch(_) {
 
           }
