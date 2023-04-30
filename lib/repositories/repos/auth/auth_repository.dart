@@ -27,18 +27,21 @@ class AuthRepository {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-    }  
-     catch (_) {
-    }
+    } catch (_) {}
   }
 
   //login
-  Future<void> loginWithCredentials({required String email, required String password}) async {
+  Future<void> loginWithCredentials(
+      {required String email, required String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-    } catch(_) {
-
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      log(" e   ${e.code}");
+      log(" e   ${e.message}");
+      throw e.code;
+    } catch (_) {
+      throw "unknown";
     }
   }
 

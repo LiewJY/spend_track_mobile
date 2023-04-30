@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:track/l10n/l10n.dart';
+import 'package:track/repositories/repositories.dart';
 
 class AppSnackBar {
-  static void info(context, text) {
+  static void info(BuildContext context, String text) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     final snackBar = SnackBar(
@@ -12,7 +14,7 @@ class AppSnackBar {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  static void error(context, text) {
+  static void error(BuildContext context, String text) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     final snackBar = SnackBar(
@@ -24,7 +26,7 @@ class AppSnackBar {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  static void success(context, text) {
+  static void success(BuildContext context, String text) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     final snackBar = SnackBar(
@@ -35,17 +37,16 @@ class AppSnackBar {
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+
+  static void authError(BuildContext context, String text) {
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    final snackBar = SnackBar(
+      content: Text(authErrorMessage(context, text)),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Theme.of(context).colorScheme.error,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }
-
-// class AppSnackBar extends StatelessWidget {
-//   const AppSnackBar({super.key, required this.message});
-
-//   final String message;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SnackBar(
-//       content: Text(message),
-//     );
-//   }
-// }

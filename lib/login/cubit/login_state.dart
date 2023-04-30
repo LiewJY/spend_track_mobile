@@ -7,11 +7,13 @@ class LoginState extends Equatable {
   // final String email;
   // final String password;
   final LoginStatus status;
+  final String error;
 
   const LoginState({
     // required this.email,
     // required this.password,
     required this.status,
+    required this.error,
   });
 
   //initializing
@@ -20,6 +22,7 @@ class LoginState extends Equatable {
       // email: '',
       // password: '',
       status: LoginStatus.initial,
+      error: '',
     );
   }
 
@@ -32,11 +35,13 @@ class LoginState extends Equatable {
     // String? email,
     // String? password,
     LoginStatus? status,
+    String ? error,
   }) {
     return LoginState(
       // email: email ?? this.email,
       // password: password ?? this.password,
       status: status ?? this.status,
+      error: error ?? this.error,
     );
   }
 }

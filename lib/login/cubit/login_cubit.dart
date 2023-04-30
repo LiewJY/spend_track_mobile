@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:track/repositories/repos/auth_repository.dart';
+import 'package:track/repositories/repos/auth/auth_repository.dart';
 
 part 'login_state.dart';
 
@@ -28,7 +28,16 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       await authRepository.loginWithCredentials(
           email: email, password: password);
-      emit(state.copyWith(status: LoginStatus.success));
-    } catch (e) {}
+      emit(state.copyWith(
+        status: LoginStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: LoginStatus.failure,
+        error: e.toString(),
+      ));
+      log(" eed   ${e.toString()}");
+      //throw e;
+    }
   }
 }

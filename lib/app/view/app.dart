@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/app/bloc/app_bloc.dart';
-import 'package:track/repositories/repos/auth_repository.dart';
+import 'package:track/repositories/repos/auth/auth_repository.dart';
 import 'package:track/bloc_observer.dart';
 import 'package:track/login/login.dart';
 import '../../home/home.dart';

@@ -32,18 +32,13 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          EmailField(controller: _emailController),
+          EmailField(controller: _emailController, textInputAction: 'next',),
           Constant.sizedBoxSpace,
           PasswordField(controller: _passwordController),
           Constant.sizedBoxSpace,
           FilledButton(
             style: Constant.fullWidthButton,
             onPressed: () => login(),
-            // onPressed: () {
-            //   context.read<LoginCubit>().loginWithCredentials(
-            //       email: _emailController.text,
-            //       password: _passwordController.text);
-            // },
             child: Text(l10n.login),
           ),
           OutlinedButton(
@@ -59,7 +54,9 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void login() {
-    context.read<LoginCubit>().loginWithCredentials(
-        email: _emailController.text, password: _passwordController.text);
+    if (loginForm.currentState!.validate()) {
+      context.read<LoginCubit>().loginWithCredentials(
+          email: _emailController.text, password: _passwordController.text);
+    }
   }
 }
