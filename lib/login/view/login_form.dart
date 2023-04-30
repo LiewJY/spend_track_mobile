@@ -23,6 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   final loginForm = GlobalKey<FormState>();
 
   //text field controllers
+  //fixme remove setted value
   final _emailController = TextEditingController(text: "test@mail.com");
 
   final _passwordController = TextEditingController(text: "123456");
@@ -30,9 +31,6 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final db = FirebaseFirestore.instance;
-              var ll =  '';
-
     return Form(
       key: loginForm,
       child: Column(
@@ -52,23 +50,9 @@ class _LoginFormState extends State<LoginForm> {
           ),
           OutlinedButton(
             style: Constant.fullWidthButton,
-            onPressed: () {
-
-              db
-                  .collection("users")
-                  .doc("Ewo8IINYnvTAbZiCDEDOFBw5KV23")
-                  .get()
-                  .then((DocumentSnapshot doc) {
-                final data = doc.data() as Map<String, dynamic>;
-                ll = data['name'];
-                              log(" ss $ll");
-
-              });
-              log(" aa $ll");
-            },
-            // onPressed: () => Navigator.of(context).push(
-            //   MaterialPageRoute(builder: (context) => SignUpScreen()),
-            // ),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => SignUpScreen()),
+            ),
             child: Text(l10n.signUp),
           ),
         ],

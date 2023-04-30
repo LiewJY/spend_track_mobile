@@ -5,17 +5,20 @@
   "email": "Email",
   "password": "Password",
   "name": "Name",
+  "confirmPassword": "Confirm Password",
 
 "@textfield validation": {},
   "invalidEmail": "Invalid email address",
   "pleaseEnterEmail": "Please enter a valid email address",
   "passwordAtLeast6": "Password must be at least 6 characters",
   "nameEmpty": "Name cannot be empty",
+  "passwordDoesNotMatch": "Password does not match",
 
 "@button": {},
   "login": "Login",
   "signUp": "Sign Up",
   "logout": "Logout",
+  "cancel": "Cancel",
 
 
 "@firebaseAuthErrors": {},

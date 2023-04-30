@@ -1,41 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track/l10n/l10n.dart';
+import 'package:track/repositories/repos/auth/auth_repository.dart';
+import 'package:track/sign_up/sign_up.dart';
 import 'package:track/uitls/constant.dart';
 
 import '../../widgets/widgets.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
-  //for form
-  final signUpForm = GlobalKey<FormState>();
-
-  //text field controllers
-  final _emailController = TextEditingController();
-  @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        surfaceTintColor: Theme.of(context).colorScheme.background,
+        title: Text(
+          l10n.signUp,
+          style: Theme.of(context).textTheme.headlineLarge,
+          textAlign: TextAlign.left,
+        ),
+      ),
       body: SafeArea(
           child: Padding(
         padding: Constant.paddingHorizontal,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Form(
-                key: signUpForm,
-                child: Column(
-                  children: [
-                    //todo
-                    EmailField(controller: _emailController),
-                  ],
-                ))
-          ],
+        child: BlocProvider(
+          create: (context) => SignUpCubit(context.read<AuthRepository>()),
+          child: BlocListener<SignUpCubit, SignUpState>(
+            listener: (context, state) {
+              if (state.status == SignUpStatus.failure) {
+                //todo failure error
+                //AppSnackBar.error(context, state.error);
+              }
+            },
+            child: SingleChildScrollView(child: SignUpForm()),
+          ),
         ),
       )),
     );
