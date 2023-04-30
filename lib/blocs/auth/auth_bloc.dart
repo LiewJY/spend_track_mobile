@@ -4,8 +4,6 @@ import 'package:meta/meta.dart';
 
 import 'package:track/repositories/repos/auth_repository.dart';
 
-//import 'package:meta/meta.dart';
-
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -18,7 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       on<LoginRequest>((event, emit) async {
         emit(Loading());
         try {
-          await authRepository.login(
+          await authRepository.loginWithCredentials(
               email: event.email, password: event.password);
           emit(Authenticated());
         } catch (e) {

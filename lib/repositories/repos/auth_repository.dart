@@ -33,7 +33,7 @@ class AuthRepository {
   }
 
   //login
-  Future<void> login({required String email, required String password}) async {
+  Future<void> loginWithCredentials({required String email, required String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);

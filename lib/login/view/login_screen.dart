@@ -40,46 +40,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-// class _EmailInput extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<LoginCubit, LoginState>(
-//       buildWhen: (previous, current) => previous.email != current.email,
-//       builder: (context, state) {
-//         return TextField(
-//           key: const Key('loginForm_emailInput_textField'),
-//           onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
-//           keyboardType: TextInputType.emailAddress,
-//           decoration: InputDecoration(
-//             labelText: 'email',
-//             helperText: '',
-//             //errorText: state.email.invalid ? 'invalid email' : null,
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class _PasswordInput extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<LoginCubit, LoginState>(
-//       buildWhen: (previous, current) => previous.password != current.password,
-//       builder: (context, state) {
-//         return TextField(
-//           key: const Key('loginForm_passwordInput_textField'),
-//           onChanged: (password) =>
-//               context.read<LoginCubit>().passwordChanged(password),
-//           obscureText: true,
-//           decoration: InputDecoration(
-//             labelText: 'password',
-//             helperText: '',
-//             //errorText: state.password.invalid ? 'invalid password' : null,
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
+}
