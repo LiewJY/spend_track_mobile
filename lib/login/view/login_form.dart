@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -19,20 +23,25 @@ class _LoginFormState extends State<LoginForm> {
   final loginForm = GlobalKey<FormState>();
 
   //text field controllers
-  final _emailController = TextEditingController();
+  final _emailController = TextEditingController(text: "test@mail.com");
 
-  final _passwordController = TextEditingController();
+  final _passwordController = TextEditingController(text: "123456");
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final db = FirebaseFirestore.instance;
+              var ll =  '';
 
     return Form(
       key: loginForm,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          EmailField(controller: _emailController, textInputAction: 'next',),
+          EmailField(
+            controller: _emailController,
+            textInputAction: 'next',
+          ),
           Constant.sizedBoxSpace,
           PasswordField(controller: _passwordController),
           Constant.sizedBoxSpace,
@@ -43,9 +52,23 @@ class _LoginFormState extends State<LoginForm> {
           ),
           OutlinedButton(
             style: Constant.fullWidthButton,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => SignUpScreen()),
-            ),
+            onPressed: () {
+
+              db
+                  .collection("users")
+                  .doc("Ewo8IINYnvTAbZiCDEDOFBw5KV23")
+                  .get()
+                  .then((DocumentSnapshot doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                ll = data['name'];
+                              log(" ss $ll");
+
+              });
+              log(" aa $ll");
+            },
+            // onPressed: () => Navigator.of(context).push(
+            //   MaterialPageRoute(builder: (context) => SignUpScreen()),
+            // ),
             child: Text(l10n.signUp),
           ),
         ],

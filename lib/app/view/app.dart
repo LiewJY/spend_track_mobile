@@ -84,15 +84,6 @@ class _AppViewState extends State<AppView> {
       onGeneratePages: routes,
     );
   }
-
-  // return StreamBuilder(
-  //     stream: FirebaseAuth.instance.userChanges(),
-  //     builder: (context, snapshot) {
-  //       if (snapshot.hasData) {
-  //         return HomeScreen();
-  //       }
-  //       return LoginScreen();
-  //     });
 }
 
 List<Page> routes(

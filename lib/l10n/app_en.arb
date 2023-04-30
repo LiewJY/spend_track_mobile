@@ -4,15 +4,19 @@
 "@textfield": {},
   "email": "Email",
   "password": "Password",
+  "name": "Name",
 
 "@textfield validation": {},
   "invalidEmail": "Invalid email address",
   "pleaseEnterEmail": "Please enter a valid email address",
   "passwordAtLeast6": "Password must be at least 6 characters",
+  "nameEmpty": "Name cannot be empty",
 
 "@button": {},
   "login": "Login",
   "signUp": "Sign Up",
+  "logout": "Logout",
+
 
 "@firebaseAuthErrors": {},
   "userDisabled": "This user has been disabled. Please contact support for help.",

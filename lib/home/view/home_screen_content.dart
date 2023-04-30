@@ -20,14 +20,13 @@ class HomeScreenContent extends StatelessWidget {
         FilledButton(
           style: Constant.fullWidthButton,
           onPressed: () => context.read<AppBloc>().add(AppLogoutRequested()),
-          child: Text(l10n.login),
+          child: Text(l10n.logout),
         ),
-        Text(user.email ?? "ssssss")
+        Text(user.email ?? "empty"),
+                Text(user.name ?? "empty")
+
       ],
     );
   }
-  // //action
-  // void logout(context) {
-  //   context
-  // }
+
 }
