@@ -35,7 +35,11 @@ class SignUpScreen extends StatelessWidget {
             listener: (context, state) {
               if (state.status == SignUpStatus.failure) {
                 //todo failure error
-                //AppSnackBar.error(context, state.error);
+                AppSnackBar.authError(context, state.error);
+              }
+              if (state.status == SignUpStatus.success) {
+                //todo verify working
+                Navigator.pop(context);
               }
             },
             child: SingleChildScrollView(child: SignUpForm()),

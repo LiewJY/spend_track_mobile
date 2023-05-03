@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:track/repositories/models/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthRepository {
   //create firebase auth instance
@@ -10,49 +9,39 @@ class AuthRepository {
   AuthRepository({firebase_auth.FirebaseAuth? firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
 
-  //create firestore instance
-  final db = FirebaseFirestore.instance;
-
   //init as empty
   var currentUser = User.empty;
 
   //return a stream of the current user
   Stream<User> get user {
     //var user;
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
+    var firebaseUser = _firebaseAuth.currentUser;
+
+    //return User(id: firebaseUser?.uid, email: firebaseUser?.email, name: firebaseUser?.displayName);
+
+    return _firebaseAuth.userChanges().map((firebaseUser) {
       final currentUser =
           firebaseUser == null ? User.empty : firebaseUser.toUser;
-
       //return the mapped user
       return currentUser;
     });
   }
 
-  // //register
-  Future<void> register(
-      {required String email, required String password}) async {
+  //sign up
+  Future<void> signUp(
+      {required String email,
+      required String password,
+      required String name}) async {
+    //firebase_auth.UserCredential authRegisterResult;
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-    } catch (_) {}
-  }
-
-//fixme
-  Future<void> aa() async {
-    String name;
-    try {
-      await db
-          .collection("users")
-          .doc("Ewo8IINYnvTAbZiCDEDOFBw5KV23")
-          .get()
-          .then((DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        name = data['name'];
-        log(" ss $name");
-        currentUser = User(id: currentUser.id, email: currentUser.email, name: name);
-        //currentUser.name = name;
-      });
-    } catch (_) {}
+      var authRegisterResult = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      await authRegisterResult.user?.updateDisplayName(name).whenComplete(() => authRegisterResult.user?.reload());
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw e.code;
+    } catch (_) {
+      throw "unknown";
+    }
   }
 
   //login

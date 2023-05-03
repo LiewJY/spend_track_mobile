@@ -1,12 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:track/l10n/l10n.dart';
 
 class ConfirmPasswordField extends StatefulWidget {
-  const ConfirmPasswordField({super.key, required this.controller});
+  const ConfirmPasswordField(
+      {super.key, required this.controller, required this.password});
 
   final TextEditingController controller;
+  final TextEditingController password;
 
   @override
   State<ConfirmPasswordField> createState() => _ConfirmPasswordFieldState();
@@ -22,7 +24,11 @@ class _ConfirmPasswordFieldState extends State<ConfirmPasswordField> {
 
     String? passwordValidator(value) {
       if (value.length >= 6 && value != null) {
-        return null;
+        if (widget.controller.text != widget.password.text) {
+          return l10n.passwordDoesNotMatch;
+        } else {
+          return null;
+        }
       } else {
         return l10n.passwordAtLeast6;
       }

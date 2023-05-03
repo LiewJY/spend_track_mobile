@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
@@ -23,10 +21,8 @@ class HomeScreenContent extends StatelessWidget {
           child: Text(l10n.logout),
         ),
         Text(user.email ?? "empty"),
-                Text(user.name ?? "empty")
-
+        Text(user.name ?? "empty")
       ],
     );
   }
-
 }
