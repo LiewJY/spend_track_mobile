@@ -34,11 +34,9 @@ class SignUpScreen extends StatelessWidget {
           child: BlocListener<SignUpCubit, SignUpState>(
             listener: (context, state) {
               if (state.status == SignUpStatus.failure) {
-                //todo failure error
                 AppSnackBar.authError(context, state.error);
               }
               if (state.status == SignUpStatus.success) {
-                //todo verify working
                 Navigator.pop(context);
               }
             },

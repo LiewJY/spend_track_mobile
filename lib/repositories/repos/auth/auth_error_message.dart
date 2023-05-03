@@ -12,7 +12,6 @@ String authErrorMessage(BuildContext context, String errorCode) {
     case 'wrong-password':
       return l10n.wrongPassword;
     //sign up error
-    //todo verify
     case 'invalid-email':
       return l10n.invalidEmail;
     case 'user-disabled':
