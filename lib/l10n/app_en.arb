@@ -1,0 +1,40 @@
+{
+"@@locale": "en",
+
+"@textfield": {},
+  "email": "Email",
+  "password": "Password",
+  "name": "Name",
+  "confirmPassword": "Confirm Password",
+
+"@textfield validation": {},
+  "invalidEmail": "Invalid email address",
+  "pleaseEnterEmail": "Please enter a valid email address",
+  "passwordAtLeast6": "Password must be at least 6 characters",
+  "nameEmpty": "Name cannot be empty",
+  "passwordDoesNotMatch": "Password does not match",
+
+"@button": {},
+  "login": "Login",
+  "signUp": "Sign Up",
+  "logout": "Logout",
+  "cancel": "Cancel",
+
+
+"@firebaseAuthErrors": {},
+  "userDisabled": "This user has been disabled. Please contact support for help.",
+  "userNotFound": "Email is not found, please create an account.",
+  "wrongPassword": "Incorrect password, please try again.",
+  "firebaseAuthDefault": "An unknown exception occurred.",
+  "invalidEmail": "This user has been disabled. Please contact support for help.",
+  "emailAlreadyInUse": "An account already exists with that email.",
+  "operationNotAllowed": "Operation is not allowed.  Please contact support.",
+  "weakPassword": "Please enter a stronger password."
+
+
+
+
+
+
+
+}
