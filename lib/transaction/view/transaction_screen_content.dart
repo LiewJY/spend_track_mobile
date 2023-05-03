@@ -4,8 +4,8 @@ import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/uitls/constant.dart';
 
-class HomeScreenContent extends StatelessWidget {
-  const HomeScreenContent({super.key});
+class TransactionScreenContent extends StatelessWidget {
+  const TransactionScreenContent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,9 @@ class HomeScreenContent extends StatelessWidget {
     //todo
 
     return Column(
-      children: [Text("HomeScreenContent")],
+      children: [
+        Text("TransactionScreenContent")
+      ],
     );
   }
 }
