@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
-import 'package:track/uitls/constant.dart';
+import 'package:track/utils/constant.dart';
+import 'package:track/widgets/card/wallet_card.dart';
+import 'package:track/widgets/widgets.dart';
 
 class HomeScreenContent extends StatelessWidget {
   const HomeScreenContent({super.key});
@@ -13,7 +15,12 @@ class HomeScreenContent extends StatelessWidget {
     //todo
 
     return Column(
-      children: [Text("HomeScreenContent")],
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [Text("HomeScreenContent"),
+      WalletCard(),
+      CardsCard(),
+      CategoryCard(),
+      ],
     );
   }
 }

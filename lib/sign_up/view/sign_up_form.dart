@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/login/login.dart';
 import 'package:track/sign_up/sign_up.dart';
-import 'package:track/uitls/constant.dart';
+import 'package:track/utils/constant.dart';
 import 'package:track/widgets/widgets.dart';
 
 class SignUpForm extends StatefulWidget {

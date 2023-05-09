@@ -19,6 +19,7 @@
   "signUp": "Sign Up",
   "logout": "Logout",
   "cancel": "Cancel",
+  "edit": "Edit",
 
 
 "@firebaseAuthErrors": {},

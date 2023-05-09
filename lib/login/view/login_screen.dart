@@ -6,7 +6,7 @@ import 'package:track/l10n/l10n.dart';
 import 'package:track/login/login.dart';
 import 'package:track/repositories/repos/auth/auth_repository.dart';
 import 'package:track/widgets/widgets.dart';
-import '../../uitls/constant.dart';
+import '../../utils/constant.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
