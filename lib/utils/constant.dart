@@ -8,4 +8,6 @@ class Constant {
   //old
   // static const cardPadding = SizedBox(width: 16, height: 16);
   static const cardPadding = EdgeInsets.all(16);
+    static const modalPadding =  EdgeInsets.symmetric(horizontal: 20.0, vertical: 32);
+
 }

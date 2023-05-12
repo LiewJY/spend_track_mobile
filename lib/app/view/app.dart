@@ -2,6 +2,7 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track/account/account.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/repositories/repos/auth/auth_repository.dart';
 import 'package:track/bloc_observer.dart';
@@ -23,9 +24,16 @@ class App extends StatelessWidget {
 
     return RepositoryProvider.value(
       value: authRepository,
-      child: BlocProvider(
-        create: (_) => AppBloc(authRepository: authRepository),
-        child: const AppView(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AppBloc(authRepository: authRepository),
+          ),
+          BlocProvider(
+            create: (context) => ManageAccountBloc(authRepository: authRepository),
+          ),
+        ],
+        child: AppView(),
       ),
     );
   }

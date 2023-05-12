@@ -20,6 +20,18 @@
   "logout": "Logout",
   "cancel": "Cancel",
   "edit": "Edit",
+  "update": "Update",
+
+
+"@profilePage": {},
+  "myAccount": "My Account",
+  "editName": "Edit Name",
+  "changeEmail": "Change Email",
+  "changePassword": "Change Password",
+  "myWallet": "My Wallet",
+  "manageWallet": "Manage Wallet",
+  "manageCard": "Manage Card",
+  "manageCategory": "Manage Category",
 
 
 "@firebaseAuthErrors": {},

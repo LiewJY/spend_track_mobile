@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/l10n/l10n.dart';
+import 'package:track/repositories/repositories.dart';
 import 'package:track/utils/constant.dart';
 import 'package:track/home/home.dart';
 import 'package:track/transaction/transaction.dart';
@@ -20,6 +21,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   //bottom navigation bar
   int currentPageIndex = 0;
+
+  //repos
+  final authRepository = AuthRepository();
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;

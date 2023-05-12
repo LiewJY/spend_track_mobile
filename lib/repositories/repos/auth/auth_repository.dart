@@ -32,11 +32,12 @@ class AuthRepository {
       {required String email,
       required String password,
       required String name}) async {
-    //firebase_auth.UserCredential authRegisterResult;
     try {
       var authRegisterResult = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-      await authRegisterResult.user?.updateDisplayName(name).whenComplete(() => authRegisterResult.user?.reload());
+      await authRegisterResult.user
+          ?.updateDisplayName(name)
+          .whenComplete(() => authRegisterResult.user?.reload());
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw e.code;
     } catch (_) {
@@ -66,6 +67,20 @@ class AuthRepository {
       throw Exception(e);
     }
   }
+
+  //update name
+  Future<void> updateName({required String name}) async {
+    try {
+      await _firebaseAuth.currentUser?.updateDisplayName(name);
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw e.code;
+    } catch (_) {
+      throw "unknown";
+    }
+  }
+
+  //todo
+  //update profile
 
   //todo google login and link with account
   //google login
