@@ -16,5 +16,33 @@ class UpdateNameRequested extends ManageAccountEvent {
   List<Object> get props => [name];
 }
 
+//todo now not in use
+class ReAuthRequested extends ManageAccountEvent {
+  const ReAuthRequested(this.email, this.password);
 
-//todo more
+  final String email;
+  final String password;
+
+  @override
+  List<Object> get props => [email, password];
+}
+//todo now not in use
+class ChangeEmailRequested extends ManageAccountEvent {
+  const ChangeEmailRequested(this.email);
+
+  final String email;
+
+  @override
+  List<Object> get props => [email];
+}
+
+class ResetPasswordRequested extends ManageAccountEvent {
+  const ResetPasswordRequested(this.email);
+
+  final String email;
+
+  @override
+  List<Object> get props => [email];
+}
+
+

@@ -6,6 +6,7 @@ import 'package:track/account/account.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/utils/constant.dart';
+import 'package:track/widgets/widgets.dart';
 
 class AccountScreenContent extends StatelessWidget {
   const AccountScreenContent({super.key});
@@ -25,16 +26,28 @@ class AccountScreenContent extends StatelessWidget {
 
     return BlocListener<ManageAccountBloc, ManageAccountState>(
       listener: (context, state) {
-        // TODO: implement listener
         if (state.status == ManageAccountStatus.failure) {
-          log('fail');
-          //todo
+          AppSnackBar.error(context, state.error);
         }
         if (state.status == ManageAccountStatus.success) {
           if (isBottomSheetOpen) {
             Navigator.pop(context);
-            //todo add success message
           }
+          switch (state.success) {
+            case 'nameUpdated':
+              AppSnackBar.success(context, l10n.nameChanged);
+              break;
+                          case 'resetPasswordEmailSent':
+              AppSnackBar.success(context, l10n.resetPasswordEmailSent);
+              break;
+            // case 'emailChanged':
+            //   AppSnackBar.success(context, l10n.emailChanged);
+            //   break;
+            default:
+          }
+
+          //todo support multi action
+          //AppSnackBar.success(context, l10n.nameChanged);
         }
       },
       child: ListView(
@@ -48,6 +61,7 @@ class AccountScreenContent extends StatelessWidget {
               user.name ?? l10n.name,
               style: Theme.of(context).textTheme.titleMedium,
             ),
+            subtitle: Text(user.email ?? ''),
           ),
           Text(
             l10n.myAccount,
@@ -73,22 +87,40 @@ class AccountScreenContent extends StatelessWidget {
             },
             trailing: Icon(Icons.arrow_forward_ios_rounded),
           ),
+          //todo
+          // ListTile(
+          //   title: Text(
+          //     l10n.changeEmail,
+          //     style: Theme.of(context).textTheme.titleMedium,
+          //   ),
+          //   onTap: () {
+          //     if (!isBottomSheetOpen) {
+          //       showModalBottomSheet(
+          //           context: context,
+          //           isScrollControlled: true,
+          //           builder: (BuildContext context) {
+          //             return ReAuthModal();
+          //           }).then((value) {
+          //         toggleBottomSheet();
+          //       });
+          //       toggleBottomSheet();
+          //     }
+          //   },
+          //   trailing: Icon(Icons.arrow_forward_ios_rounded),
+          // ),
+
           ListTile(
             title: Text(
-              l10n.changeEmail,
+              l10n.resetPassword,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            onTap: () => changeEmail(),
+            //onTap: () => changePassword(),
+            onTap: () => context
+                .read<ManageAccountBloc>()
+                .add(ResetPasswordRequested(user.email.toString())),
             trailing: Icon(Icons.arrow_forward_ios_rounded),
           ),
-          ListTile(
-            title: Text(
-              l10n.changePassword,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            onTap: () => changePassword(),
-            trailing: Icon(Icons.arrow_forward_ios_rounded),
-          ),
+          //todo link with google
           Divider(),
           Text(
             l10n.myWallet,
@@ -134,18 +166,4 @@ class AccountScreenContent extends StatelessWidget {
   manageCard() {}
 
   manageWallet() {}
-
-  changePassword() {}
-
-  changeEmail() {}
-
-}
-
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
 }

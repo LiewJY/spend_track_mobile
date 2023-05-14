@@ -21,18 +21,24 @@
   "cancel": "Cancel",
   "edit": "Edit",
   "update": "Update",
+  "next": "Next",
 
 
 "@profilePage": {},
   "myAccount": "My Account",
   "editName": "Edit Name",
   "changeEmail": "Change Email",
-  "changePassword": "Change Password",
+  "resetPassword": "Reset Password",
   "myWallet": "My Wallet",
   "manageWallet": "Manage Wallet",
   "manageCard": "Manage Card",
   "manageCategory": "Manage Category",
+  "reAuth": "Re Authenticate",
 
+"@SuccessMessage": {},
+  "nameChanged": "Name successfully changed",
+  "emailChanged": "Email successfully changed",
+  "resetPasswordEmailSent": "Reset your password with the link sent to your email",
 
 "@firebaseAuthErrors": {},
   "userDisabled": "This user has been disabled. Please contact support for help.",
