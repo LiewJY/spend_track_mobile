@@ -20,7 +20,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //bottom navigation bar
-  int currentPageIndex = 0;
+  //fixme
+  int currentPageIndex = 4;
 
   //repos
   final authRepository = AuthRepository();

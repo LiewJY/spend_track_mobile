@@ -37,7 +37,7 @@ class AccountScreenContent extends StatelessWidget {
             case 'nameUpdated':
               AppSnackBar.success(context, l10n.nameChanged);
               break;
-                          case 'resetPasswordEmailSent':
+            case 'resetPasswordEmailSent':
               AppSnackBar.success(context, l10n.resetPasswordEmailSent);
               break;
             // case 'emailChanged':
@@ -114,7 +114,6 @@ class AccountScreenContent extends StatelessWidget {
               l10n.resetPassword,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            //onTap: () => changePassword(),
             onTap: () => context
                 .read<ManageAccountBloc>()
                 .add(ResetPasswordRequested(user.email.toString())),
@@ -131,7 +130,8 @@ class AccountScreenContent extends StatelessWidget {
               l10n.manageWallet,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            onTap: () => manageWallet(),
+            onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => ManageWalletScreen())),
             trailing: Icon(Icons.arrow_forward_ios_rounded),
           ),
           ListTile(
@@ -139,7 +139,8 @@ class AccountScreenContent extends StatelessWidget {
               l10n.manageCard,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            onTap: () => manageCard(),
+            onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => ManageCardScreen())),
             trailing: Icon(Icons.arrow_forward_ios_rounded),
           ),
           ListTile(
@@ -147,7 +148,8 @@ class AccountScreenContent extends StatelessWidget {
               l10n.manageCategory,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            onTap: () => manageCategory(),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ManageCategoryScreen())),
             trailing: Icon(Icons.arrow_forward_ios_rounded),
           ),
           Constant.sizedBoxSpace,
@@ -160,10 +162,4 @@ class AccountScreenContent extends StatelessWidget {
       ),
     );
   }
-
-  manageCategory() {}
-
-  manageCard() {}
-
-  manageWallet() {}
 }
