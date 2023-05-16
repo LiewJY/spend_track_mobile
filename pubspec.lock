@@ -354,6 +354,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.16"
+  track_theme:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "6e7268e1c0b5d51339e09641a73cc0275c8a3107"
+      url: "https://github.com/LiewJY/track_theme.git"
+    source: git
+    version: "0.0.2"
   typed_data:
     dependency: transitive
     description:

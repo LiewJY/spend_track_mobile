@@ -10,7 +10,7 @@ import 'package:track/forget_password/forget_password.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/login/login.dart';
 import 'package:track/sign_up/sign_up.dart';
-import 'package:track/utils/constant.dart';
+import 'package:track_theme/track_theme.dart';
 import 'package:track/widgets/widgets.dart';
 
 class LoginForm extends StatefulWidget {
@@ -41,7 +41,7 @@ class _LoginFormState extends State<LoginForm> {
             controller: _emailController,
             textInputAction: 'next',
           ),
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           PasswordField(controller: _passwordController),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -55,12 +55,12 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
           FilledButton(
-            style: Constant.fullWidthButton,
+            style: AppStyle.fullWidthButton,
             onPressed: () => login(),
             child: Text(l10n.login),
           ),
           OutlinedButton(
-            style: Constant.fullWidthButton,
+            style: AppStyle.fullWidthButton,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => SignUpScreen()),
             ),

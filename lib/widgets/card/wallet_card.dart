@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:track/l10n/l10n.dart';
-import 'package:track/utils/constant.dart';
+import 'package:track_theme/track_theme.dart';
 
 class WalletCard extends StatelessWidget {
   const WalletCard({super.key});
@@ -23,7 +23,7 @@ class WalletCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: Constant.cardPadding,
+            padding: AppStyle.cardPadding,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

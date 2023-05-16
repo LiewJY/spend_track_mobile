@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/repositories.dart';
-import 'package:track/utils/constant.dart';
+import 'package:track_theme/track_theme.dart';
 import 'package:track/home/home.dart';
 import 'package:track/transaction/transaction.dart';
 import 'package:track/add/add.dart';
@@ -69,27 +69,27 @@ class _HomeScreenState extends State<HomeScreen> {
       body: const <Widget>[
         SafeArea(
             child: Padding(
-          padding: Constant.paddingHorizontal,
+          padding: AppStyle.paddingHorizontal,
           child: HomeScreenContent(),
         )),
         SafeArea(
             child: Padding(
-          padding: Constant.paddingHorizontal,
+          padding: AppStyle.paddingHorizontal,
           child: TransactionScreenContent(),
         )),
         SafeArea(
             child: Padding(
-          padding: Constant.paddingHorizontal,
+          padding: AppStyle.paddingHorizontal,
           child: AddScreenContent(),
         )),
         SafeArea(
             child: Padding(
-          padding: Constant.paddingHorizontal,
+          padding: AppStyle.paddingHorizontal,
           child: BudgetScreenContent(),
         )),
         SafeArea(
             child: Padding(
-          padding: Constant.paddingHorizontal,
+          padding: AppStyle.paddingHorizontal,
           child: AccountScreenContent(),
         )),
       ][currentPageIndex],

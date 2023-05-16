@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/account/account.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
-import 'package:track/utils/constant.dart';
 import 'package:track/widgets/widgets.dart';
+import 'package:track_theme/track_theme.dart';
 
 class AccountScreenContent extends StatelessWidget {
   const AccountScreenContent({super.key});
@@ -152,9 +152,9 @@ class AccountScreenContent extends StatelessWidget {
                 builder: (context) => ManageCategoryScreen())),
             trailing: Icon(Icons.arrow_forward_ios_rounded),
           ),
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           FilledButton(
-            style: Constant.fullWidthButton,
+            style: AppStyle.fullWidthButton,
             onPressed: () => context.read<AppBloc>().add(AppLogoutRequested()),
             child: Text(l10n.logout),
           ),

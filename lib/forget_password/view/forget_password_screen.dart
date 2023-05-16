@@ -7,7 +7,7 @@ import 'package:track/l10n/l10n.dart';
 import 'package:track/login/login.dart';
 import 'package:track/repositories/repos/auth/auth_repository.dart';
 import 'package:track/widgets/widgets.dart';
-import '../../utils/constant.dart';
+import 'package:track_theme/track_theme.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   const ForgetPasswordScreen({super.key});
@@ -31,7 +31,7 @@ class ForgetPasswordScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: Constant.paddingHorizontal,
+          padding: AppStyle.paddingHorizontal,
           child: BlocProvider(
             create: (context) =>
                 ForgetPasswordCubit(context.read<AuthRepository>()),
@@ -77,11 +77,11 @@ class _ForgetPasswordFormState extends State<ForgetPasswordForm> {
       key: forgetPasswordForm,
       child: Column(
         children: [
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           EmailField(controller: _emailController),
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           FilledButton(
-            style: Constant.fullWidthButton,
+            style: AppStyle.fullWidthButton,
             onPressed: () => sendResetEmail(),
             child: Text(l10n.resetPassword),
           ),

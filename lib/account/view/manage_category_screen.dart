@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:track/utils/constant.dart';
+import 'package:track_theme/track_theme.dart';
 
 class ManageCategoryScreen extends StatelessWidget {
   const ManageCategoryScreen({super.key});
@@ -9,7 +9,7 @@ class ManageCategoryScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
           child: Padding(
-        padding: Constant.paddingHorizontal,
+        padding: AppStyle.paddingHorizontal,
         child: Text('fff'),
       )),
     );

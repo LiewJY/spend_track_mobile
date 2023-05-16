@@ -9,7 +9,7 @@ import 'package:track/bloc_observer.dart';
 import 'package:track/login/login.dart';
 import '../../home/home.dart';
 import '../../l10n/l10n.dart';
-import '../../theme/app_theme.dart';
+import 'package:track_theme/track_theme.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -30,7 +30,8 @@ class App extends StatelessWidget {
             create: (_) => AppBloc(authRepository: authRepository),
           ),
           BlocProvider(
-            create: (context) => ManageAccountBloc(authRepository: authRepository),
+            create: (context) =>
+                ManageAccountBloc(authRepository: authRepository),
           ),
         ],
         child: AppView(),

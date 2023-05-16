@@ -57,6 +57,12 @@ dependencies:
   intl:
     any
 
+  # theme from github
+  track_theme: 
+    git: 
+      url: https://github.com/LiewJY/track_theme.git
+      ref: main
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

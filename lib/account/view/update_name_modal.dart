@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/account/account.dart';
 import 'package:track/l10n/l10n.dart';
-import 'package:track/utils/constant.dart';
+import 'package:track_theme/track_theme.dart';
 import 'package:track/widgets/widgets.dart';
 
 class UpdateNameModal extends StatefulWidget {
@@ -26,7 +26,7 @@ class _UpdateNameModalState extends State<UpdateNameModal> {
     final l10n = context.l10n;
     return Padding(
       //this padding is for the keyboard
-      padding: Constant.modalPadding,
+      padding: AppStyle.modalPadding,
       child: Padding(
         padding: MediaQuery.of(context).viewInsets,
         child: SizedBox(
@@ -36,9 +36,9 @@ class _UpdateNameModalState extends State<UpdateNameModal> {
             child: Column(
               children: [
                 NameField(controller: _nameController),
-                Constant.sizedBoxSpace,
+                AppStyle.sizedBoxSpace,
                 FilledButton(
-                  style: Constant.fullWidthButton,
+                  style: AppStyle.fullWidthButton,
                   onPressed: () => updateName(),
                   child: Text(l10n.update),
                 ),

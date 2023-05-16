@@ -6,7 +6,7 @@ import 'package:track/l10n/l10n.dart';
 import 'package:track/login/login.dart';
 import 'package:track/repositories/repos/auth/auth_repository.dart';
 import 'package:track/widgets/widgets.dart';
-import '../../utils/constant.dart';
+import 'package:track_theme/track_theme.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -19,7 +19,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: Constant.paddingHorizontal,
+          padding: AppStyle.paddingHorizontal,
           child: BlocProvider(
             create: (context) => LoginCubit(context.read<AuthRepository>()),
             child: BlocListener<LoginCubit, LoginState>(

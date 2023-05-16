@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:track/utils/constant.dart';
+import 'package:track_theme/track_theme.dart';
 
 class ManageWalletScreen extends StatelessWidget {
   const ManageWalletScreen({super.key});
@@ -9,7 +9,7 @@ class ManageWalletScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
           child: Padding(
-        padding: Constant.paddingHorizontal,
+        padding: AppStyle.paddingHorizontal,
         child: Text('fff'),
       )),
     );

@@ -10,7 +10,7 @@ import 'package:track/account/account.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/login/login.dart';
 import 'package:track/sign_up/sign_up.dart';
-import 'package:track/utils/constant.dart';
+import 'package:track_theme/track_theme.dart';
 import 'package:track/widgets/widgets.dart';
 //todo not in used, may need to remove
 class ReAuthModal extends StatefulWidget {
@@ -32,7 +32,7 @@ class _ReAuthModalState extends State<ReAuthModal> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Padding(
-      padding: Constant.modalPadding,
+      padding: AppStyle.modalPadding,
       child: Padding(
         padding: MediaQuery.of(context).viewInsets,
         child: SizedBox(
@@ -50,16 +50,16 @@ class _ReAuthModalState extends State<ReAuthModal> {
                     ),
                   ],
                 ),
-                Constant.sizedBoxSpace,
+                AppStyle.sizedBoxSpace,
                 EmailField(
                   controller: _emailController,
                   textInputAction: 'next',
                 ),
-                Constant.sizedBoxSpace,
+                AppStyle.sizedBoxSpace,
                 PasswordField(controller: _passwordController),
-                Constant.sizedBoxSpace,
+                AppStyle.sizedBoxSpace,
                 FilledButton(
-                  style: Constant.fullWidthButton,
+                  style: AppStyle.fullWidthButton,
                   onPressed: () => reAuth(),
                   child: Text(l10n.next),
                 ),
