@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track/forget_password/forget_password.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/login/login.dart';
 import 'package:track/sign_up/sign_up.dart';
@@ -42,7 +43,17 @@ class _LoginFormState extends State<LoginForm> {
           ),
           Constant.sizedBoxSpace,
           PasswordField(controller: _passwordController),
-          Constant.sizedBoxSpace,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ForgetPasswordScreen()),
+                ),
+                child: Text(l10n.forgetPassword),
+              ),
+            ],
+          ),
           FilledButton(
             style: Constant.fullWidthButton,
             onPressed: () => login(),

@@ -54,8 +54,9 @@ class ManageAccountBloc extends Bloc<ManageAccountEvent, ManageAccountState> {
         //await authRepository.updateName(name: event.name);
         await authRepository.sendResetPasswordEmail(email: event.email);
         emit(state.copyWith(
-            status: ManageAccountStatus.success,
-            success: 'resetPasswordEmailSent'));
+          status: ManageAccountStatus.success,
+          success: 'resetPasswordEmailSent',
+        ));
       } catch (e) {
         emit(state.copyWith(
           status: ManageAccountStatus.failure,

@@ -23,6 +23,9 @@
   "update": "Update",
   "next": "Next",
 
+"@loginPage": {},
+  "forgetPassword": "Forget Password",
+
 
 "@profilePage": {},
   "myAccount": "My Account",
