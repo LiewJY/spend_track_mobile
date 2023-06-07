@@ -38,31 +38,31 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
+        destinations:  <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.home_filled),
             icon: Icon(Icons.home_outlined),
-            label: 'home',
+            label: l10n.home,
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.transform),
             icon: Icon(Icons.transform_outlined),
-            label: 'transaction',
+            label: l10n.transaction,
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.add),
             icon: Icon(Icons.add),
-            label: 'add',
+            label: l10n.add,
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.attach_money),
             icon: Icon(Icons.attach_money_outlined),
-            label: 'budget',
+            label: l10n.budget,
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.person_2),
             icon: Icon(Icons.person_2_outlined),
-            label: 'account',
+            label: l10n.account,
           ),
         ],
       ),

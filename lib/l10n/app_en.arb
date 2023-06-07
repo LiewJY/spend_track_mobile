@@ -23,6 +23,14 @@
   "update": "Update",
   "next": "Next",
 
+"@navigation": {},
+  "home": "Home",
+  "transaction": "Transaction",
+  "add": "Add",
+  "budget": "Budget",
+  "account": "Account",
+
+
 "@loginPage": {},
   "forgetPassword": "Forget Password",
 
