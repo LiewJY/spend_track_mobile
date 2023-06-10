@@ -14,8 +14,6 @@ String authErrorMessage(BuildContext context, String errorCode) {
     //sign up error
     case 'invalid-email':
       return l10n.invalidEmail;
-    case 'user-disabled':
-      return l10n.userDisabled;
     case 'email-already-in-use':
       return l10n.emailAlreadyInUse;
     case 'operation-not-allowed':
