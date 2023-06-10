@@ -83,9 +83,9 @@ class AuthRepository {
   //todo now not in use
   Future<void> reAuth({required String email, required String password}) async {
     try {
-      final credential = firebase_auth.EmailAuthProvider.credential(email : email, password : password);
-      await _firebaseAuth.currentUser
-          ?.reauthenticateWithCredential(credential);
+      final credential = firebase_auth.EmailAuthProvider.credential(
+          email: email, password: password);
+      await _firebaseAuth.currentUser?.reauthenticateWithCredential(credential);
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw e.code;
     } catch (_) {
@@ -93,7 +93,7 @@ class AuthRepository {
     }
   }
 
-    Future<void> sendResetPasswordEmail({required String email}) async {
+  Future<void> sendResetPasswordEmail({required String email}) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } on firebase_auth.FirebaseAuthException catch (e) {
@@ -102,8 +102,6 @@ class AuthRepository {
       throw "unknown";
     }
   }
-
-
 
   //todo
   //update profile
