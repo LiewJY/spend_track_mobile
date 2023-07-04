@@ -1,0 +1,1 @@
+export 'view/manage_wallet_screen.dart';

@@ -35,6 +35,16 @@ class _UpdateNameModalState extends State<UpdateNameModal> {
             key: updateNameForm,
             child: Column(
               children: [
+                Row(
+                  children: [
+                    Text(
+                      l10n.updateName,
+                      style: Theme.of(context).textTheme.titleLarge,
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                ),
+                AppStyle.sizedBoxSpace,
                 NameField(controller: _nameController),
                 AppStyle.sizedBoxSpace,
                 FilledButton(
