@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:track_theme/track_theme.dart';
 
-class ManageCardScreen extends StatelessWidget {
-  const ManageCardScreen({super.key});
-
+class ManageCategoryScreen extends StatelessWidget {
+  const ManageCategoryScreen({super.key});
+//fixme not in use now
+//todo remove later
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,3 +16,4 @@ class ManageCardScreen extends StatelessWidget {
     );
   }
 }
+

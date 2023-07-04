@@ -46,6 +46,10 @@
   "manageCategory": "Manage Category",
   "reAuth": "Re Authenticate",
 
+"@manageCardPage": {},
+  "myCards": "My Cards",
+
+
 "@SuccessMessage": {},
   "nameChanged": "Name successfully changed",
   "emailChanged": "Email successfully changed",
