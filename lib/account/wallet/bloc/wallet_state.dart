@@ -7,14 +7,12 @@ class WalletState extends Equatable {
   final String error;
   final String success;
   final List<Wallet> walletList;
-  // final List<Cashback> cashbackList;
 
   const WalletState({
     required this.status,
     required this.error,
     required this.success,
     required this.walletList,
-    //  required this.cashbackList,
   });
 
   //initializing
@@ -24,7 +22,6 @@ class WalletState extends Equatable {
       error: '',
       success: '',
       walletList: [],
-      //  cashbackList: [],
     );
   }
 
@@ -36,14 +33,12 @@ class WalletState extends Equatable {
     String? error,
     String? success,
     List<Wallet>? walletList,
-    // List<Cashback>? cashbackList,
   }) {
     return WalletState(
       status: status ?? this.status,
       error: error ?? this.error,
       success: success ?? this.success,
       walletList: walletList ?? this.walletList,
-      //  cashbackList: cashbackList?? this.cashbackList,
     );
   }
 }

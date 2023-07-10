@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track_theme/track_theme.dart';
-import 'package:track/widgets/card/wallet_card.dart';
+import 'package:track/widgets/card/wallets_card.dart';
 import 'package:track/widgets/widgets.dart';
 
 class HomeScreenContent extends StatelessWidget {
@@ -17,7 +17,7 @@ class HomeScreenContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [Text("HomeScreenContent"),
-      WalletCard(),
+      //WalletCard(),
       //CardsCard(),
       CategoryCard(),
       ],

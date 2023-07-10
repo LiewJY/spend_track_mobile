@@ -110,4 +110,5 @@ class CardBloc extends Bloc<CardEvent, CardState> {
       ));
     }
   }
+
 }

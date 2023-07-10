@@ -6,14 +6,15 @@ import 'package:track/repositories/repos/wallet/wallet_repository.dart';
 part 'available_wallet_state.dart';
 
 class AvailableWalletCubit extends Cubit<AvailableWalletState> {
-    final WalletRepository walletRepository;
+  final WalletRepository walletRepository;
 
-  AvailableWalletCubit(this.walletRepository) : super(AvailableWalletState.initial());
+  AvailableWalletCubit(this.walletRepository)
+      : super(AvailableWalletState.initial());
 
-getAvailableWallets() async {
+  getAvailableWallets() async {
     if (state.status == AvailableWalletStatus.loading) return;
     emit(state.copyWith(status: AvailableWalletStatus.loading));
-  List<Wallet> wallets = [];
+    List<Wallet> wallets = [];
 
     try {
       wallets = await walletRepository.getAvailableWallets();
@@ -30,7 +31,32 @@ getAvailableWallets() async {
     }
   }
 
+  addToMyWallets(
+      {Wallet? wallet,
+      String? customName,
+      }) async {
+    if (state.status == AvailableWalletStatus.loading) return;
+    emit(state.copyWith(status: AvailableWalletStatus.loading));
 
+    try {
+      final storeWallet = Wallet(
+        uid: wallet!.uid,
+        name: wallet.name,
+        description: wallet.description,
+        customName: customName,
+      );
 
+      await walletRepository.addToMyWallets(storeWallet);
 
+      emit(state.copyWith(
+        status: AvailableWalletStatus.success,
+        success: 'added',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: AvailableWalletStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
 }

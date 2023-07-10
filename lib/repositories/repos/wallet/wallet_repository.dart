@@ -28,7 +28,7 @@ class WalletRepository {
     }
   }
 
-  Future<List<Wallet>> getMyCards() async {
+  Future<List<Wallet>> getMyWallets() async {
     wallets.clear();
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
@@ -53,8 +53,7 @@ class WalletRepository {
     }
   }
 
-  Future<void> addToMyCards(Wallet card) async {
-    // List<Cashback> cardCashbacks = [];
+  Future<void> addToMyWallets(Wallet card) async {
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
       await userRef
@@ -71,7 +70,23 @@ class WalletRepository {
     }
   }
 
-  Future<void> deleteCard({required String uid}) async {
+    Future<void> updateMyWallet({
+    required String uid,
+    required String customName,
+    //required double budget,
+  }) async {
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+
+      await userRef.doc(userID).collection('myWallets').doc(uid).update({
+        'customName': customName,
+      });
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<void> deleteWallet({required String uid}) async {
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
       await userRef.doc(userID).collection('myWallets').doc(uid).delete();

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/account/card/card.dart';
+import 'package:track/account/wallet/cubit/available_wallet_cubit.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/models/creditCard.dart';
+import 'package:track/repositories/models/wallet.dart';
 import 'package:track/widgets/form_field/amount_field.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
 
-class CardDialog extends StatefulWidget {
-  const CardDialog({
+class WalletDialog extends StatefulWidget {
+  const WalletDialog({
     super.key,
     required this.dialogTitle,
     required this.actionName,
@@ -19,18 +21,18 @@ class CardDialog extends StatefulWidget {
   final String dialogTitle;
   final String actionName;
   final String action;
-  final CreditCard? data;
+  final Wallet? data;
 
   @override
-  State<CardDialog> createState() => _CardDialogState();
+  State<WalletDialog> createState() => _WalletDialogState();
 }
 
-class _CardDialogState extends State<CardDialog> {
+class _WalletDialogState extends State<WalletDialog> {
   final cardForm = GlobalKey<FormState>();
   late final String uid;
   final _nameController = TextEditingController();
-  final _cardNumberController = TextEditingController();
-  final _cardBudgetController = TextEditingController();
+  // final _cardNumberController = TextEditingController();
+  // final _cardBudgetController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +70,6 @@ class _CardDialogState extends State<CardDialog> {
                 AppStyle.sizedBoxSpace,
                 NameField(controller: _nameController),
                 AppStyle.sizedBoxSpace,
-                CardNumberField(
-                  controller: _cardNumberController,
-                  label: l10n.last4DigitOfCard,
-                ),
                 // AppStyle.sizedBoxSpace,
                 // AmountField(
                 //   controller: _cardBudgetController,
@@ -101,30 +99,14 @@ class _CardDialogState extends State<CardDialog> {
   action(type) {
     if (cardForm.currentState!.validate()) {
       switch (type) {
-        case 'addToMyCard':
-          context.read<AvailableCardCubit>().addToMyCards(
-                card: widget.data,
+        case 'addToMyWallet':
+          context.read<AvailableWalletCubit>().addToMyWallets(
+                wallet: widget.data,
                 customName: _nameController.text,
-                lastNumber: _cardNumberController.text,
                 // budget: double.tryParse(_cardBudgetController.text),
               );
           break;
       }
-      //   switch (type) {
-      //     case 'addCategory':
-      //       context.read<CategoryBloc>().add(AddCategoryRequested(
-      //             name: _nameController.text,
-      //             description: _descriptionController.text,
-      //           ));
-      //       break;
-      //     case 'editCategory':
-      //       context.read<CategoryBloc>().add(UpdateCategoryRequested(
-      //             uid: widget.data!.uid!,
-      //             name: _nameController.text,
-      //             description: _descriptionController.text,
-      //           ));
-      //       break;
-      //   }
     }
   }
 }

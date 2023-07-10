@@ -2,10 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:track/l10n/l10n.dart';
+import 'package:track/repositories/models/wallet.dart';
 import 'package:track_theme/track_theme.dart';
 
-class WalletCard extends StatelessWidget {
-  const WalletCard({super.key});
+class WalletsCard extends StatelessWidget {
+  const WalletsCard({
+    super.key,
+    required this.data,
+    required this.edit,
+    required this.delete,
+  });
+  final Wallet data;
+  final edit;
+  final delete;
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +24,10 @@ class WalletCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            title: Text('Wallet name'),
-            subtitle: Text('cash / e-wallet'),
+            title: Text(data.customName.toString()),
+            subtitle: Text('${data.name}, ${data.description}'),
             trailing: IconButton(
-              onPressed: () => onDelete(),
+              onPressed: delete,
               icon: Icon(Icons.delete),
             ),
           ),
@@ -28,7 +37,7 @@ class WalletCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FilledButton(
-                  onPressed: () => walletCardEdit(),
+                  onPressed: edit,
                   child: Text(l10n.edit),
                 ),
               ],
@@ -39,13 +48,13 @@ class WalletCard extends StatelessWidget {
     );
   }
 
-  void walletCardEdit() {
-    log("pressed wc");
-    //todo
-  }
+  // void WalletsCardEdit() {
+  //   log("pressed wc");
+  //   //todo
+  // }
 
-  void onDelete() {
-    log('delete');
-    //todo
-  }
+  // void onDelete() {
+  //   log('delete');
+  //   //todo
+  // }
 }

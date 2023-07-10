@@ -85,6 +85,9 @@
   "myWallets": "My Wallets",
   "addWallet": "Add Wallet",
   "walletAvailable": "Wallet Available",
+  "addToMyWallets": "Add To My Wallets",
+  "wallet": "Wallet",
+  "description": "Description",
 
 "@SuccessMessage": {},
   "nameChanged": "Name successfully changed",
@@ -93,6 +96,9 @@
   "cardAddSuccess": "Card successfully added",
   "cardUpdateSuccess": "Card successfully updated",
   "cardDeleteSuccess": "Card successfully deleted",
+  "walletAddSuccess": "Wallet successfully added",
+  "walletUpdateSuccess": "Wallet successfully updated",
+  "walletDeleteSuccess": "Wallet successfully deleted",
 
 "@firebaseErrors": {},
   "cannotRetrieveData": "Cannot retrieve data. Unknown error occurred.",

@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -10,13 +9,13 @@ class Wallet extends Equatable {
     this.name,
     this.description,
     //for user only
-    this.budget,
+    this.customName,
   });
 
   final String? uid;
   final String? name;
   final String? description;
-  final double? budget;
+  final String? customName;
 
   //convert firestore format into object
   factory Wallet.fromFirestore(
@@ -28,7 +27,7 @@ class Wallet extends Equatable {
       uid: snapshot.id,
       name: data?['name'],
       description: data?['description'],
-      budget: data?['budget'],
+      customName: data?['customName'],
     );
   }
 
@@ -38,7 +37,7 @@ class Wallet extends Equatable {
       if (uid != null) "uid": uid,
       if (name != null) "name": name,
       if (description != null) "description": description,
-      if (budget != null) "budget": budget,
+      if (customName != null) "customName": customName,
     };
   }
 
@@ -64,6 +63,6 @@ class Wallet extends Equatable {
         uid,
         name,
         description,
-        budget,
+        customName,
       ];
 }

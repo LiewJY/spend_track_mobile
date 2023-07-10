@@ -13,8 +13,32 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<DisplayWalletRequested>(_onDisplayWalletRequested);
     // on<DisplayCardCashbackRequested>(_onDisplayCardCashbackRequested);
     // on<AddCardRequested>(_onAddCardRequested);
-    // on<UpdateCardRequested>(_onUpdateCardRequested);
-    // on<DeleteCardRequested>(_onDeleteCardRequested);
+    on<UpdateWalletRequested>(_onUpdateWalletRequested);
+     on<DeleteWalletRequested>(_onDeleteWaletRequested);
+  }
+  _onUpdateWalletRequested(
+    UpdateWalletRequested event,
+    Emitter emit,
+  ) async {
+    if (state.status == WalletStatus.loading) return;
+    emit(state.copyWith(status: WalletStatus.loading));
+    try {
+      await walletRepository.updateMyWallet(
+        uid: event.uid,
+        customName: event.customName,
+        //budget: event.budget,
+      );
+
+      emit(state.copyWith(
+        status: WalletStatus.success,
+        success: 'updated',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: WalletStatus.failure,
+        error: e.toString(),
+      ));
+    }
   }
 
   _onDisplayWalletRequested(
@@ -24,11 +48,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     if (state.status == WalletStatus.loading) return;
     emit(state.copyWith(status: WalletStatus.loading));
     try {
-      //List<Wallet> walletList = await walletRepository.getMyCards();
+      List<Wallet> walletList = await walletRepository.getMyWallets();
       emit(state.copyWith(
         status: WalletStatus.success,
         success: 'loadedData',
-        //walletList: walletList,
+        walletList: walletList,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -37,4 +61,26 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       ));
     }
   }
+
+  _onDeleteWaletRequested(
+    DeleteWalletRequested event,
+    Emitter emit,
+  ) async {
+    if (state.status == WalletStatus.loading) return;
+    emit(state.copyWith(status: WalletStatus.loading));
+    try {
+      await walletRepository.deleteWallet(uid: event.uid);
+
+      emit(state.copyWith(
+        status: WalletStatus.success,
+        success: 'deleted',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: WalletStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
+
 }

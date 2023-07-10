@@ -52,7 +52,7 @@ class _WalletListScreenState extends State<WalletListScreen> {
                     if (isDialogOpen) {
                       Navigator.of(context, rootNavigator: true).pop();
                     }
-                    AppSnackBar.success(context, l10n.cardAddSuccess);
+                    AppSnackBar.success(context, l10n.walletAddSuccess);
                     break;
                   default:
                 }
@@ -103,48 +103,27 @@ class _AvailableCardListState extends State<AvailableCardsList> {
 
 
 
-              return AddCardsCard(
+              return AddWalletCard(
                 title: wallets[index].name.toString(),
-                subtitle: '${wallets[index].name}, ${wallets[index].name}',
-                buttonPressed: () {
-                  // context
-                  //     .read<AvailableCardCubit>()
-                  //     .getCardDetails(wallets[index].uid.toString());
-                  if (!isDialogOpen) {
-                    // showDialog(
-                    //     context: context,
-                    //     builder: (_) {
-                    //       return BlocProvider.value(
-                    //         value: BlocProvider.of<AvailableCardCubit>(context),
-                    //         // child: CardDetailsDialog(
-                    //         //   dialogTitle: wallets[index].name.toString(),
-                    //         //   data: wallets[index],
-                    //         // ),
-                    //       );
-                    //     }).then((value) {
-                    //   toggleDialog();
-                    // });
-                    // toggleDialog();
-                  }
-                },
+                subtitle: wallets[index].description.toString(),
                 iconPressed: () {
                   if (!isDialogOpen) {
-                    // showDialog(
-                    //     context: context,
-                    //     builder: (_) {
-                    //       return BlocProvider.value(
-                    //         value: BlocProvider.of<AvailableCardCubit>(context),
-                    //         // child: CardDialog(
-                    //         //   dialogTitle: l10n.addToMyCards,
-                    //         //   actionName: l10n.addToMyCards,
-                    //         //   action: 'addToMyCard',
-                    //         //   data: wallets[index],
-                    //         // ),
-                    //       );
-                    //     }).then((value) {
-                    //   toggleDialog();
-                    // });
-                    // toggleDialog();
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          return BlocProvider.value(
+                            value: BlocProvider.of<AvailableWalletCubit>(context),
+                            child: WalletDialog(
+                              dialogTitle: l10n.addToMyWallets,
+                              actionName: l10n.addToMyWallets,
+                              action: 'addToMyWallet',
+                              data: wallets[index],
+                            ),
+                          );
+                        }).then((value) {
+                      toggleDialog();
+                    });
+                    toggleDialog();
                   }
                 },
                 // content: cards[index].bank.toString(),
