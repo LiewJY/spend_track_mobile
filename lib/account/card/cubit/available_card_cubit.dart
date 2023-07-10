@@ -49,7 +49,7 @@ class AvailableCardCubit extends Cubit<AvailableCardState> {
         isCashback: card.isCashback,
         customName: customName,
         lastNumber: lastNumber,
-        budget: budget,
+        //budget: budget,
       );
 
       await cardRepository.addToMyCards(storeCard);

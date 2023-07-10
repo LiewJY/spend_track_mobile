@@ -1,11 +1,9 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:track/repositories/models/cashback.dart';
 import 'package:track/repositories/models/creditCard.dart';
-import 'package:track/repositories/models/myCard.dart';
 
 class CardRepository {
   //firestore instance
@@ -140,17 +138,15 @@ class CardRepository {
     required String uid,
     required String customName,
     required String lastNumber,
-    required double budget
+    //required double budget,
   }) async {
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
 
-      log('in reoo');
       await userRef.doc(userID).collection('myCards').doc(uid).update({
         'customName': customName,
         'lastNumber': lastNumber,
-                'budget': budget,
-
+        //'budget': budget,
       });
     } catch (e) {
       throw e.toString();

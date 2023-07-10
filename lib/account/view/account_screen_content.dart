@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/account/account.dart';
+import 'package:track/account/wallet/bloc/wallet_bloc.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
+import 'package:track/repositories/repos/wallet/wallet_repository.dart';
 import 'package:track/repositories/repositories.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
@@ -19,6 +21,7 @@ class AccountScreenContent extends StatelessWidget {
     //for auth logout
     final user = context.select((AppBloc bloc) => bloc.state.user);
     final categoryRepository = CardRepository();
+    final walletRepository = WalletRepository();
 
     bool isBottomSheetOpen = false;
 
@@ -133,8 +136,9 @@ class AccountScreenContent extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => BlocProvider.value(
-                      value: BlocProvider.of<CardBloc>(context),
+                builder: (context) => BlocProvider(
+                      create: (context) =>
+                          WalletBloc(walletRepository: walletRepository),
                       child: ManageWalletScreen(),
                     ))),
             trailing: Icon(Icons.arrow_forward_ios_rounded),

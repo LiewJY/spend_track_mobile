@@ -11,7 +11,7 @@ class CreditCard extends Equatable {
     //for user only
     this.customName,
     this.lastNumber,
-    this.budget,
+    //this.budget,
   });
 
   final String? uid;
@@ -21,7 +21,7 @@ class CreditCard extends Equatable {
   final bool? isCashback;
   final String? customName;
   final String? lastNumber;
-  final double? budget;
+  //final double? budget;
 
   //convert firestore format into object
   factory CreditCard.fromFirestore(
@@ -37,7 +37,7 @@ class CreditCard extends Equatable {
       isCashback: data?['isCashback'],
       customName: data?['customName'],
       lastNumber: data?['lastNumber'],
-      budget: data?['budget'],
+      //budget: double.tryParse(data!['budget'].toString()),
     );
   }
 
@@ -51,7 +51,7 @@ class CreditCard extends Equatable {
       if (isCashback != null) "isCashback": isCashback,
       if (customName != null) "customName": customName,
       if (lastNumber != null) "lastNumber": lastNumber,
-      if (budget != null) "budget": budget,
+      //if (budget != null) "budget": budget,
     };
   }
 
@@ -64,6 +64,6 @@ class CreditCard extends Equatable {
         isCashback,
         customName,
         lastNumber,
-        budget,
+        //budget,
       ];
 }

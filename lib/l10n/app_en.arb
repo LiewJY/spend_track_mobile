@@ -81,6 +81,10 @@
   "bank": "Bank",
   "editCard": "Edit Card",
 
+"@manageWalletPage": {},
+  "myWallets": "My Wallets",
+  "addWallet": "Add Wallet",
+  "walletAvailable": "Wallet Available",
 
 "@SuccessMessage": {},
   "nameChanged": "Name successfully changed",

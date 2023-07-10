@@ -36,16 +36,20 @@ class UpdateCardRequested extends CardEvent {
     required this.uid,
     required this.customName,
     required this.lastNumber,
-    required this.budget,
+    // required this.budget,
   });
 
   final String uid;
   final String customName;
   final String lastNumber;
-  final double budget;
+  //final double budget;
 
   @override
-  List<Object> get props => [uid, customName, lastNumber, budget];
+  List<Object> get props => [
+        uid,
+        customName,
+        lastNumber,
+      ];
 }
 // class AddCardRequested extends CardEvent {
 

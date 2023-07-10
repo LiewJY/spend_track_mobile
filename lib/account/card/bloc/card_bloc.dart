@@ -32,7 +32,7 @@ class CardBloc extends Bloc<CardEvent, CardState> {
         uid: event.uid,
         customName: event.customName,
         lastNumber: event.lastNumber,
-        budget: event.budget,
+        //budget: event.budget,
       );
 
       emit(state.copyWith(

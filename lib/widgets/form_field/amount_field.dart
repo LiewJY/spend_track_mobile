@@ -19,7 +19,7 @@ class _AmountFieldState extends State<AmountField> {
     final l10n = context.l10n;
 
     String? amountValidator(value) {
-      if ((double.tryParse(value) ?? 0) <= 0.0) {
+      if (value == null) {
         return l10n.amountError;
       } else {
         return null;

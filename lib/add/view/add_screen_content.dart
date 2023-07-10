@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track_theme/track_theme.dart';
@@ -11,75 +12,46 @@ class AddScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    //todo
-    //return TestStepper();
+    formatDate(DateTime dateTime) {
+      return DateFormat('dd-MM-yyyy').format(dateTime);
+    }
+
+    // final TextEditingController _dateInputController;
+    TextEditingController _dateInputController = TextEditingController();
+    _dateInputController.text = formatDate(DateTime.now());
+
     return Column(
-      children: [Text("AddScreenContent")],
-    );
-  }
-}
+      children: [
+        Text("AddScreenContent"),
+        TextFormField(
+          decoration:
+              InputDecoration(prefixIcon: Icon(Icons.calendar_today_rounded)),
+          controller: _dateInputController,
+          readOnly: true,
+          onTap: () async {
+            DateTime? pick = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2021),
+                lastDate: DateTime.now(),
+                currentDate: DateTime.now());
+            _dateInputController.text = formatDate(pick!);
+          },
+        ),
+        //         TextFormField(
+        //   decoration:
+        //       InputDecoration(prefixIcon: Icon(Icons.av_timer_outlined)),
+        //   controller: _dateInputController,
+        //   readOnly: true,
+        //   onTap: () {
+        //     showTimePicker(
+        //       context: context,
+        //       initialTime: TimeOfDay.now()
 
-class TestStepper extends StatefulWidget {
-  const TestStepper({super.key});
-
-  @override
-  State<TestStepper> createState() => _TestStepperState();
-}
-
-class _TestStepperState extends State<TestStepper> {
-  int _index = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        // colorScheme: ColorScheme.light(primary: Colors.pink)
-      ),
-      child: Stepper(
-        type: StepperType.horizontal,
-        currentStep: _index,
-        onStepCancel: () {
-          if (_index > 0) {
-            setState(() {
-              _index -= 1;
-            });
-          }
-        },
-        onStepContinue: () {
-          if (_index <= 0) {
-            setState(() {
-              _index += 1;
-            });
-          }
-        },
-        onStepTapped: (int index) {
-          setState(() {
-            _index = index;
-          });
-        },
-        steps: <Step>[
-          Step(
-            title: const Text('Step 1 title'),
-            content: Container(
-              alignment: Alignment.centerLeft,
-              child: const Text('Content for Step 1'),
-            ),
-            isActive: false,
-          ),
-          Step(
-            title: Text('Step 2 title'),
-            content: Text('Content for Step 2'),
-          ),
-                    Step(
-            title: Text('Step 3 title'),
-            content: Text('Content for Step 3'),
-          ),
-                    Step(
-            title: Text('Step 4 title'),
-            content: Text('Content for Step 4'),
-          ),
-        ],
-      ),
+        //     );
+        //   },
+        // ),
+      ],
     );
   }
 }

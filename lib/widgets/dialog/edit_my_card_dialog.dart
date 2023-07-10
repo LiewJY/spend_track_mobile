@@ -35,7 +35,7 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
   ///late final String uid;
   final _nameController = TextEditingController();
   final _cardNumberController = TextEditingController();
-  final _cardBudgetController = TextEditingController();
+  //final _cardBudgetController = TextEditingController();
 
   List<Cashback> cashbacks = [];
   @override
@@ -53,7 +53,7 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
     //populate textfield
     _nameController.text = widget.data!.customName!;
     _cardNumberController.text = widget.data!.lastNumber!;
-    _cardBudgetController.text = widget.data!.budget!.toString();
+    //_cardBudgetController.text = widget.data!.budget.toString();
 
     return Dialog(
       child: SingleChildScrollView(
@@ -95,11 +95,11 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
                     controller: _cardNumberController,
                     label: l10n.last4DigitOfCard),
                 AppStyle.sizedBoxSpace,
-                AmountField(
-                  controller: _cardBudgetController,
-                  label: l10n.budget,
-                ),
-                AppStyle.sizedBoxSpace,
+                // AmountField(
+                //   controller: _cardBudgetController,
+                //   label: l10n.budget,
+                // ),
+                // AppStyle.sizedBoxSpace,
                 BlocBuilder<CardCashbackCubit, CardCashbackState>(
                   builder: (context, state) {
                     if (state.status == CardCashbackStatus.success) {
@@ -142,13 +142,12 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
   }
 
   save() {
-    log('cslck');
     if (cardForm.currentState!.validate()) {
       context.read<CardBloc>().add(UpdateCardRequested(
-          uid: widget.data!.uid!,
-          customName: _nameController.text,
-          lastNumber: _cardNumberController.text,
-          budget: double.parse( _cardBudgetController.text),
+            uid: widget.data!.uid!,
+            customName: _nameController.text,
+            lastNumber: _cardNumberController.text,
+            //budget: double.parse( _cardBudgetController.text),
           ));
     }
 
