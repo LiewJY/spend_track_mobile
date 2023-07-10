@@ -15,7 +15,6 @@ class CardBloc extends Bloc<CardEvent, CardState> {
   CardBloc({required this.cardRepository}) : super(CardState.initial()) {
     on<DisplayCardRequested>(_onDisplayCardRequested);
     on<DisplayCardCashbackRequested>(_onDisplayCardCashbackRequested);
-
     // on<AddCardRequested>(_onAddCardRequested);
     on<UpdateCardRequested>(_onUpdateCardRequested);
     on<DeleteCardRequested>(_onDeleteCardRequested);
@@ -29,11 +28,6 @@ class CardBloc extends Bloc<CardEvent, CardState> {
     if (state.status == CardStatus.loading) return;
     emit(state.copyWith(status: CardStatus.loading));
     try {
-      // await cardRepository.(
-      //   uid: event.uid,
-      //   name: event.name,
-      //   description: event.description,
-      // );
       await cardRepository.updateMyCard(
         uid: event.uid,
         customName: event.customName,
