@@ -109,14 +109,9 @@ class _AvailableCardListState extends State<AvailableCardsList> {
                 title: cards[index].name.toString(),
                 subtitle: '${cards[index].cardType}, ${cards[index].bank}',
                 buttonPressed: () {
-                  //todo view details
-                  log('vvds' + cards[index].uid.toString());
                   context
                       .read<AvailableCardCubit>()
                       .getCardDetails(cards[index].uid.toString());
-                  //       cashbacks = context.select(
-                  // (AvailableCardCubit bloc) =>
-                  //     bloc.state.cardDetailList);
                   if (!isDialogOpen) {
                     showDialog(
                         context: context,
@@ -126,6 +121,7 @@ class _AvailableCardListState extends State<AvailableCardsList> {
                             // child: Text('dddd' +cashbacks.toString()),
                             child: CardDetailsDialog(
                               dialogTitle: cards[index].name.toString(),
+                              data: cards[index],
                               // actionName: l10n.addToMyCards,
                               // action: 'addToMyCard',
                               // data: cashbacks.toString(),

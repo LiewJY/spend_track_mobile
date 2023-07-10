@@ -25,6 +25,7 @@
   "update": "Update",
   "next": "Next",
   "viewDetails": "View Details",
+  "save": "Save",
 
 "@navigation": {},
   "home": "Home",
@@ -74,6 +75,8 @@
   "cashbackCapped": "Is cashback amount capped at?",
   "amountCappedAt": "Amount capped at",
   "cashback": "Cashback",
+  "bank": "Bank",
+  "editCard": "Edit Card",
 
 
 "@SuccessMessage": {},
@@ -83,7 +86,7 @@
   "cardAddSuccess": "Card successfully added",
   "cardUpdateSuccess": "Card successfully updated",
   "cardDeleteSuccess": "Card successfully deleted",
-  
+
 "@firebaseErrors": {},
   "cannotRetrieveData": "Cannot retrieve data. Unknown error occurred.",
     "unknownError": "An unknown error occurred. Please try again.",

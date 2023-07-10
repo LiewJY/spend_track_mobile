@@ -13,6 +13,7 @@ export 'card/add_cards_card.dart';
 export 'card/cashback_review_card.dart';
 
 
+
 //others
 export 'snackbar.dart';
 
@@ -22,3 +23,4 @@ export 'card_button.dart';
 //dialog
 export 'dialog/card_dialog.dart';
 export 'dialog/card_details_dialog.dart';
+export 'dialog/edit_my_card_dialog.dart';

@@ -107,6 +107,53 @@ class CardRepository {
     }
   }
 
+  List<Cashback> cardCashbacks = [];
+  Future<List<Cashback>> getCardCashbacks(String uid) async {
+    cardCashbacks.clear();
+    try {
+      //todo
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+
+      await userRef
+          .doc(userID)
+          .collection('myCards')
+          .doc(uid)
+          .collection('cashbacks')
+          .withConverter(
+              fromFirestore: Cashback.fromFirestore,
+              toFirestore: (Cashback cashback, _) => cashback.toFirestore())
+          .orderBy('formId')
+          .get()
+          .then((querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          cardCashbacks.add(docSnapshot.data());
+        }
+      });
+      return cardCashbacks;
+    } catch (e) {
+      log(e.toString());
+      throw 'cannotRetrieveData';
+    }
+  }
+
+  Future<void> updateCategory({
+    required String uid,
+    required String customName,
+    required String lastNumber,
+  }) async {
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+
+      log('in reoo');
+      await userRef.doc(userID).collection('myCards').doc(uid).update({
+        'customName': customName,
+        'lastNumber': lastNumber,
+      });
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
   // Future<List<CreditCard>> getAvailableCardsInfinity() async {
   //   cards.clear();
   //   try {

@@ -15,13 +15,13 @@ class CardDetailsDialog extends StatefulWidget {
     required this.dialogTitle,
     // required this.actionName,
     // required this.action,
-    // this.data,
+    this.data,
   });
 
   final String dialogTitle;
   // final String actionName;
   // final String action;
-  // final CreditCard? data;
+  final CreditCard? data;
 
   @override
   State<CardDetailsDialog> createState() => _CardDetailsDialogState();
@@ -52,10 +52,27 @@ class _CardDetailsDialogState extends State<CardDetailsDialog> {
             children: [
               Row(
                 children: [
-                  Text(
-                    widget.dialogTitle,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.dialogTitle,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      Text(
+                        '${l10n.bank}: ${widget.data!.bank}',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      Text(
+                        '${l10n.cardType}: ${widget.data!.bank}',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                        Text(
+                        '${l10n.cashback}: ${widget.data!.isCashback! ? l10n.yes : l10n.no}',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  )
                 ],
               ),
               BlocBuilder<AvailableCardCubit, AvailableCardState>(
