@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/account/account.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
+import 'package:track/repositories/repositories.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
 
@@ -17,6 +18,7 @@ class AccountScreenContent extends StatelessWidget {
 
     //for auth logout
     final user = context.select((AppBloc bloc) => bloc.state.user);
+    final categoryRepository = CardRepository();
 
     bool isBottomSheetOpen = false;
 
@@ -130,8 +132,11 @@ class AccountScreenContent extends StatelessWidget {
               l10n.manageWallet,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ManageWalletScreen())),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                      value: BlocProvider.of<CardBloc>(context),
+                      child: ManageWalletScreen(),
+                    ))),
             trailing: Icon(Icons.arrow_forward_ios_rounded),
           ),
           ListTile(
@@ -139,8 +144,12 @@ class AccountScreenContent extends StatelessWidget {
               l10n.manageCard,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ManageCardScreen())),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                      create: (context) =>
+                          CardBloc(cardRepository: categoryRepository),
+                      child: ManageCardScreen(),
+                    ))),
             trailing: Icon(Icons.arrow_forward_ios_rounded),
           ),
           ListTile(

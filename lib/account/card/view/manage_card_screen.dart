@@ -1,57 +1,46 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/account/account.dart';
 import 'package:track/account/card/view/card_list_screen.dart';
 import 'package:track/l10n/l10n.dart';
+import 'package:track/repositories/models/creditCard.dart';
+import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
 
-class ManageCardScreen extends StatelessWidget {
+class ManageCardScreen extends StatefulWidget {
   const ManageCardScreen({super.key});
 
   @override
+  State<ManageCardScreen> createState() => _ManageCardScreenState();
+}
+
+class _ManageCardScreenState extends State<ManageCardScreen> {
+  List<CreditCard> cards = [];
+  @override
+  initState() {
+    super.initState();
+    //initial call
+    context.read<CardBloc>().add(DisplayCardRequested());
+  }
+
+  reload() {
+    context.read<CardBloc>().add(DisplayCardRequested());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    cards = context.select((CardBloc bloc) => bloc.state.cardList);
     bool isBottomSheetOpen = false;
 
     void toggleBottomSheet() {
       isBottomSheetOpen = !isBottomSheetOpen;
     }
 
-    bool isDialogOpen = false;
-
-    void toggleDialogSheet() {
-      isDialogOpen = !isDialogOpen;
-    }
-
-    //dialog
-    dialog() {
-      if (!isDialogOpen) {
-        showDialog(
-            context: context,
-            // isScrollControlled: true,
-            useSafeArea: true,
-            builder: (BuildContext context) {
-              //todo
-              return Dialog.fullscreen(
-                child: Text('ff'),
-              );
-
-              // return AddCardModal(
-              //   actionLeft: () {
-              //     //close bottom sheet then open list
-              //     if (isBottomSheetOpen) {
-              //       Navigator.pop(context);
-              //     }
-
-              //     // Navigator.of(context).push(MaterialPageRoute(
-              //     //     builder: (context) =>  CardListDialog()));
-              //   },
-              // );
-            }).then((value) {
-          toggleDialogSheet();
-        });
-        toggleDialogSheet();
-      }
+    refresh() {
+      //call load data function
+      context.read<CardBloc>().add(DisplayCardRequested());
     }
 
     final l10n = context.l10n;
@@ -68,18 +57,14 @@ class ManageCardScreen extends StatelessWidget {
                       context: context,
                       isScrollControlled: true,
                       builder: (BuildContext context) {
-                        //todo
-
                         return AddCardModal(
                           actionLeft: () {
                             //close bottom sheet then open list
                             if (isBottomSheetOpen) {
                               Navigator.pop(context);
                             }
-                           // dialog();
-
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>  CardListScreen()));
+                                builder: (context) => CardListScreen()));
                           },
                         );
                       }).then((value) {
@@ -91,28 +76,62 @@ class ManageCardScreen extends StatelessWidget {
               icon: Icon(Icons.add))
         ],
       ),
-      body: SafeArea(
-          child: Padding(
-        padding: AppStyle.paddingHorizontal,
-        child: Column(
-          children: [
-
-            // AvailableCardsList()
-            // Row(children: [
-            // Text(
-            //   l10n.myCards,
-            //   style: Theme.of(context).textTheme.headlineSmall,
-            //   textAlign: TextAlign.left,
-            // ),
-            // ],),
-
-            //search
-            //todo
-            //inifinity scroll list
-          ],
-        ),
-      )),
+      body: BlocListener<CardBloc, CardState>(
+        listener: (context, state) {
+          if (state.status == CardStatus.failure) {
+            switch (state.error) {
+              case 'cannotRetrieveData':
+                AppSnackBar.error(context, l10n.cannotRetrieveData);
+                break;
+            }
+          }
+          if (state.status == CardStatus.success) {
+            switch (state.success) {
+              case 'updated':
+                if (isDialogOpen) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }
+                AppSnackBar.success(context, l10n.cardUpdateSuccess);
+                refresh();
+                break;
+              case 'deleted':
+                AppSnackBar.success(context, l10n.cardDeleteSuccess);
+                refresh();
+                break;
+              case 'loadedData':
+                //reload the data table when data is loaded
+                setState(() {});
+                break;
+            }
+          }
+        },
+        child: SafeArea(
+            child: Padding(
+                padding: AppStyle.paddingHorizontal,
+                child: cards.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: cards.length,
+                        itemBuilder: (_, index) {
+                          return CardsCard(
+                            data: cards[index],
+                            edit: () {
+                              log('edit');
+                            },
+                            delete: () {
+                              log('delete');
+                              context
+                                  .read<CardBloc>()
+                                  .add(DeleteCardRequested(uid: cards[index].uid.toString()));
+                            },
+                          );
+                        })
+                    : Center(
+                        child: CircularProgressIndicator(
+                          value: 5,
+                        ),
+                      ))),
+      ),
     );
   }
 }
-

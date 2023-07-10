@@ -22,13 +22,31 @@ class CardRepository {
         for (var docSnapshot in querySnapshot.docs) {
           cards.add(docSnapshot.data());
         }
-        // if (querySnapshot.docs.isNotEmpty) {
-        // } else {
-        // }
-        // for (var doc in value.docs) {
-        //   log(doc.data().toString());
+      });
+      return cards;
+    } catch (e) {
+      log(e.toString());
+      throw 'cannotRetrieveData';
+    }
+  }
 
-        // }
+  Future<List<CreditCard>> getMyCards() async {
+    cards.clear();
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+
+      await userRef
+          .doc(userID)
+          .collection('myCards')
+          .withConverter(
+              fromFirestore: CreditCard.fromFirestore,
+              toFirestore: (CreditCard card, _) => card.toFirestore())
+          .orderBy('customName')
+          .get()
+          .then((querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          cards.add(docSnapshot.data());
+        }
       });
       return cards;
     } catch (e) {
@@ -70,14 +88,22 @@ class CardRepository {
           .get()
           .then((querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          print('var log' + docSnapshot.data().toString());
-           cashbacks.add(docSnapshot.data());
+          cashbacks.add(docSnapshot.data());
         }
       });
       return cashbacks;
     } catch (e) {
       log(e.toString());
       throw 'cannotRetrieveDetailsData';
+    }
+  }
+
+  Future<void> deleteCard({required String uid}) async {
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+      await userRef.doc(userID).collection('myCards').doc(uid).delete();
+    } catch (e) {
+      throw e.toString();
     }
   }
 

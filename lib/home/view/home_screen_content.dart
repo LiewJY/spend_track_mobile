@@ -18,7 +18,7 @@ class HomeScreenContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [Text("HomeScreenContent"),
       WalletCard(),
-      CardsCard(),
+      //CardsCard(),
       CategoryCard(),
       ],
     );

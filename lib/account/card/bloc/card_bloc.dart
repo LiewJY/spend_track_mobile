@@ -10,33 +10,53 @@ class CardBloc extends Bloc<CardEvent, CardState> {
   final CardRepository cardRepository;
 
   CardBloc({required this.cardRepository}) : super(CardState.initial()) {
-    // on<DisplayAllAvailableCardRequested>(_onDisplayAllAvailableCardRequested);
+    on<DisplayCardRequested>(_onDisplayCardRequested);
     // // on<DisplayCardCashbackRequested>(_onDisplayCardCashbackRequested);
 
     // on<AddCardRequested>(_onAddCardRequested);
     // // on<UpdateCardRequested>(_onUpdateCardRequested);
-    //  on<DeleteCardRequested>(_onDeleteCardRequested);
+     on<DeleteCardRequested>(_onDeleteCardRequested);
   }
 
-  //actions
-  // _onDisplayAllAvailableCardRequested(
-  //   DisplayAllAvailableCardRequested event,
-  //   Emitter emit,
-  // ) async {
-  //   if (state.status == CardStatus.loading) return;
-  //   emit(state.copyWith(status: CardStatus.loading));
-  //   try {
-  //     List<CreditCard> cardList = await cardRepository.getAvailableCards();
-  //     emit(state.copyWith(
-  //       status: CardStatus.success,
-  //       success: 'loadedData',
-  //       availableCardList: cardList,
-  //     ));
-  //   } catch (e) {
-  //     emit(state.copyWith(
-  //       status: CardStatus.failure,
-  //       error: e.toString(),
-  //     ));
-  //   }
-  // }
+  // actions
+  _onDisplayCardRequested(
+    DisplayCardRequested event,
+    Emitter emit,
+  ) async {
+    if (state.status == CardStatus.loading) return;
+    emit(state.copyWith(status: CardStatus.loading));
+    try {
+      List<CreditCard> cardList = await cardRepository.getMyCards();
+      emit(state.copyWith(
+        status: CardStatus.success,
+        success: 'loadedData',
+        cardList: cardList,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: CardStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
+   _onDeleteCardRequested(
+    DeleteCardRequested event,
+    Emitter emit,
+  ) async {
+    if (state.status == CardStatus.loading) return;
+    emit(state.copyWith(status: CardStatus.loading));
+    try {
+            await cardRepository.deleteCard( uid: event.uid);
+
+      emit(state.copyWith(
+        status: CardStatus.success,
+        success: 'deleted',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: CardStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
 }

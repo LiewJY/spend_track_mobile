@@ -57,6 +57,7 @@ class _CardListScreenState extends State<CardListScreen> {
                     if (isDialogOpen) {
                       Navigator.of(context, rootNavigator: true).pop();
                     }
+                   // context.read<CardBloc>().add(DisplayCardRequested());
                     AppSnackBar.success(context, l10n.cardAddSuccess);
                     break;
                   default:
@@ -113,16 +114,16 @@ class _AvailableCardListState extends State<AvailableCardsList> {
                   context
                       .read<AvailableCardCubit>()
                       .getCardDetails(cards[index].uid.toString());
-                              //       cashbacks = context.select(
-                              // (AvailableCardCubit bloc) =>
-                              //     bloc.state.cardDetailList);
+                  //       cashbacks = context.select(
+                  // (AvailableCardCubit bloc) =>
+                  //     bloc.state.cardDetailList);
                   if (!isDialogOpen) {
                     showDialog(
                         context: context,
                         builder: (_) {
                           return BlocProvider.value(
                             value: BlocProvider.of<AvailableCardCubit>(context),
-                           // child: Text('dddd' +cashbacks.toString()),
+                            // child: Text('dddd' +cashbacks.toString()),
                             child: CardDetailsDialog(
                               dialogTitle: cards[index].name.toString(),
                               // actionName: l10n.addToMyCards,
@@ -161,8 +162,10 @@ class _AvailableCardListState extends State<AvailableCardsList> {
                 // content: cards[index].bank.toString(),
               );
             })
-        : CircularProgressIndicator(
-            value: 5,
+        : Center(
+            child: CircularProgressIndicator(
+              value: 5,
+            ),
           );
   }
 }

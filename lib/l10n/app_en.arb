@@ -81,6 +81,12 @@
   "emailChanged": "Email successfully changed",
   "resetPasswordEmailSent": "Reset your password with the link sent to your email",
   "cardAddSuccess": "Card successfully added",
+  "cardUpdateSuccess": "Card successfully updated",
+  "cardDeleteSuccess": "Card successfully deleted",
+  
+"@firebaseErrors": {},
+  "cannotRetrieveData": "Cannot retrieve data. Unknown error occurred.",
+    "unknownError": "An unknown error occurred. Please try again.",
 
 "@firebaseAuthErrors": {},
   "userDisabled": "This user has been disabled. Please contact support for help.",

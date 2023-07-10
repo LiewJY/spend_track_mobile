@@ -44,9 +44,6 @@ class _CardDetailsDialogState extends State<CardDetailsDialog> {
     final l10n = context.l10n;
     cashbacks =
         context.select((AvailableCardCubit bloc) => bloc.state.cardDetailList);
-    cashbacks.forEach((aa) {
-      log(aa.toString());
-    });
     return Dialog(
       child: SingleChildScrollView(
         child: Padding(

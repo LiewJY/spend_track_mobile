@@ -2,10 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:track/l10n/l10n.dart';
+import 'package:track/repositories/models/creditCard.dart';
 import 'package:track_theme/track_theme.dart';
 
 class CardsCard extends StatelessWidget {
-  const CardsCard({super.key});
+  const CardsCard({
+    super.key,
+    required this.data,
+    required this.edit,
+    required this.delete,
+  });
+
+  final CreditCard data;
+  final edit;
+  final delete;
 
   @override
   Widget build(BuildContext context) {
@@ -15,19 +25,20 @@ class CardsCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            title: Text('Card name'),
-            subtitle: Text('visa **1234'),
+            title: Text(data.customName.toString()),
+            subtitle: Text('${data.name}, ${data.bank}'),
             trailing: IconButton(
-              onPressed: () => onDelete(),
+              onPressed: delete,
               icon: Icon(Icons.delete),
             ),
           ),
           Padding(
-            padding: AppStyle.cardPadding,
+            //todo add to style
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text('bank name'),
+                Text('${data.cardType} **${data.lastNumber}'),
               ],
             ),
           ),
@@ -37,7 +48,7 @@ class CardsCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FilledButton(
-                  onPressed: () => cardsCardEdit(),
+                  onPressed: edit,
                   child: Text(l10n.edit),
                 ),
               ],
@@ -46,15 +57,5 @@ class CardsCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void cardsCardEdit() {
-    log("pressed cc");
-    //todo
-  }
-
-  void onDelete() {
-    log('delete');
-    //todo
   }
 }
