@@ -32,7 +32,8 @@ class AddCardModal extends StatelessWidget {
               CardButton(
                   onTap: actionLeft,
                   color: 'primary',
-                  text: l10n.addCard),
+                  text: l10n.addCard,
+                  icon: Icons.credit_card),
             ],
           ),
 

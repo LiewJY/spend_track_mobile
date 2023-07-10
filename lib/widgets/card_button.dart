@@ -9,11 +9,13 @@ class CardButton extends StatelessWidget {
     required this.onTap,
     required this.color,
     required this.text,
+    this.icon,
   });
 
   final String color;
   final onTap;
   final String text;
+  final icon;
 
   @override
   Widget build(BuildContext context) {
@@ -28,32 +30,62 @@ class CardButton extends StatelessWidget {
       }
     }
 
-    getTextColor() {
+    getContent() {
       switch (color) {
         case 'primary':
-          return Text(
-            text,
-            style: Theme.of(context).textTheme.bodyLarge?.merge(
-                  TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer),
-                ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                this.icon,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+              Text(
+                text,
+                style: Theme.of(context).textTheme.bodyLarge?.merge(
+                      TextStyle(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
+                    ),
+              ),
+            ],
           );
         case 'secondary':
-          return Text(
-            text,
-            style: Theme.of(context).textTheme.bodyLarge?.merge(
-                  TextStyle(
-                      color:
-                          Theme.of(context).colorScheme.onSecondaryContainer),
-                ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                this.icon,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+              ),
+              Text(
+                text,
+                style: Theme.of(context).textTheme.bodyLarge?.merge(
+                      TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer),
+                    ),
+              ),
+            ],
           );
         default:
-          return Text(
-            text,
-            style: Theme.of(context).textTheme.bodyLarge?.merge(
-                  TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer),
-                ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                this.icon,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+              Text(
+                text,
+                style: Theme.of(context).textTheme.bodyLarge?.merge(
+                      TextStyle(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
+                    ),
+              ),
+            ],
           );
       }
     }
@@ -64,7 +96,7 @@ class CardButton extends StatelessWidget {
         color: getContainerColor(),
         child: Padding(
           padding: AppStyle.cardPadding,
-          child: getTextColor(),
+          child: getContent(),
         ),
       ),
     );
