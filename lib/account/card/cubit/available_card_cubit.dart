@@ -36,7 +36,7 @@ class AvailableCardCubit extends Cubit<AvailableCardState> {
   }
 
   addToMyCards(
-      {CreditCard? card, String? customName, String? lastNumber}) async {
+      {CreditCard? card, String? customName, String? lastNumber, double? budget}) async {
     if (state.status == AvailableCardStatus.loading) return;
     emit(state.copyWith(status: AvailableCardStatus.loading));
 
@@ -49,6 +49,7 @@ class AvailableCardCubit extends Cubit<AvailableCardState> {
         isCashback: card.isCashback,
         customName: customName,
         lastNumber: lastNumber,
+        budget: budget,
       );
 
       await cardRepository.addToMyCards(storeCard);

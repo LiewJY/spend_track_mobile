@@ -7,6 +7,7 @@ import 'package:track/account/card/cubit/card_cashback_cubit.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/models/cashback.dart';
 import 'package:track/repositories/models/creditCard.dart';
+import 'package:track/widgets/form_field/amount_field.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
 
@@ -34,6 +35,7 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
   ///late final String uid;
   final _nameController = TextEditingController();
   final _cardNumberController = TextEditingController();
+  final _cardBudgetController = TextEditingController();
 
   List<Cashback> cashbacks = [];
   @override
@@ -51,6 +53,7 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
     //populate textfield
     _nameController.text = widget.data!.customName!;
     _cardNumberController.text = widget.data!.lastNumber!;
+    _cardBudgetController.text = widget.data!.budget!.toString();
 
     return Dialog(
       child: SingleChildScrollView(
@@ -91,6 +94,11 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
                 CardNumberField(
                     controller: _cardNumberController,
                     label: l10n.last4DigitOfCard),
+                AppStyle.sizedBoxSpace,
+                AmountField(
+                  controller: _cardBudgetController,
+                  label: l10n.budget,
+                ),
                 AppStyle.sizedBoxSpace,
                 BlocBuilder<CardCashbackCubit, CardCashbackState>(
                   builder: (context, state) {
@@ -139,7 +147,9 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
       context.read<CardBloc>().add(UpdateCardRequested(
           uid: widget.data!.uid!,
           customName: _nameController.text,
-          lastNumber: _cardNumberController.text));
+          lastNumber: _cardNumberController.text,
+          budget: double.parse( _cardBudgetController.text),
+          ));
     }
 
     //     context.read<AvailableCardCubit>().addToMyCards(card: widget.data,

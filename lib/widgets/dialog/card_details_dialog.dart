@@ -30,9 +30,6 @@ class CardDetailsDialog extends StatefulWidget {
 class _CardDetailsDialogState extends State<CardDetailsDialog> {
   final cardForm = GlobalKey<FormState>();
   late final String uid;
-  final _nameController = TextEditingController();
-  final _cardNumberController = TextEditingController();
-
   List<Cashback> cashbacks = [];
   @override
   void initState() {

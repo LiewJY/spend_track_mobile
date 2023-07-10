@@ -34,10 +34,11 @@ class CardBloc extends Bloc<CardEvent, CardState> {
       //   name: event.name,
       //   description: event.description,
       // );
-      await cardRepository.updateCategory(
+      await cardRepository.updateMyCard(
         uid: event.uid,
         customName: event.customName,
         lastNumber: event.lastNumber,
+        budget: event.budget,
       );
 
       emit(state.copyWith(

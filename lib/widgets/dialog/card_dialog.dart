@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/account/card/card.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/models/creditCard.dart';
+import 'package:track/widgets/form_field/amount_field.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
 
@@ -29,6 +30,7 @@ class _CardDialogState extends State<CardDialog> {
   late final String uid;
   final _nameController = TextEditingController();
   final _cardNumberController = TextEditingController();
+  final _cardBudgetController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +69,15 @@ class _CardDialogState extends State<CardDialog> {
                 NameField(controller: _nameController),
                 AppStyle.sizedBoxSpace,
                 CardNumberField(
-                    controller: _cardNumberController,
-                    label: l10n.last4DigitOfCard),
+                  controller: _cardNumberController,
+                  label: l10n.last4DigitOfCard,
+                ),
                 AppStyle.sizedBoxSpace,
-
+                AmountField(
+                  controller: _cardBudgetController,
+                  label: l10n.budget,
+                ),
+                AppStyle.sizedBoxSpace,
                 FilledButton(
                   style: AppStyle.fullWidthButton,
                   onPressed: () => action(widget.action),
@@ -95,9 +102,12 @@ class _CardDialogState extends State<CardDialog> {
     if (cardForm.currentState!.validate()) {
       switch (type) {
         case 'addToMyCard':
-          context.read<AvailableCardCubit>().addToMyCards(card: widget.data,
-          customName: _nameController.text,
-          lastNumber: _cardNumberController.text);
+          context.read<AvailableCardCubit>().addToMyCards(
+                card: widget.data,
+                customName: _nameController.text,
+                lastNumber: _cardNumberController.text,
+                budget: double.tryParse(_cardBudgetController.text),
+              );
           break;
       }
       //   switch (type) {

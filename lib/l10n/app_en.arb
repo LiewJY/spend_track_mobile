@@ -7,6 +7,7 @@
   "name": "Name",
   "confirmPassword": "Confirm Password",
   "last4DigitOfCard": "Last 4 digits of Card",
+  "budget": "Budget",
 
 "@textfield validation": {},
   "invalidEmail": "Invalid email address",
@@ -15,6 +16,8 @@
   "nameEmpty": "Name cannot be empty",
   "passwordDoesNotMatch": "Password does not match",
   "pleaseProvideLast4DigitOfCard": "Please provide last 4 digit of card as unique identifier",
+  "amountError": "Amount must be number and cannot be empty",
+
 
 "@button": {},
   "login": "Login",

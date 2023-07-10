@@ -136,10 +136,11 @@ class CardRepository {
     }
   }
 
-  Future<void> updateCategory({
+  Future<void> updateMyCard({
     required String uid,
     required String customName,
     required String lastNumber,
+    required double budget
   }) async {
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
@@ -148,6 +149,8 @@ class CardRepository {
       await userRef.doc(userID).collection('myCards').doc(uid).update({
         'customName': customName,
         'lastNumber': lastNumber,
+                'budget': budget,
+
       });
     } catch (e) {
       throw e.toString();
