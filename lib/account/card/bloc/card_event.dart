@@ -6,3 +6,16 @@ abstract class CardEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+
+class DisplayAllAvailableCardRequested extends CardEvent {
+
+  @override
+  List<Object> get props => [];
+}
+
+// class AddCardRequested extends CardEvent {
+
+//   @override
+//   List<Object> get props => [];
+// }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:track/account/account.dart';
+import 'package:track/account/card/view/card_list_screen.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track_theme/track_theme.dart';
 
@@ -14,6 +15,43 @@ class ManageCardScreen extends StatelessWidget {
 
     void toggleBottomSheet() {
       isBottomSheetOpen = !isBottomSheetOpen;
+    }
+
+    bool isDialogOpen = false;
+
+    void toggleDialogSheet() {
+      isDialogOpen = !isDialogOpen;
+    }
+
+    //dialog
+    dialog() {
+      if (!isDialogOpen) {
+        showDialog(
+            context: context,
+            // isScrollControlled: true,
+            useSafeArea: true,
+            builder: (BuildContext context) {
+              //todo
+              return Dialog.fullscreen(
+                child: Text('ff'),
+              );
+
+              // return AddCardModal(
+              //   actionLeft: () {
+              //     //close bottom sheet then open list
+              //     if (isBottomSheetOpen) {
+              //       Navigator.pop(context);
+              //     }
+
+              //     // Navigator.of(context).push(MaterialPageRoute(
+              //     //     builder: (context) =>  CardListDialog()));
+              //   },
+              // );
+            }).then((value) {
+          toggleDialogSheet();
+        });
+        toggleDialogSheet();
+      }
     }
 
     final l10n = context.l10n;
@@ -31,9 +69,19 @@ class ManageCardScreen extends StatelessWidget {
                       isScrollControlled: true,
                       builder: (BuildContext context) {
                         //todo
-                        
 
-                        return UpdateNameModal();
+                        return AddCardModal(
+                          actionLeft: () {
+                            //close bottom sheet then open list
+                            if (isBottomSheetOpen) {
+                              Navigator.pop(context);
+                            }
+                           // dialog();
+
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>  CardListScreen()));
+                          },
+                        );
                       }).then((value) {
                     toggleBottomSheet();
                   });
@@ -48,6 +96,8 @@ class ManageCardScreen extends StatelessWidget {
         padding: AppStyle.paddingHorizontal,
         child: Column(
           children: [
+
+            // AvailableCardsList()
             // Row(children: [
             // Text(
             //   l10n.myCards,
@@ -66,16 +116,3 @@ class ManageCardScreen extends StatelessWidget {
   }
 }
 
-class CardInfinityList extends StatefulWidget {
-  const CardInfinityList({super.key});
-
-  @override
-  State<CardInfinityList> createState() => _CardInfinityListState();
-}
-
-class _CardInfinityListState extends State<CardInfinityList> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
