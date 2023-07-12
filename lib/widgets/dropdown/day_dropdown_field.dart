@@ -25,7 +25,7 @@ List<DropdownMenuItem> get dayDropdownItems {
     // const DropdownMenuItem(value: 'Weekends', child: Text('Weekends')),
   ];
   for (var i = 1; i < 32; i++) {
-    menuItems.add(DropdownMenuItem(value: i, child: Text(i.toString())));
+    menuItems.add(DropdownMenuItem(value: i.toString(), child: Text(i.toString())));
   }
   return menuItems;
 }

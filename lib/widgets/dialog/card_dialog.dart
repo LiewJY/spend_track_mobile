@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/account/card/card.dart';
@@ -31,6 +33,11 @@ class _CardDialogState extends State<CardDialog> {
   final _nameController = TextEditingController();
   final _cardNumberController = TextEditingController();
   final _cardBudgetController = TextEditingController();
+
+  //for payment reminder
+  String reminderDay = '1';
+  bool _isReminder = false;
+  String? _paymentDay;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +79,60 @@ class _CardDialogState extends State<CardDialog> {
                   controller: _cardNumberController,
                   label: l10n.last4DigitOfCard,
                 ),
+                AppStyle.sizedBoxSpace,
+                SwitchField(
+                    label: l10n.paymentReminder,
+                    switchState: _isReminder,
+                    onChanged: (value) {
+                      setState(() {
+                        _isReminder = value;
+                      });
+                    }),
+                if (_isReminder) ...[
+                  Container(
+                    width: double.infinity,
+                    child: SegmentedButton(
+                      showSelectedIcon: false,
+                      selected: {reminderDay},
+                      onSelectionChanged: (newSelection) {
+                        setState(() {
+                          reminderDay = newSelection.first;
+                        });
+                      },
+                      segments: [
+                        ButtonSegment(
+                          value: '1',
+                          label: Text(
+                            l10n.one,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        ButtonSegment(
+                          value: '3',
+                          label: Text(
+                            l10n.three,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        ButtonSegment(
+                          value: '7',
+                          label: Text(
+                            l10n.seven,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  AppStyle.sizedBoxSpace,
+                  PaymentDayDropDownField(onChanged: (value) {
+                    log(value);
+                    setState(() {
+                      _paymentDay = value;
+                    });
+                  })
+                ],
+
                 // AppStyle.sizedBoxSpace,
                 // AmountField(
                 //   controller: _cardBudgetController,
@@ -106,6 +167,13 @@ class _CardDialogState extends State<CardDialog> {
                 card: widget.data,
                 customName: _nameController.text,
                 lastNumber: _cardNumberController.text,
+                isReminder: _isReminder,
+                reminderDay: reminderDay,
+                paymentDay: _paymentDay,
+
+                //                 String reminderDay = '1';
+                // bool _isReminder = false;
+                // String? _paymentDay;
                 // budget: double.tryParse(_cardBudgetController.text),
               );
           break;

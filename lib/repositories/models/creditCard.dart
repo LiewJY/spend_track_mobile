@@ -14,6 +14,7 @@ class CreditCard extends Equatable {
     //this.budget,
     //todo
     this.isReminder,
+    this.reminderDay,
     this.paymentDay,
   });
 
@@ -25,6 +26,7 @@ class CreditCard extends Equatable {
   final String? customName;
   final String? lastNumber;
   final bool? isReminder;
+  final String? reminderDay;
   final String? paymentDay;
   //final double? budget;
 
@@ -43,8 +45,8 @@ class CreditCard extends Equatable {
       customName: data?['customName'],
       lastNumber: data?['lastNumber'],
       isReminder: data?['isReminder'],
+      reminderDay: data?['reminderDay'],
       paymentDay: data?['paymentDay'],
-
       //budget: double.tryParse(data!['budget'].toString()),
     );
   }
@@ -60,6 +62,7 @@ class CreditCard extends Equatable {
       if (customName != null) "customName": customName,
       if (lastNumber != null) "lastNumber": lastNumber,
       if (isReminder != null) "isReminder": isReminder,
+      if (reminderDay != null) "reminderDay": reminderDay,
       if (paymentDay != null) "paymentDay": paymentDay,
       //if (budget != null) "budget": budget,
     };

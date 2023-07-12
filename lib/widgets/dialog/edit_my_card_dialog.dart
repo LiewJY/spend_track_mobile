@@ -36,9 +36,11 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
   final _nameController = TextEditingController();
   final _cardNumberController = TextEditingController();
   //final _cardBudgetController = TextEditingController();
+
+  //for payment reminder
   String reminderDay = '1';
   bool _isReminder = true;
-  int? _paymentDay;
+  String? _paymentDay;
 
   List<Cashback> cashbacks = [];
   @override
