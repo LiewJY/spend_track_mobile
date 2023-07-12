@@ -14,6 +14,7 @@
   "selectCategory": "Select Category",
   "selectWallet": "Select Wallet",
   "isCashbackEligible": "Is eligible for cashback?",
+  "selectPaymentDay": "Select payment day",
 
 "@textfield validation": {},
   "invalidEmail": "Invalid email address",
@@ -30,6 +31,7 @@
   "pleaseSelectCard": "Please select card",
   "pleaseSelectCategory": "Please select category",
   "pleaseSelectWallet": "Please select wallet",
+  "pleaseSelectDay": "Please select day",
 
 "@button": {},
   "login": "Login",
@@ -94,6 +96,12 @@
   "cashback": "Cashback",
   "bank": "Bank",
   "editCard": "Edit Card",
+  "paymentReminder": "Payment Reminder",
+  "one": "1 day before",
+  "three": "3 days before",
+  "seven": "7 days before",
+  "cardDetails": "Card Details",
+
 
 "@manageWalletPage": {},
   "myWallets": "My Wallets",

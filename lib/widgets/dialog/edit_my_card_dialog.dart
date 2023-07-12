@@ -36,12 +36,17 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
   final _nameController = TextEditingController();
   final _cardNumberController = TextEditingController();
   //final _cardBudgetController = TextEditingController();
+  String reminderDay = '1';
+  bool _isReminder = true;
+  int? _paymentDay;
 
   List<Cashback> cashbacks = [];
   @override
   void initState() {
     super.initState();
     context.read<CardCashbackCubit>().getCardDetails(widget.data!.uid!);
+    _isReminder = widget.data!.isReminder!;
+    //todo payment day
   }
 
   @override
@@ -62,6 +67,7 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
           child: Form(
             key: cardForm,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -100,6 +106,65 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
                 //   label: l10n.budget,
                 // ),
                 // AppStyle.sizedBoxSpace,
+                SwitchField(
+                    label: l10n.paymentReminder,
+                    switchState: _isReminder,
+                    onChanged: (value) {
+                      setState(() {
+                        _isReminder = value;
+                      });
+                    }),
+                if (_isReminder) ...[
+                  Container(
+                    width: double.infinity,
+                    child: SegmentedButton(
+                      showSelectedIcon: false,
+                      selected: {reminderDay},
+                      onSelectionChanged: (newSelection) {
+                        setState(() {
+                          reminderDay = newSelection.first;
+                        });
+                      },
+                      segments: [
+                        ButtonSegment(
+                          value: '1',
+                          label: Text(
+                            l10n.one,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        ButtonSegment(
+                          value: '3',
+                          label: Text(
+                            l10n.three,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        ButtonSegment(
+                          value: '7',
+                          label: Text(
+                            l10n.seven,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  AppStyle.sizedBoxSpace,
+                  PaymentDayDropDownField(onChanged: (value) {
+                    log(value);
+                    setState(() {
+                      _paymentDay = value;
+                    });
+                  })
+                ],
+
+                //card details
+                AppStyle.sizedBoxSpace,
+                Text(
+                  l10n.cardDetails,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 BlocBuilder<CardCashbackCubit, CardCashbackState>(
                   builder: (context, state) {
                     if (state.status == CardCashbackStatus.success) {
@@ -122,6 +187,7 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
                     );
                   },
                 ),
+                AppStyle.sizedBoxSpace,
                 FilledButton(
                   style: AppStyle.fullWidthButton,
                   onPressed: () => save(),

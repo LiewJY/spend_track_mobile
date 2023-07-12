@@ -13,8 +13,8 @@ class CreditCard extends Equatable {
     this.lastNumber,
     //this.budget,
     //todo
-    // this.paymentDay
-    // this.isReminder,
+    this.isReminder,
+    this.paymentDay,
   });
 
   final String? uid;
@@ -24,6 +24,8 @@ class CreditCard extends Equatable {
   final bool? isCashback;
   final String? customName;
   final String? lastNumber;
+  final bool? isReminder;
+  final String? paymentDay;
   //final double? budget;
 
   //convert firestore format into object
@@ -40,6 +42,9 @@ class CreditCard extends Equatable {
       isCashback: data?['isCashback'],
       customName: data?['customName'],
       lastNumber: data?['lastNumber'],
+      isReminder: data?['isReminder'],
+      paymentDay: data?['paymentDay'],
+
       //budget: double.tryParse(data!['budget'].toString()),
     );
   }
@@ -54,6 +59,8 @@ class CreditCard extends Equatable {
       if (isCashback != null) "isCashback": isCashback,
       if (customName != null) "customName": customName,
       if (lastNumber != null) "lastNumber": lastNumber,
+      if (isReminder != null) "isReminder": isReminder,
+      if (paymentDay != null) "paymentDay": paymentDay,
       //if (budget != null) "budget": budget,
     };
   }
@@ -67,6 +74,8 @@ class CreditCard extends Equatable {
         isCashback,
         customName,
         lastNumber,
+        isReminder,
+        paymentDay,
         //budget,
       ];
 }

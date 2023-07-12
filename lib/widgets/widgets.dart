@@ -19,6 +19,7 @@ export 'card/add_wallet_card.dart';
 export 'dropdown/category_dropdown_field.dart';
 export 'dropdown/card_dropdown_field.dart';
 export 'dropdown/wallet_dropdown_field.dart';
+export 'dropdown/day_dropdown_field.dart';
 
 //others
 export 'snackbar.dart';
