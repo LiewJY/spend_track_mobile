@@ -33,6 +33,9 @@ class CardBloc extends Bloc<CardEvent, CardState> {
         customName: event.customName,
         lastNumber: event.lastNumber,
         //budget: event.budget,
+        isReminder: event.isReminder,
+        paymentDay: event.paymentDay,
+        reminderDay: event.reminderDay,
       );
 
       emit(state.copyWith(
@@ -110,5 +113,4 @@ class CardBloc extends Bloc<CardEvent, CardState> {
       ));
     }
   }
-
 }

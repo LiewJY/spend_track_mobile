@@ -139,6 +139,9 @@ class CardRepository {
     required String uid,
     required String customName,
     required String lastNumber,
+    required String reminderDay,
+    required bool isReminder,
+    required String paymentDay,
     //required double budget,
   }) async {
     try {
@@ -148,12 +151,14 @@ class CardRepository {
         'customName': customName,
         'lastNumber': lastNumber,
         //'budget': budget,
+        'isReminder': isReminder,
+        'paymentDay': paymentDay,
+        'reminderDay': reminderDay,
       });
     } catch (e) {
       throw e.toString();
     }
   }
-
 
   // Future<List<CreditCard>> getAvailableCardsInfinity() async {
   //   cards.clear();

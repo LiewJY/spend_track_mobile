@@ -37,18 +37,26 @@ class UpdateCardRequested extends CardEvent {
     required this.customName,
     required this.lastNumber,
     // required this.budget,
+    required this.reminderDay,
+    required this.isReminder,
+    required this.paymentDay,
   });
 
   final String uid;
   final String customName;
   final String lastNumber;
   //final double budget;
-
+  final String reminderDay;
+  final bool isReminder;
+  final String paymentDay;
   @override
   List<Object> get props => [
         uid,
         customName,
         lastNumber,
+        reminderDay,
+        isReminder,
+        paymentDay,
       ];
 }
 // class AddCardRequested extends CardEvent {

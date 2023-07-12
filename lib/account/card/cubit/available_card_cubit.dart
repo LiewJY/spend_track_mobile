@@ -35,8 +35,14 @@ class AvailableCardCubit extends Cubit<AvailableCardState> {
     }
   }
 
-  addToMyCards(
-      {CreditCard? card, String? customName, String? lastNumber,String? reminderDay, bool? isReminder, String? paymentDay,}) async {
+  addToMyCards({
+    CreditCard? card,
+    String? customName,
+    String? lastNumber,
+    String? reminderDay,
+    bool? isReminder,
+    String? paymentDay,
+  }) async {
     if (state.status == AvailableCardStatus.loading) return;
     emit(state.copyWith(status: AvailableCardStatus.loading));
 
@@ -52,7 +58,6 @@ class AvailableCardCubit extends Cubit<AvailableCardState> {
         isReminder: isReminder,
         reminderDay: reminderDay,
         paymentDay: paymentDay,
-
 
         //budget: budget,
       );
@@ -71,7 +76,7 @@ class AvailableCardCubit extends Cubit<AvailableCardState> {
     }
   }
 
-    getCardDetails(String uid) async {
+  getCardDetails(String uid) async {
     if (state.status == AvailableCardStatus.loading) return;
     emit(state.copyWith(status: AvailableCardStatus.loading));
 
@@ -79,9 +84,7 @@ class AvailableCardCubit extends Cubit<AvailableCardState> {
       cashbacks = await cardRepository.getCardDetails(uid);
       cashbacks.forEach((ff) {
         log(ff.formId.toString());
-      }
-
-      );
+      });
       emit(state.copyWith(
         status: AvailableCardStatus.success,
         success: 'loadedDetailsData',

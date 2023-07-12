@@ -48,6 +48,8 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
     super.initState();
     context.read<CardCashbackCubit>().getCardDetails(widget.data!.uid!);
     _isReminder = widget.data!.isReminder!;
+    reminderDay = widget.data!.reminderDay!;
+    _paymentDay = widget.data!.paymentDay!;
     //todo payment day
   }
 
@@ -153,14 +155,15 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
                     ),
                   ),
                   AppStyle.sizedBoxSpace,
-                  PaymentDayDropDownField(onChanged: (value) {
+                  PaymentDayDropDownField(
+                    value: _paymentDay,
+                    onChanged: (value) {
                     log(value);
                     setState(() {
                       _paymentDay = value;
                     });
                   })
                 ],
-
                 //card details
                 AppStyle.sizedBoxSpace,
                 Text(
@@ -215,6 +218,9 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
             uid: widget.data!.uid!,
             customName: _nameController.text,
             lastNumber: _cardNumberController.text,
+            isReminder: _isReminder,
+            paymentDay: _paymentDay.toString(),
+            reminderDay: reminderDay.toString(),
             //budget: double.parse( _cardBudgetController.text),
           ));
     }
