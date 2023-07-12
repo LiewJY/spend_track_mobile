@@ -12,6 +12,9 @@ class CreditCard extends Equatable {
     this.customName,
     this.lastNumber,
     //this.budget,
+    //todo
+    // this.paymentDay
+    // this.isReminder,
   });
 
   final String? uid;

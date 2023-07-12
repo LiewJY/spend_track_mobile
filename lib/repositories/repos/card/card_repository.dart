@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:track/account/card/bloc/card_bloc.dart';
 import 'package:track/repositories/models/cashback.dart';
 import 'package:track/repositories/models/creditCard.dart';
 
@@ -152,6 +153,7 @@ class CardRepository {
       throw e.toString();
     }
   }
+
 
   // Future<List<CreditCard>> getAvailableCardsInfinity() async {
   //   cards.clear();

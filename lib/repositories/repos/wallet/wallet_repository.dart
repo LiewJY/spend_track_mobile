@@ -70,7 +70,7 @@ class WalletRepository {
     }
   }
 
-    Future<void> updateMyWallet({
+  Future<void> updateMyWallet({
     required String uid,
     required String customName,
     //required double budget,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:track/repositories/models/wallet.dart';
@@ -49,6 +51,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(state.copyWith(status: WalletStatus.loading));
     try {
       List<Wallet> walletList = await walletRepository.getMyWallets();
+      log(walletList.length.toString());
       emit(state.copyWith(
         status: WalletStatus.success,
         success: 'loadedData',

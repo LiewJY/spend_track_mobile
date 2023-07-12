@@ -156,15 +156,16 @@ class AccountScreenContent extends StatelessWidget {
                     ))),
             trailing: Icon(Icons.arrow_forward_ios_rounded),
           ),
-          ListTile(
-            title: Text(
-              l10n.manageCategory,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ManageCategoryScreen())),
-            trailing: Icon(Icons.arrow_forward_ios_rounded),
-          ),
+          //todo remove 
+          // ListTile(
+          //   title: Text(
+          //     l10n.manageCategory,
+          //     style: Theme.of(context).textTheme.titleMedium,
+          //   ),
+          //   onTap: () => Navigator.of(context).push(MaterialPageRoute(
+          //       builder: (context) => ManageCategoryScreen())),
+          //   trailing: Icon(Icons.arrow_forward_ios_rounded),
+          // ),
           AppStyle.sizedBoxSpace,
           FilledButton(
             style: AppStyle.fullWidthButton,

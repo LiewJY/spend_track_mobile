@@ -9,6 +9,12 @@
   "last4DigitOfCard": "Last 4 digits of Card",
   "budget": "Budget",
 
+"@otherField": {},
+  "selectCard": "Select Card",
+  "selectCategory": "Select Category",
+  "selectWallet": "Select Wallet",
+  "isCashbackEligible": "Is eligible for cashback?",
+
 "@textfield validation": {},
   "invalidEmail": "Invalid email address",
   "pleaseEnterEmail": "Please enter a valid email address",
@@ -17,7 +23,13 @@
   "passwordDoesNotMatch": "Password does not match",
   "pleaseProvideLast4DigitOfCard": "Please provide last 4 digit of card as unique identifier",
   "amountError": "Amount must be number and cannot be empty",
+  "noteEmpty": "Note cannot be empty",
+  "transactionEmpty": "Transaction cannot be empty",
 
+"@otherField validation": {},
+  "pleaseSelectCard": "Please select card",
+  "pleaseSelectCategory": "Please select category",
+  "pleaseSelectWallet": "Please select wallet",
 
 "@button": {},
   "login": "Login",
@@ -29,6 +41,8 @@
   "next": "Next",
   "viewDetails": "View Details",
   "save": "Save",
+  "card": "Card",
+  "clear": "Clear",
 
 "@navigation": {},
   "home": "Home",
@@ -88,6 +102,13 @@
   "addToMyWallets": "Add To My Wallets",
   "wallet": "Wallet",
   "description": "Description",
+
+"@addPage": {},
+  "addTransaction": "Add Transaction",
+  "transactionName": "Transaction Name",
+  "date": "Date",
+  "note": "Note",
+  
 
 "@SuccessMessage": {},
   "nameChanged": "Name successfully changed",

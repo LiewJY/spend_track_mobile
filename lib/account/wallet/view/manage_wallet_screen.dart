@@ -21,9 +21,10 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
   List<Wallet> wallets = [];
   @override
   initState() {
+    context.read<WalletBloc>().add(DisplayWalletRequested());
+
     super.initState();
     //initial call
-    context.read<WalletBloc>().add(DisplayWalletRequested());
   }
 
   reload() {
@@ -109,6 +110,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                 break;
               case 'loadedData':
                 //reload the data table when data is loaded
+
                 setState(() {});
                 break;
             }
