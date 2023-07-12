@@ -117,55 +117,67 @@ class _ManageCardScreenState extends State<ManageCardScreen> {
         child: SafeArea(
             child: Padding(
                 padding: AppStyle.paddingHorizontal,
-                child: cards.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: cards.length,
-                        itemBuilder: (_, index) {
-                          return CardsCard(
-                            data: cards[index],
-                            edit: () {
-                              if (!isDialogOpen) {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) {
-                                      return RepositoryProvider(
-                                        create: (context) => CardRepository(),
-                                        child: MultiBlocProvider(
-                                          providers: [
-                                            BlocProvider(
+                child: BlocBuilder<CardBloc, CardState>(
+                  builder: (context, state) {
+                    if (state.status == CardStatus.success &&
+                        state.success == 'loadedData') {
+                      return cards.isNotEmpty
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: cards.length,
+                              itemBuilder: (_, index) {
+                                return CardsCard(
+                                  data: cards[index],
+                                  edit: () {
+                                    if (!isDialogOpen) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) {
+                                            return RepositoryProvider(
                                               create: (context) =>
-                                                  CardCashbackCubit(context
-                                                      .read<CardRepository>()),
-                                            ),
-                                            BlocProvider.value(
-                                              value: BlocProvider.of<CardBloc>(
-                                                  context),
-                                            ),
-                                          ],
-                                          child: EditMyCardDialog(
-                                            data: cards[index],
-                                            dialogTitle: l10n.editCard,
-                                          ),
-                                        ),
-                                      );
-                                    }).then((value) {
-                                  toggleDialog();
-                                });
-                                toggleDialog();
-                              }
-                            },
-                            delete: () {
-                              context.read<CardBloc>().add(DeleteCardRequested(
-                                  uid: cards[index].uid.toString()));
-                            },
-                          );
-                        })
-                    : Center(
+                                                  CardRepository(),
+                                              child: MultiBlocProvider(
+                                                providers: [
+                                                  BlocProvider(
+                                                    create: (context) =>
+                                                        CardCashbackCubit(
+                                                            context.read<
+                                                                CardRepository>()),
+                                                  ),
+                                                  BlocProvider.value(
+                                                    value: BlocProvider.of<
+                                                        CardBloc>(context),
+                                                  ),
+                                                ],
+                                                child: EditMyCardDialog(
+                                                  data: cards[index],
+                                                  dialogTitle: l10n.editCard,
+                                                ),
+                                              ),
+                                            );
+                                          }).then((value) {
+                                        toggleDialog();
+                                      });
+                                      toggleDialog();
+                                    }
+                                  },
+                                  delete: () {
+                                    context.read<CardBloc>().add(
+                                        DeleteCardRequested(
+                                            uid: cards[index].uid.toString()));
+                                  },
+                                );
+                              })
+                          : Center(child: Text(l10n.youDoNotHaveAnyCard));
+                    } else {
+                      return Center(
                         child: CircularProgressIndicator(
                           value: 5,
                         ),
-                      ))),
+                      );
+                    }
+                  },
+                ))),
       ),
     );
   }

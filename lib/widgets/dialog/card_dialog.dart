@@ -80,6 +80,14 @@ class _CardDialogState extends State<CardDialog> {
                   label: l10n.last4DigitOfCard,
                 ),
                 AppStyle.sizedBoxSpace,
+                PaymentDayDropDownField(onChanged: (value) {
+                  log(value);
+                  setState(() {
+                    _paymentDay = value;
+                  });
+                }),
+                AppStyle.sizedBoxSpace,
+
                 SwitchField(
                     label: l10n.paymentReminder,
                     switchState: _isReminder,
@@ -124,13 +132,6 @@ class _CardDialogState extends State<CardDialog> {
                       ],
                     ),
                   ),
-                  AppStyle.sizedBoxSpace,
-                  PaymentDayDropDownField(onChanged: (value) {
-                    log(value);
-                    setState(() {
-                      _paymentDay = value;
-                    });
-                  })
                 ],
 
                 // AppStyle.sizedBoxSpace,

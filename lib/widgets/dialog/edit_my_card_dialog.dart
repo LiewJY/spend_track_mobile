@@ -105,11 +105,21 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
                     controller: _cardNumberController,
                     label: l10n.last4DigitOfCard),
                 AppStyle.sizedBoxSpace,
+                PaymentDayDropDownField(
+                    value: _paymentDay,
+                    onChanged: (value) {
+                      log(value);
+                      setState(() {
+                        _paymentDay = value;
+                      });
+                    }),
+                AppStyle.sizedBoxSpace,
                 // AmountField(
                 //   controller: _cardBudgetController,
                 //   label: l10n.budget,
                 // ),
                 // AppStyle.sizedBoxSpace,
+
                 SwitchField(
                     label: l10n.paymentReminder,
                     switchState: _isReminder,
@@ -154,15 +164,6 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
                       ],
                     ),
                   ),
-                  AppStyle.sizedBoxSpace,
-                  PaymentDayDropDownField(
-                    value: _paymentDay,
-                    onChanged: (value) {
-                    log(value);
-                    setState(() {
-                      _paymentDay = value;
-                    });
-                  })
                 ],
                 //card details
                 AppStyle.sizedBoxSpace,

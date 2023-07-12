@@ -54,6 +54,8 @@ class Wallet extends Equatable {
     return Wallet(
       uid: jsonMap['uid'].toString(),
       name: jsonMap['name'].toString(),
+            customName: jsonMap['customName'].toString(),
+
       //  description: json['description'],
     );
   }
