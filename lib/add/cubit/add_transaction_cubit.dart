@@ -15,8 +15,8 @@ class AddTransactionCubit extends Cubit<AddTransactionState> {
 
   addTransaction(MyTransaction transaction) async {
     //todo remove later
-    log('sdsdsdsdsd');
-    log('log   ' + transaction.toString());
+    // log('sdsdsdsdsd');
+    // log('log   ' + transaction.toString());
 
     if (state.status == AddTransactionStatus.loading) return;
     emit(state.copyWith(status: AddTransactionStatus.loading));

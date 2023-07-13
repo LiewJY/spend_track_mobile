@@ -8,6 +8,8 @@ class MyTransaction extends Equatable {
   const MyTransaction({
     this.uid,
     this.name,
+    this.amount,
+    this.date,
     this.note,
     this.categoryId,
     this.category,
@@ -21,6 +23,8 @@ class MyTransaction extends Equatable {
 
   final String? uid;
   final String? name;
+  final double? amount;
+  final DateTime? date;
   final String? note;
   final String? categoryId;
   final String? category;
@@ -40,6 +44,8 @@ class MyTransaction extends Equatable {
     return MyTransaction(
       uid: snapshot.id,
       name: data?['name'],
+      amount: data?['amount'],
+      date: data?['date'],
       note: data?['note'],
       categoryId: data?['categoryId'],
       category: data?['category'],
@@ -57,6 +63,8 @@ class MyTransaction extends Equatable {
     return {
       if (uid != null) "uid": uid,
       if (name != null) "name": name,
+      if (amount != null) "amount": amount,
+      if (date != null) "date": date,
       if (note != null) "note": note,
       if (categoryId != null) "categoryId": categoryId,
       if (category != null) "category": category,
@@ -91,6 +99,7 @@ class MyTransaction extends Equatable {
   List<Object?> get props => [
         uid,
         name,
+        amount,
         note,
         categoryId,
         category,

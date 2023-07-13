@@ -8,6 +8,7 @@
   "confirmPassword": "Confirm Password",
   "last4DigitOfCard": "Last 4 digits of Card",
   "budget": "Budget",
+  "amount": "Amount",
 
 "@otherField": {},
   "selectCard": "Select Card",
@@ -133,10 +134,12 @@
   "walletAddSuccess": "Wallet successfully added",
   "walletUpdateSuccess": "Wallet successfully updated",
   "walletDeleteSuccess": "Wallet successfully deleted",
+  "transactionAddSuccess": "Transaction successfully added",
 
 "@firebaseErrors": {},
   "cannotRetrieveData": "Cannot retrieve data. Unknown error occurred.",
-    "unknownError": "An unknown error occurred. Please try again.",
+  "unknownError": "An unknown error occurred. Please try again.",
+  "failToAddTransaction": "Failed to add transaction",
 
 "@firebaseAuthErrors": {},
   "userDisabled": "This user has been disabled. Please contact support for help.",

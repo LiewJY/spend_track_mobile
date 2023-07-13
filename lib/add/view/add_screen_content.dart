@@ -16,6 +16,7 @@ import 'package:track/repositories/repos/category/category_repository.dart';
 import 'package:track/repositories/repos/wallet/wallet_repository.dart';
 import 'package:track/repositories/repositories.dart';
 import 'package:track/transaction/bloc/category_bloc.dart';
+import 'package:track/widgets/form_field/amount_field.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
 
@@ -29,6 +30,8 @@ class AddScreenContent extends StatelessWidget {
     final walletRepository = WalletRepository();
     final categoryRepository = CategoryRepository();
     final transactionRepository = TransactionRepository();
+
+    final l10n = context.l10n;
 
     return MultiRepositoryProvider(
       providers: [
@@ -61,7 +64,22 @@ class AddScreenContent extends StatelessWidget {
             create: (context) => AddTransactionCubit(transactionRepository),
           ),
         ],
-        child: TransactionForm(),
+        child: BlocListener<AddTransactionCubit, AddTransactionState>(
+          listener: (context, state) {
+            if (state.status == AddTransactionStatus.failure) {
+              AppSnackBar.error(context, l10n.failToAddTransaction);
+            }
+            if (state.status == AddTransactionStatus.success) {
+              switch (state.success) {
+                case 'transactionAdded':
+                  AppSnackBar.success(context, l10n.transactionAddSuccess);
+                  break;
+                default:
+              }
+            }
+          },
+          child: TransactionForm(),
+        ),
       ),
     );
   }
@@ -82,10 +100,12 @@ class _TransactionFormState extends State<TransactionForm> {
   String? _walletSelected;
   String? _categorySelected;
   bool _isCashback = true;
+  DateTime? transactionDate = DateTime.now();
   // final TextEditingController _dateInputController;
   TextEditingController _dateInputController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _noteController = TextEditingController();
+  TextEditingController _amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +130,9 @@ class _TransactionFormState extends State<TransactionForm> {
             AppStyle.sizedBoxSpace,
             TransactionTitleField(controller: _titleController),
             AppStyle.sizedBoxSpace,
+            AmountField(controller: _amountController, label: l10n.amount),
+            AppStyle.sizedBoxSpace,
+
             TextFormField(
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.calendar_today_rounded)),
@@ -124,6 +147,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     currentDate: DateTime.now());
                 if (pick != null) {
                   _dateInputController.text = formatDate(pick!);
+                  transactionDate = pick;
                 }
               },
             ),
@@ -208,10 +232,14 @@ class _TransactionFormState extends State<TransactionForm> {
     );
   }
 
+  double? stringToDouble(value) {
+    return double.tryParse(value);
+  }
+
   //action
   addTransaction() {
     if (transactionForm.currentState!.validate()) {
-      log('11111');
+      log('11111' + transactionDate.toString());
       SpendingCategory category = SpendingCategory.fromJson(_categorySelected);
       log(category.toString());
       var storeTransaction;
@@ -220,6 +248,8 @@ class _TransactionFormState extends State<TransactionForm> {
         Wallet wallet = Wallet.fromJson(_walletSelected);
         storeTransaction = MyTransaction(
           name: _titleController.text,
+          amount: stringToDouble(_amountController.text),
+          date: transactionDate,
           note: _noteController.text,
           categoryId: category.uid,
           category: category.name,
@@ -233,6 +263,8 @@ class _TransactionFormState extends State<TransactionForm> {
         CreditCard card = CreditCard.fromJson(_cardSelected);
         storeTransaction = MyTransaction(
           name: _titleController.text,
+          amount: stringToDouble(_amountController.text),
+          date: transactionDate,
           note: _noteController.text,
           categoryId: category.uid,
           category: category.name,
