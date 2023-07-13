@@ -78,7 +78,16 @@ class AddScreenContent extends StatelessWidget {
               }
             }
           },
-          child: TransactionForm(),
+          child: Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  l10n.addTransaction,
+                ),
+              ),
+              body: Padding(
+                padding: AppStyle.paddingHorizontal,
+                child: TransactionForm(),
+              )),
         ),
       ),
     );
@@ -122,11 +131,6 @@ class _TransactionFormState extends State<TransactionForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              l10n.addTransaction,
-              style: Theme.of(context).textTheme.headlineSmall,
-              textAlign: TextAlign.left,
-            ),
             AppStyle.sizedBoxSpace,
             TransactionTitleField(controller: _titleController),
             AppStyle.sizedBoxSpace,

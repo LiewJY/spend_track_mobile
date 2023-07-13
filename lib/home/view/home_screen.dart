@@ -78,15 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: TransactionScreenContent(),
         )),
         SafeArea(
-            child: Padding(
-          padding: AppStyle.paddingHorizontal,
-          child: AddScreenContent(),
-        )),
+            child: AddScreenContent()),
         SafeArea(
-            child: Padding(
-          padding: AppStyle.paddingHorizontal,
-          child: BudgetScreenContent(),
-        )),
+            child: BudgetScreenContent()),
         SafeArea(
             child: Padding(
           padding: AppStyle.paddingHorizontal,

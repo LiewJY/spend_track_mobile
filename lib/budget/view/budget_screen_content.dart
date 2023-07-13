@@ -12,11 +12,14 @@ class BudgetScreenContent extends StatelessWidget {
     final l10n = context.l10n;
     //todo
 
-
-    return Column(
-      children: [
-        Text("BudgetScreenContent")
-      ],
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.myBudget)),
+      body: Padding(
+        padding: AppStyle.paddingHorizontal,
+        child: Column(
+          children: [Text("BudgetScreenContent")],
+        ),
+      ),
     );
   }
 }

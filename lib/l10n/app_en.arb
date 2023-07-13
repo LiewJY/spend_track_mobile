@@ -117,7 +117,11 @@
   "transactionName": "Transaction Name",
   "date": "Date",
   "note": "Note",
-  
+
+"@budgetPage": {},
+  "myBudget": "My budget",
+
+
 "@noDataText": {},
   "youDoNotHaveAnyCard": "You do not have any card",
   "youDoNotHaveAnyWallet": "You do not have any wallet",
