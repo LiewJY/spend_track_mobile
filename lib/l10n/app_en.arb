@@ -53,6 +53,7 @@
   "add": "Add",
   "budget": "Budget",
   "account": "Account",
+  "overview": "Overview",
 
 
 "@loginPage": {},
@@ -120,6 +121,13 @@
 
 "@budgetPage": {},
   "myBudget": "My budget",
+  "totalMonthlyBudget": "Total Monthly Budget",
+  "budgetByCategory": "Budget By Category",
+  "budgetCategoryAvailable": "Budget Category Available",
+  "budgetAmount": "Budget Amount",
+  "addToMyBudget": "Add To My Budget",
+  "addingBudget": "Adding '{cardName}' to my budget",
+
 
 
 "@noDataText": {},
@@ -139,6 +147,9 @@
   "walletUpdateSuccess": "Wallet successfully updated",
   "walletDeleteSuccess": "Wallet successfully deleted",
   "transactionAddSuccess": "Transaction successfully added",
+  "budgetAddSuccess": "Budget successfully added",
+  "budgetUpdateSuccess": "Budget successfully updated",
+  "budgetDeleteSuccess": "Budget successfully deleted",
 
 "@firebaseErrors": {},
   "cannotRetrieveData": "Cannot retrieve data. Unknown error occurred.",

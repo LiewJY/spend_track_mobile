@@ -17,7 +17,6 @@ class WalletRepository {
     try {
       await ref.orderBy('name').get().then((querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          log('dddd');
           wallets.add(docSnapshot.data());
         }
       });
