@@ -16,6 +16,8 @@ class TransactionRepository {
   final userRef = FirebaseFirestore.instance.collection('users');
 
   // List<SpendingCategory> categories = [];
+  List<MyTransaction> transactions = [];
+        List<String> transactionRange= [];
 
   addTransaction(MyTransaction transaction) async {
     log('in repo trans ');
@@ -23,9 +25,9 @@ class TransactionRepository {
       //todo
       String userID = FirebaseAuth.instance.currentUser!.uid;
 
-      log(transaction.date.toString());
-      log('month is' + transaction.date!.month.toString());
-      log('year is' + transaction.date!.year.toString());
+      // log(transaction.date.toString());
+      // log('month is' + transaction.date!.month.toString());
+      // log('year is' + transaction.date!.year.toString());
       String tranasactionId =
           '${transaction.date!.year}_${transaction.date!.month}';
 
@@ -46,18 +48,49 @@ class TransactionRepository {
     }
   }
 
-  // Future<List<SpendingCategory>> getCategories() async {
-  //   categories.clear();
-  //   try {
-  //     await ref.orderBy('name').get().then((querySnapshot) {
-  //       for (var docSnapshot in querySnapshot.docs) {
-  //         categories.add(docSnapshot.data());
-  //       }
-  //     });
-  //     return categories;
-  //   } catch (e) {
-  //     log(e.toString());
-  //     throw 'cannotRetrieveData';
-  //   }
-  // }
+ Future<List<String>> getTransactionsRange() async {
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+      await userRef
+          .doc(userID)
+          .collection('myTransactions')
+          .get()
+          .then((querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          transactionRange.add(docSnapshot.id);
+        }
+      });
+      return transactionRange;
+    } catch (e) {
+      log(e.toString());
+      throw 'cannotRetrieveData';
+    }
+  }
+
+  Future<List<MyTransaction>> getTransactions(String yearMonth) async {
+    transactions.clear();
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+      await userRef
+          .doc(userID)
+          .collection('myTransactions')
+          .doc(yearMonth)
+          .collection('monthlyTransactions')
+          .withConverter(
+              fromFirestore: MyTransaction.fromFirestore,
+              toFirestore: (MyTransaction myTransaction, _) =>
+                  myTransaction.toFirestore())
+          .orderBy('date')
+          .get()
+          .then((querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          transactions.add(docSnapshot.data());
+        }
+      });
+      return transactions;
+    } catch (e) {
+      log(e.toString());
+      throw 'cannotRetrieveData';
+    }
+  }
 }

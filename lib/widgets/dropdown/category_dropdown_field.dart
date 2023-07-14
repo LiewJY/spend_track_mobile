@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track/add/bloc/category_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/models/category.dart';
-import 'package:track/transaction/bloc/category_bloc.dart';
 
 
 class CategoryDropDownField extends StatefulWidget {

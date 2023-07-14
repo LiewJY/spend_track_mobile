@@ -6,3 +6,12 @@ abstract class BudgetEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class DisplayBudgetRequested extends BudgetEvent {
+  @override
+  List<Object> get props => [];
+}
+
+//todo update
+
+//todo remove

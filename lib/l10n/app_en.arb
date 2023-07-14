@@ -133,6 +133,7 @@
 "@noDataText": {},
   "youDoNotHaveAnyCard": "You do not have any card",
   "youDoNotHaveAnyWallet": "You do not have any wallet",
+  "youDoNotHaveAnyBudget": "You do not have any budget",
   "youDoNotHaveAnyTransaction": "You do not have any transaction",
 
 
