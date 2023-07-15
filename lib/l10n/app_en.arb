@@ -130,6 +130,9 @@
 
 "@transactionPage": {},
   "totalMonthlyTransaction": "Total Monthly Transaction",
+  "monthlyView": "Monthly View",
+  "yearlyView": "Yearly View",
+  "dailyView": "Daily View",
 
 "@noDataText": {},
   "youDoNotHaveAnyCard": "You do not have any card",
