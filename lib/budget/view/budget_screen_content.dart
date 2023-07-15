@@ -148,11 +148,7 @@ class _ContentState extends State<Content> {
                           itemCount: budgets.length,
                           shrinkWrap: true,
                           itemBuilder: (_, index) {
-                            return BudgetList(
-                                onPressed: () {
-                                  log('asd');
-                                },
-                                data: budgets[index]);
+                            return BudgetList(data: budgets[index]);
                           })
                       : Center(
                           child: Text(l10n.youDoNotHaveAnyBudget),
