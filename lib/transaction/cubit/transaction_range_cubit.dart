@@ -11,7 +11,7 @@ class TransactionRangeCubit extends Cubit<TransactionRangeState> {
   TransactionRangeCubit(this.transactionRepository)
       : super(TransactionRangeState.initial());
 
-      getTransactionRange() async {
+  getTransactionRange() async {
     if (state.status == TransactionRangeStatus.loading) return;
     emit(state.copyWith(status: TransactionRangeStatus.loading));
     List<String> transactionRange = [];
@@ -49,10 +49,5 @@ class TransactionRangeCubit extends Cubit<TransactionRangeState> {
     //   log(e.toString());
     //   throw 'cannotRetrieveData';
     // }
-      }
-
-
-
-
-
+  }
 }

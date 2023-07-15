@@ -19,6 +19,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     formatDate(DateTime dateTime) {
       return DateFormat('dd-MM-yyyy').format(dateTime);
     }
@@ -29,7 +30,8 @@ class TransactionList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('RM ${data.amount!.toStringAsFixed(2)}'),
-          Text(formatDate(data.date!)),
+          Text('${l10n.category}: ${data.category}'),
+          //add note field here 
         ],
       ),
       trailing:

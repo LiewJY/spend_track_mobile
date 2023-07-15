@@ -6,8 +6,10 @@ import 'package:intl/intl.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/models/transaction.dart';
+import 'package:track/repositories/models/transactionSummary.dart';
 import 'package:track/repositories/repos/transaction/transaction_repository.dart';
 import 'package:track/transaction/bloc/transaction_bloc.dart';
+import 'package:track/transaction/cubit/monthly_transaction_summary_cubit.dart';
 import 'package:track/transaction/transaction.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
@@ -27,26 +29,45 @@ class TransactionScreenContent extends StatelessWidget {
         BlocProvider(
           create: (context) => TransactionRangeCubit(transactionRepository),
         ),
+        BlocProvider(
+          create: (context) =>
+              MonthlyTransactionSummaryCubit(transactionRepository),
+        ),
       ],
-      child: BlocListener<TransactionRangeCubit, TransactionRangeState>(
-        listener: (context, state) {
-          if (state.status == TransactionRangeStatus.failure) {
-            switch (state.error) {
-              case 'cannotRetrieveData':
-                AppSnackBar.error(context, l10n.cannotRetrieveData);
-                break;
-            }
-          }
-          //todo for success range
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<TransactionRangeCubit, TransactionRangeState>(
+            listener: (context, state) {
+              if (state.status == TransactionRangeStatus.failure) {
+                switch (state.error) {
+                  case 'cannotRetrieveData':
+                    AppSnackBar.error(context, l10n.cannotRetrieveData);
+                    break;
+                }
+              }
+
+              //todo for success range
+            },
+          ),
+          BlocListener<MonthlyTransactionSummaryCubit,
+              MonthlyTransactionSummaryState>(
+            listener: (context, state) {
+              if (state.status == MonthlyTransactionSummaryStatus.failure) {
+                switch (state.error) {
+                  case 'cannotRetrieveData':
+                    AppSnackBar.error(context, l10n.cannotRetrieveData);
+                    break;
+                }
+              }
+              //todo for success range
+            },
+          ),
+        ],
         child: Scaffold(
             appBar: AppBar(
               title: Text(l10n.transaction),
             ),
-            body: Padding(
-              padding: AppStyle.paddingHorizontal,
-              child: TransactionContent(),
-            )),
+            body: TransactionContent()),
       ),
     );
   }
@@ -82,11 +103,33 @@ class _TransactionContentState extends State<TransactionContent> {
     return formattedDate;
   }
 
-  loadSelectedMonth(String collectionName) {
+  loadSelectedMonth(String yearMonth) {
     //todo
     context
         .read<TransactionBloc>()
-        .add(DisplayTransactionRequested(yyyyMm: collectionName));
+        .add(DisplayTransactionRequested(yearMonth: yearMonth));
+    //todo add the summary
+    context
+        .read<MonthlyTransactionSummaryCubit>()
+        .getMonthlyTransactionSummary(yearMonth);
+  }
+
+  //grouping data into its dates
+  Map<DateTime, List<MyTransaction>> groupDataByDate(dataList) {
+    Map<DateTime, List<MyTransaction>> groupedData = {};
+    for (var item in dataList) {
+      DateTime date = item.date;
+      if (!groupedData.containsKey(date)) {
+        groupedData[date] = [];
+      }
+      groupedData[date]!.add(item);
+    }
+    return groupedData;
+  }
+
+//todo move to utils
+  formatDate(DateTime dateTime) {
+    return DateFormat('dd-MM-yyyy').format(dateTime);
   }
 
   @override
@@ -97,9 +140,11 @@ class _TransactionContentState extends State<TransactionContent> {
     List<String> content =
         context.select((TransactionRangeCubit bloc) => bloc.state.rangeList);
 
-    // content.forEach((f) {
-    //   log('sds ' + f);
-    // });
+// //add to anither
+    // TransactionSummary monthlyTransactionSummary = context.select(
+    //     (MonthlyTransactionSummaryCubit bloc) =>
+    //         bloc.state.monthlyTransactionSummary);
+//      log('ss' +  monthlyTransactionSummary.toString());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +163,7 @@ class _TransactionContentState extends State<TransactionContent> {
                   state.success == 'loadedTransactionRange') {
                 //preselect the latest and load the data
                 selected = content.last;
-                loadSelectedMonth(selected!);
+                loadSelectedMonth(selected.toString());
                 log("${selected}selected");
                 return ListView.builder(
                     //reverse: true,
@@ -132,13 +177,15 @@ class _TransactionContentState extends State<TransactionContent> {
                           onPressed: () {
                             log(content[index]);
                             selected = content[index];
-                            log("${selected}selected");
+                            log("${selected}selected wewe");
+                            loadSelectedMonth(selected.toString());
                           },
                           child: Text(translateYYYY_MM(content[index])),
                         ),
                       );
                     });
               } else {
+                //todo make into conponent
                 return Center(
                   child: CircularProgressIndicator(
                     value: 5,
@@ -149,40 +196,92 @@ class _TransactionContentState extends State<TransactionContent> {
           ),
         ),
         AppStyle.sizedBoxSpace,
-        //todo graph (show percentage of each category spending)
+        //todo graph (show percentage of each category spending) add inbnto the bloc builder also
+// monthlyTransactionSummary
+        //todo total monthly budget
+        BlocBuilder<MonthlyTransactionSummaryCubit,
+            MonthlyTransactionSummaryState>(
+          builder: (context, state) {
+            log('jk ' + state.monthlyTransactionSummary.toString());
+            return Padding(
+              padding: AppStyle.paddingHorizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    l10n.totalMonthlyTransaction,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Text(
+                    'RM${state.monthlyTransactionSummary.totalSpending?.toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
 
         //vertical scrolling list for month's transaction
-        Expanded(child: BlocBuilder<TransactionBloc, TransactionState>(
-          builder: (context, state) {
-            if (state.status == TransactionStatus.success &&
-                state.success == 'loadedData') {
-              transactions = context
-                  .select((TransactionBloc bloc) => bloc.state.transactionList);
-              transactions.forEach((element) {
-                log('fff' + element.toString());
-              });
-              return content.isNotEmpty
-                  ? ListView.builder(
+        Expanded(
+          child: Padding(
+            padding: AppStyle.paddingHorizontal,
+            child: BlocBuilder<TransactionBloc, TransactionState>(
+              builder: (context, state) {
+                if (state.status == TransactionStatus.success &&
+                    state.success == 'loadedData') {
+                  log('reloaddata');
+                  transactions = context.select(
+                      (TransactionBloc bloc) => bloc.state.transactionList);
+                  transactions.forEach((element) {
+                    log('fffm  ' + element.toString());
+                  });
+                  Map<DateTime, List<MyTransaction>> groupedData =
+                      groupDataByDate(transactions);
+
+                  if (content.isEmpty) {
+                    //if empty return empty text
+                    return Center(child: Text(l10n.youDoNotHaveAnyTransaction));
+                  }
+                  return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: transactions.length,
+                      itemCount: groupedData.length,
                       itemBuilder: (_, index) {
-                        return TransactionList(
-                            onPressed: () {
-                              //todo
-                              log('sadsad');
-                            },
-                            data: transactions[index]);
-                      })
-                  : Center(child: Text(l10n.youDoNotHaveAnyTransaction));
-            } else {
-              return Center(
-                child: CircularProgressIndicator(
-                  value: 5,
-                ),
-              );
-            }
-          },
-        )),
+                        DateTime date = groupedData.keys.elementAt(index);
+                        List<MyTransaction> groupedTransactions =
+                            groupedData[date]!;
+                        return Column(
+                          children: [
+                            Text(formatDate(date) +
+                                ', ' +
+                                DateFormat('EEEE').format(date).toString()),
+                            Column(
+                              children: groupedTransactions
+                                  .map(
+                                    (item) => TransactionList(
+                                      onPressed: () {
+                                        //todo
+                                        log('sadsad');
+                                      },
+                                      data: item,
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ],
+                        );
+                      });
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: 5,
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ),
       ],
     );
   }

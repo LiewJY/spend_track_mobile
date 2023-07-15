@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:track/repositories/models/category.dart';
 import 'package:track/repositories/models/transaction.dart';
+import 'package:track/repositories/models/transactionSummary.dart';
 
 class TransactionRepository {
   //firestore instance
@@ -17,7 +18,7 @@ class TransactionRepository {
 
   // List<SpendingCategory> categories = [];
   List<MyTransaction> transactions = [];
-        List<String> transactionRange= [];
+  List<String> transactionRange = [];
 
   addTransaction(MyTransaction transaction) async {
     log('in repo trans ');
@@ -48,7 +49,7 @@ class TransactionRepository {
     }
   }
 
- Future<List<String>> getTransactionsRange() async {
+  Future<List<String>> getTransactionsRange() async {
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
       await userRef
@@ -80,7 +81,7 @@ class TransactionRepository {
               fromFirestore: MyTransaction.fromFirestore,
               toFirestore: (MyTransaction myTransaction, _) =>
                   myTransaction.toFirestore())
-          .orderBy('date')
+          .orderBy('date', descending: true)
           .get()
           .then((querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
@@ -88,6 +89,51 @@ class TransactionRepository {
         }
       });
       return transactions;
+    } catch (e) {
+      log(e.toString());
+      throw 'cannotRetrieveData';
+    }
+  }
+
+ Future<TransactionSummary> getMonthlyTransactionSummary(String yearMonth) async {
+    try {
+      // log('repo get summary ');
+      TransactionSummary monthlyTransactionSummary =  TransactionSummary();
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+      await userRef
+          .doc(userID)
+          .collection('myTransactions')
+          .doc(yearMonth)
+          .get()
+          .then((querySnapshot) {
+        // log(querySnapshot.data().toString());
+        // log(querySnapshot.id);
+        //create a blank list to store all the transaction by category
+        List<SpendingByCategory> spendingByCategoryList = [];
+        Map<String, dynamic>? data = querySnapshot.data();
+        data?.forEach((key, value) {
+          if (key != 'totalSpending') {
+            String id = key;
+            int amount = value['amount'];
+            String categoryName = value['categoryName'];
+            SpendingByCategory data = SpendingByCategory(
+                id: id, amount: double.tryParse(amount.toString()), categoryName: categoryName);
+            spendingByCategoryList.add(data);
+          }
+        });
+        monthlyTransactionSummary =  TransactionSummary(
+          uid: querySnapshot.id,
+          totalSpending: double.tryParse(querySnapshot.data()!['totalSpending'].toString()),
+          spendingCategoryList: spendingByCategoryList,
+        );
+        // log('repo get monthlyTransactionSummary ');
+        // log(monthlyTransactionSummary.toString());
+
+        // for (var docSnapshot in querySnapshot.docs) {
+        //   transactionRange.add(docSnapshot.id);
+        // }
+      });
+      return monthlyTransactionSummary;
     } catch (e) {
       log(e.toString());
       throw 'cannotRetrieveData';

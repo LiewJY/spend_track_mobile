@@ -14,9 +14,9 @@ abstract class TransactionEvent extends Equatable {
 
 class DisplayTransactionRequested extends TransactionEvent {
   const DisplayTransactionRequested({
-    required this.yyyyMm,
+    required this.yearMonth,
   });
-  final String yyyyMm;
+  final String yearMonth;
   @override
-  List<Object> get props => [yyyyMm];
+  List<Object> get props => [yearMonth];
 }

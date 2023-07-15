@@ -128,7 +128,8 @@
   "addToMyBudget": "Add To My Budget",
   "addingBudget": "Adding '{cardName}' to my budget",
 
-
+"@transactionPage": {},
+  "totalMonthlyTransaction": "Total Monthly Transaction",
 
 "@noDataText": {},
   "youDoNotHaveAnyCard": "You do not have any card",

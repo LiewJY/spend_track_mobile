@@ -17,10 +17,13 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc({required this.transactionRepository})
       : super(TransactionState.initial()) {
     on<DisplayTransactionRequested>(_onDisplayTransactionRequested);
+    // on<DisplayTransactionSummaryRequested>(_onDisplayTransactionSummaryRequested);
 
     // on<UpdateWalletRequested>(_onUpdateWalletRequested);
     //  on<DeleteWalletRequested>(_onDeleteWaletRequested);
   }
+
+ 
 
   _onDisplayTransactionRequested(
     DisplayTransactionRequested event,
@@ -30,7 +33,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     emit(state.copyWith(status: TransactionStatus.loading));
     try {
       List<MyTransaction> transactionList =
-          await transactionRepository.getTransactions(event.yyyyMm);
+          await transactionRepository.getTransactions(event.yearMonth);
 
       // List<MyTransaction> budgetList = await budgetRepository.getMyBudgets();
       emit(state.copyWith(
