@@ -144,16 +144,23 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
             log('jk ' + state.monthlyTransactionSummary.toString());
             return Padding(
               padding: AppStyle.paddingHorizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: [
-                  Text(
-                    l10n.totalMonthlyTransaction,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Text(
-                    'RM${state.monthlyTransactionSummary.totalSpending?.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleMedium,
+                  //todo summary here
+                  TransactionChart(data: state.monthlyTransactionSummary),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        l10n.totalMonthlyTransaction,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Text(
+                        'RM${state.monthlyTransactionSummary.totalSpending?.toStringAsFixed(2)}',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
                   ),
                 ],
               ),

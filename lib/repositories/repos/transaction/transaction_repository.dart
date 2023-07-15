@@ -95,10 +95,11 @@ class TransactionRepository {
     }
   }
 
- Future<TransactionSummary> getMonthlyTransactionSummary(String yearMonth) async {
+  Future<TransactionSummary> getMonthlyTransactionSummary(
+      String yearMonth) async {
     try {
       // log('repo get summary ');
-      TransactionSummary monthlyTransactionSummary =  TransactionSummary();
+      TransactionSummary monthlyTransactionSummary = TransactionSummary();
       String userID = FirebaseAuth.instance.currentUser!.uid;
       await userRef
           .doc(userID)
@@ -116,14 +117,20 @@ class TransactionRepository {
             String id = key;
             int amount = value['amount'];
             String categoryName = value['categoryName'];
+            String? color = value['categoryColor'];
             SpendingByCategory data = SpendingByCategory(
-                id: id, amount: double.tryParse(amount.toString()), categoryName: categoryName);
+              id: id,
+              amount: double.tryParse(amount.toString()),
+              categoryName: categoryName,
+              color: color,
+            );
             spendingByCategoryList.add(data);
           }
         });
-        monthlyTransactionSummary =  TransactionSummary(
+        monthlyTransactionSummary = TransactionSummary(
           uid: querySnapshot.id,
-          totalSpending: double.tryParse(querySnapshot.data()!['totalSpending'].toString()),
+          totalSpending: double.tryParse(
+              querySnapshot.data()!['totalSpending'].toString()),
           spendingCategoryList: spendingByCategoryList,
         );
         // log('repo get monthlyTransactionSummary ');

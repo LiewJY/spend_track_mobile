@@ -46,13 +46,15 @@ class SpendingByCategory extends Equatable {
   final String? id; //id is from category (used for cloud function update only)
   final double? amount;
   final String? categoryName;
+  final String? color;
 
   const SpendingByCategory({
     required this.id,
     required this.amount,
     required this.categoryName,
+    required this.color,
   });
 
   @override
-  List<Object?> get props => [id, amount, categoryName];
+  List<Object?> get props => [id, amount, categoryName, color];
 }
