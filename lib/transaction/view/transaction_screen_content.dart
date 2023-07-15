@@ -86,11 +86,10 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
               if (state.status == TransactionRangeStatus.failure) {
                 switch (state.error) {
                   case 'cannotRetrieveData':
-                    AppSnackBar.error(context, l10n.cannotRetrieveData);
+                    AppSnackBar.error(context, l10n.youDoNotHaveAnyTransaction);
                     break;
                 }
               }
-
               //todo for success range
             },
           ),
@@ -100,7 +99,7 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
               if (state.status == MonthlyTransactionSummaryStatus.failure) {
                 switch (state.error) {
                   case 'cannotRetrieveData':
-                    AppSnackBar.error(context, l10n.cannotRetrieveData);
+                    AppSnackBar.error(context, l10n.youDoNotHaveAnyTransaction);
                     break;
                 }
               }

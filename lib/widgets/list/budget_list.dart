@@ -19,6 +19,7 @@ class BudgetList extends StatelessWidget {
     return ListTile(
       title: Text(data.name!),
       subtitle: Text('RM ${data.amount!.toStringAsFixed(2)}'),
+      //todo make this into dropdown that allow delete and edit
       trailing: IconButton(
           onPressed: onPressed,
           icon: Icon(Icons.more_vert_rounded)),

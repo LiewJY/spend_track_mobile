@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:track/repositories/models/transaction.dart';
@@ -23,17 +25,19 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     //  on<DeleteWalletRequested>(_onDeleteWaletRequested);
   }
 
- 
-
+  List<MyTransaction> transactionList = [];
   _onDisplayTransactionRequested(
     DisplayTransactionRequested event,
     Emitter emit,
   ) async {
     if (state.status == TransactionStatus.loading) return;
     emit(state.copyWith(status: TransactionStatus.loading));
+    transactionList.clear();
     try {
-      List<MyTransaction> transactionList =
+      transactionList =
           await transactionRepository.getTransactions(event.yearMonth);
+
+      log(' ccccccc ccc' + transactionList.length.toString());
 
       // List<MyTransaction> budgetList = await budgetRepository.getMyBudgets();
       emit(state.copyWith(

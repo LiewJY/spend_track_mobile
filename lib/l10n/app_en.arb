@@ -46,6 +46,7 @@
   "save": "Save",
   "card": "Card",
   "clear": "Clear",
+  "delete": "Delete",
 
 "@navigation": {},
   "home": "Home",

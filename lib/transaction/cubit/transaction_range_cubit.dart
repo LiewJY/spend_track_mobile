@@ -10,12 +10,12 @@ class TransactionRangeCubit extends Cubit<TransactionRangeState> {
 
   TransactionRangeCubit(this.transactionRepository)
       : super(TransactionRangeState.initial());
+  List<String> transactionRange = [];
 
   getTransactionRange() async {
     if (state.status == TransactionRangeStatus.loading) return;
     emit(state.copyWith(status: TransactionRangeStatus.loading));
-    List<String> transactionRange = [];
-
+    transactionRange.clear();
     try {
       transactionRange = await transactionRepository.getTransactionsRange();
       emit(state.copyWith(
