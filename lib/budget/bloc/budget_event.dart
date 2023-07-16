@@ -8,6 +8,10 @@ abstract class BudgetEvent extends Equatable {
 }
 
 class DisplayBudgetRequested extends BudgetEvent {
+  //const DisplayBudgetRequested({required this.yearMonth});
+//
+  //final String yearMonth;
+
   @override
   List<Object> get props => [];
 }

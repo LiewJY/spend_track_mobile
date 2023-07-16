@@ -20,12 +20,13 @@ class CategoryRepository {
           categories.add(docSnapshot.data());
         }
       });
+      //remove the Any option
+      //dataList.removeWhere((item) => item.id == idToRemove);
+
       return categories;
     } catch (e) {
       log(e.toString());
       throw 'cannotRetrieveData';
     }
   }
-
-  
 }

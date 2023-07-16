@@ -31,10 +31,31 @@ class BudgetList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-
+   // double remainingBudget = data.amount! - data.amountSpent!;
     return ListTile(
         title: Text(data.name!),
-        subtitle: Text('RM ${data.amount!.toStringAsFixed(2)}'),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+                '${l10n.monthlyBudget}: RM ${data.amount!.toStringAsFixed(2)}'),
+            // if (remainingBudget <= 0) ...[
+            //   Text(
+            //     '${l10n.remainingMonthlyBudget}: RM ${remainingBudget.toStringAsFixed(2)}',
+            //     style: TextStyle(
+            //       color: Theme.of(context).colorScheme.error,
+            //     ),
+            //   ),
+            // ] else ...[
+            //   Text(
+            //     '${l10n.remainingMonthlyBudget}: RM ${remainingBudget.toStringAsFixed(2)}',
+            //     style: TextStyle(
+            //       color: Colors.green.shade800,
+            //     ),
+            //   ),
+            // ]
+          ],
+        ),
         //todo make this into dropdown that allow delete and edit
         //todo implement
         trailing: PopupMenuButton(

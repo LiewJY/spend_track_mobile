@@ -58,17 +58,23 @@ class _BudgetDialogState extends State<BudgetDialog> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      widget.dialogTitle,
-                      style: Theme.of(context).textTheme.headlineSmall,
+                    Expanded(
+                      child: Text(
+                        widget.dialogTitle,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        softWrap: true,
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    Text(
-                      l10n.addingBudget(widget.data!.name.toString()),
-                      style: Theme.of(context).textTheme.bodyLarge,
+                    Expanded(
+                      child: Text(
+                        l10n.addingBudget(widget.data!.name.toString()),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        softWrap: true,
+                      ),
                     ),
                   ],
                 ),
@@ -113,7 +119,7 @@ class _BudgetDialogState extends State<BudgetDialog> {
           log('ressdsd');
           final storeBudget = Budget(
             name: widget.data!.name,
-            // categoryId: widget.data!.uid,
+            color: widget.data!.color,
             amount: stringToDouble(_amountController.text),
           );
 

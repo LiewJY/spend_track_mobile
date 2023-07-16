@@ -13,15 +13,15 @@ import 'package:track/repositories/repos/wallet/wallet_repository.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
 
-class AvailableBudgetListScreen extends StatefulWidget {
-  const AvailableBudgetListScreen({super.key});
+class BudgetListScreen extends StatefulWidget {
+  const BudgetListScreen({super.key});
 
   @override
-  State<AvailableBudgetListScreen> createState() =>
-      _AvailableBudgetListScreenState();
+  State<BudgetListScreen> createState() =>
+      _BudgetListScreenState();
 }
 
-class _AvailableBudgetListScreenState extends State<AvailableBudgetListScreen> {
+class _BudgetListScreenState extends State<BudgetListScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -115,8 +115,6 @@ class _AvailableCardListState extends State<AvailableBudgetCategoryList> {
           return CategoryList(
             data: categories[index],
             onPressed: () {
-              // log('pressed');
-
               showDialog(
                   context: context,
                   builder: (_) {
@@ -132,6 +130,7 @@ class _AvailableCardListState extends State<AvailableBudgetCategoryList> {
                   }).then((value) {
                 toggleDialog();
               });
+              
               toggleDialog();
               // }
             },

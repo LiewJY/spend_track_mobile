@@ -5,17 +5,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Budget extends Equatable {
-  const Budget({
+   Budget({
     this.uid,
     this.name,
-    // this.categoryId,
+     this.color,
     this.amount,
+    //for display to user use only
+    this.amountSpent,
   });
 
   final String? uid;
   final String? name; // the name here is from the category no custom name
-  // final String? categoryId;
+  final String? color;
   final double? amount;
+  //for display to user use only
+  //does not uses final to allow adding afterwords (join form 2 sources)
+   double? amountSpent;
 
   //convert firestore format into object
   factory Budget.fromFirestore(
@@ -26,7 +31,7 @@ class Budget extends Equatable {
     return Budget(
       uid: snapshot.id,
       name: data?['name'],
-      // categoryId: data?['categoryId'],
+      color: data?['color'],
       amount: data?['amount'],
     );
   }
@@ -36,7 +41,7 @@ class Budget extends Equatable {
     return {
       if (uid != null) "uid": uid,
       if (name != null) "name": name,
-      // if (categoryId != null) "categoryId": categoryId,
+      if (color != null) "color": color,
       if (amount != null) "amount": amount,
     };
   }
@@ -63,5 +68,7 @@ class Budget extends Equatable {
         uid,
         name,
         amount,
+        color,
+        amountSpent,
       ];
 }

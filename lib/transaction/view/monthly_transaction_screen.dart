@@ -21,7 +21,7 @@ class MonthlyTransactionContent extends StatefulWidget {
 }
 
 class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
-  String? selected;
+  String selected = '';
   List<MyTransaction> transactions = [];
   @override
   void initState() {
@@ -52,11 +52,14 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
         .getMonthlyTransactionSummary(yearMonth);
   }
 
-  //grouping data into its dates
-  Map<DateTime, List<MyTransaction>> groupDataByDate(dataList) {
-    Map<DateTime, List<MyTransaction>> groupedData = {};
+  //   formatDate(DateTime dateTime) {
+  //     return DateFormat('dd-MM-yyyy').format(dateTime);
+  //   }
+  // //grouping data into its dates
+  Map<String, List<MyTransaction>> groupDataByDate(dataList) {
+    Map<String, List<MyTransaction>> groupedData = {};
     for (var item in dataList) {
-      DateTime date = item.date;
+      String date =     formatDate(item.date);
       if (!groupedData.containsKey(date)) {
         groupedData[date] = [];
       }
@@ -101,7 +104,7 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
                 if (state.status == TransactionRangeStatus.success &&
                     state.success == 'loadedTransactionRange') {
                   //preselect the latest and load the data
-                  if (content.isNotEmpty) {
+                  if (selected.isEmpty) {
                     selected = content.last;
                   }
                   loadSelectedMonth(selected.toString());
@@ -112,17 +115,36 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
                       shrinkWrap: true,
                       itemCount: content.length,
                       itemBuilder: (_, index) {
+                        bool isSelected = selected == content[index];
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: OutlinedButton(
-                            onPressed: () {
-                              log(content[index]);
-                              selected = content[index];
-                              log("${selected}selected wewe");
-                              loadSelectedMonth(selected.toString());
-                            },
-                            child: Text(translateYYYY_MM(content[index])),
-                          ),
+                          child: isSelected
+                              ? FilledButton(
+                                  onPressed: () {
+                                    log(content[index]);
+                                    setState(() {
+                                      selected = content[index];
+                                    });
+                                    log("${selected}selected wewe");
+                                    loadSelectedMonth(selected.toString());
+                                  },
+                                  child: Text(
+                                    translateYYYY_MM(content[index]),
+                                  ),
+                                )
+                              : OutlinedButton(
+                                  onPressed: () {
+                                    log(content[index]);
+                                    setState(() {
+                                      selected = content[index];
+                                    });
+                                    log("${selected}selected wewe");
+                                    loadSelectedMonth(selected.toString());
+                                  },
+                                  child: Text(
+                                    translateYYYY_MM(content[index]),
+                                  ),
+                                ),
                         );
                       });
                 } else {
@@ -138,7 +160,7 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
           ),
           AppStyle.sizedBoxSpace,
           //todo graph (show percentage of each category spending) add inbnto the bloc builder also
-    // monthlyTransactionSummary
+          // monthlyTransactionSummary
           //todo total monthly budget
           BlocBuilder<MonthlyTransactionSummaryCubit,
               MonthlyTransactionSummaryState>(
@@ -146,96 +168,92 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
               if (state.status == MonthlyTransactionSummaryStatus.success &&
                   state.success == 'loadedMonthlyTransactionSummary') {
                 log('jk ' + state.monthlyTransactionSummary.toString());
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: AppStyle.paddingHorizontal,
-                    child: Column(
-                      children: [
-                        //todo summary here
-                        TransactionChart(data: state.monthlyTransactionSummary),
-                
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              l10n.totalMonthlyTransaction,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text(
-                              'RM${state.monthlyTransactionSummary.totalSpending?.toStringAsFixed(2)}',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                return Padding(
+                  padding: AppStyle.paddingHorizontal,
+                  child: Column(
+                    children: [
+                      //todo summary here
+                      TransactionChart(data: state.monthlyTransactionSummary),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            l10n.totalMonthlyTransaction,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          Text(
+                            'RM${state.monthlyTransactionSummary.totalSpending?.toStringAsFixed(2)}',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 );
               }
               return Center(child: Text(l10n.youDoNotHaveAnyTransaction));
             },
           ),
-    
+
           //vertical scrolling list for month's transaction
           // Expanded(
-          //   child: 
-            Padding(
-              padding: AppStyle.paddingHorizontal,
-              child: BlocBuilder<TransactionBloc, TransactionState>(
-                builder: (context, state) {
-                  if (state.status == TransactionStatus.success &&
-                      state.success == 'loadedData') {
-                    log('reloaddata');
-                    transactions = context.select(
-                        (TransactionBloc bloc) => bloc.state.transactionList);
-                    transactions.forEach((element) {
-                      log('fffm  ' + element.toString());
+          //   child:
+          BlocBuilder<TransactionBloc, TransactionState>(
+            builder: (context, state) {
+              if (state.status == TransactionStatus.success &&
+                  state.success == 'loadedData') {
+                log('reloaddata');
+                Map<String, List<MyTransaction>> groupedData;
+                transactions = context.select(
+                    (TransactionBloc bloc) => bloc.state.transactionList);
+                // transactions.forEach((element) {
+                //   log('fffm  ' + element.toString());
+                // });
+                groupedData = groupDataByDate(transactions);
+                groupedData.forEach((key, value) {
+                  log(groupedData.toString());
+                });
+
+                if (content.isEmpty) {
+                  //if empty return empty text
+                  return Center(child: Text(l10n.youDoNotHaveAnyTransaction));
+                }
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: groupedData.length,
+                    itemBuilder: (_, index) {
+                      String date = groupedData.keys.elementAt(index);
+                      List<MyTransaction> groupedTransactions =
+                          groupedData[date]!;
+                      return Column(
+                        children: [
+                          Text('$date, ${DateFormat('EEEE').format(DateFormat('dd-MM-yyyy').parse(date))}'),
+                          Column(
+                            children: groupedTransactions
+                                .map(
+                                  (item) => TransactionList(
+                                    onPressed: () {
+                                      //todo
+                                      log('sadsad');
+                                    },
+                                    data: item,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ],
+                      );
                     });
-                    Map<DateTime, List<MyTransaction>> groupedData =
-                        groupDataByDate(transactions);
-    
-                    if (content.isEmpty) {
-                      //if empty return empty text
-                      return Center(child: Text(l10n.youDoNotHaveAnyTransaction));
-                    }
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: groupedData.length,
-                        itemBuilder: (_, index) {
-                          DateTime date = groupedData.keys.elementAt(index);
-                          List<MyTransaction> groupedTransactions =
-                              groupedData[date]!;
-                          return Column(
-                            children: [
-                              Text(formatDate(date) +
-                                  ', ' +
-                                  DateFormat('EEEE').format(date).toString()),
-                              Column(
-                                children: groupedTransactions
-                                    .map(
-                                      (item) => TransactionList(
-                                        onPressed: () {
-                                          //todo
-                                          log('sadsad');
-                                        },
-                                        data: item,
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ],
-                          );
-                        });
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: 5,
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: 5,
+                  ),
+                );
+              }
+            },
+          ),
           // ),
         ],
       ),

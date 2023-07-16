@@ -44,3 +44,4 @@ export 'dialog/budget_dialog.dart';
 export 'list/category_list.dart';
 export 'list/budget_list.dart';
 export 'list/transaction_list.dart';
+export 'list/budget_list_view.dart';
