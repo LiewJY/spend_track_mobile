@@ -132,6 +132,8 @@
   "addingBudget": "Adding '{cardName}' to my budget",
   "remainingMonthlyBudget": "Remaining Monthly Budget",
   "setMyBudget": "Set my budget",
+  "deletingBudget": "Deleting {budgetName}",
+
 
 "@transactionPage": {},
   "totalMonthlyTransaction": "Total Monthly Transaction",

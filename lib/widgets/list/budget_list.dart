@@ -2,11 +2,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track/budget/bloc/budget_bloc.dart';
 import 'package:track/budget/cubit/available_budget_cubit.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/models/budget.dart';
 import 'package:track/repositories/models/category.dart';
 import 'package:track/widgets/widgets.dart';
+
+//for dialog
+bool isBudgetListDialogOpen = false;
+void toggleBudgetListDialog() {
+  isBudgetListDialogOpen = !isBudgetListDialogOpen;
+}
 
 class BudgetList extends StatelessWidget {
   const BudgetList({
@@ -23,8 +30,27 @@ class BudgetList extends StatelessWidget {
     //todo
   }
 
-  delete() {
+  delete(BuildContext context, Budget data) {
     log('delete budget ');
+        final l10n = context.l10n;
+    if (!isBudgetListDialogOpen) {
+      showDialog(
+          context: context,
+          builder: (_) {
+            return DeleteConfirmationDialog(
+                data: data,
+                description: l10n.deletingBudget(data.name!),
+                dialogTitle: l10n.delete,
+                action: () {
+                  context
+                      .read<BudgetBloc>().add(DeleteBudgetRequested(data: data));
+                  Navigator.of(context, rootNavigator: true).pop();
+                });
+          }).then((value) {
+        toggleBudgetListDialog();
+      });
+      toggleBudgetListDialog();
+    }
     //todo
   }
 
@@ -39,21 +65,6 @@ class BudgetList extends StatelessWidget {
           children: [
             Text(
                 '${l10n.monthlyBudget}: RM ${data.amount!.toStringAsFixed(2)}'),
-            // if (remainingBudget <= 0) ...[
-            //   Text(
-            //     '${l10n.remainingMonthlyBudget}: RM ${remainingBudget.toStringAsFixed(2)}',
-            //     style: TextStyle(
-            //       color: Theme.of(context).colorScheme.error,
-            //     ),
-            //   ),
-            // ] else ...[
-            //   Text(
-            //     '${l10n.remainingMonthlyBudget}: RM ${remainingBudget.toStringAsFixed(2)}',
-            //     style: TextStyle(
-            //       color: Colors.green.shade800,
-            //     ),
-            //   ),
-            // ]
           ],
         ),
         //todo make this into dropdown that allow delete and edit
@@ -78,7 +89,7 @@ class BudgetList extends StatelessWidget {
                 edit();
                 break;
               case 1:
-                delete();
+                delete(context, data);
                 break;
             }
           },

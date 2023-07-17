@@ -57,11 +57,11 @@ class _ManageBudgetScreenState extends State<ManageBudgetScreen> {
                     // if (isDialogOpen) {
                     //   Navigator.of(context, rootNavigator: true).pop();
                     // }
-                    // AppSnackBar.success(context, l10n.walletUpdateSuccess);
-                    // refresh();
+                    AppSnackBar.success(context, l10n.budgetUpdateSuccess);
+                    /// refresh();
                     break;
                   case 'deleted':
-                    // AppSnackBar.success(context, l10n.walletDeleteSuccess);
+                     AppSnackBar.success(context, l10n.budgetDeleteSuccess);
                     // refresh();
                     break;
                   case 'loadedData':
@@ -95,51 +95,15 @@ class BudgetContent extends StatefulWidget {
 }
 
 class _BudgetContentState extends State<BudgetContent> {
-  //String selectedYearMonth = '';
   List<Budget> budgets = [];
-  //String? selected;
 
   DateTime now = DateTime.now();
   @override
   void initState() {
-    //selectedYearMonth = '${now.year}_${8}';
     //initial call
     context.read<BudgetBloc>().add(DisplayBudgetRequested());
-
-    //context.read<TransactionRangeCubit>().getTransactionRange();
-
     super.initState();
   }
-
-  // translateYYYY_MM(String input) {
-  //   List<String> separated = input.split('_');
-  //   int month = int.parse(separated[1]);
-  //   int year = int.parse(separated[0]);
-
-  //   DateTime dateTime = DateTime(year, month);
-  //   String formattedDate = DateFormat('MMMM yyyy').format(dateTime);
-  //   return formattedDate;
-  // }
-
-  // loadSelectedMonth(String yearMonth) {
-  //   //todo
-  //   // context
-  //   //     .read<TransactionBloc>()
-  //   //     .add(DisplayTransactionRequested(yearMonth: yearMonth));
-  //   //todo add the summary
-  //   // context
-  //   //     .read<MonthlyTransactionSummaryCubit>()
-  //   //     .getMonthlyTransactionSummary(yearMonth);
-  // }
-
-  // refresh() {
-  //   //call load data function
-  //   context.read<BudgetBloc>().add(DisplayBudgetRequested(selectedYearMonth));
-  // }
-// //todo move to utils
-//   formatDate(DateTime dateTime) {
-//     return DateFormat('dd-MM-yyyy').format(dateTime);
-//   }
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +128,6 @@ class _BudgetContentState extends State<BudgetContent> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //todo total monthly budget
             Padding(
               padding: AppStyle.paddingHorizontal,
               child: BlocBuilder<BudgetBloc, BudgetState>(

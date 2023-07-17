@@ -15,6 +15,21 @@ class BudgetRepository {
 
   TransactionRepository transactionRepository = new TransactionRepository();
 
+  deleteBudget(Budget budget) async {
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+      await userRef
+          .doc(userID)
+          .collection('myBudgets')
+          .doc('budgetSummary')
+          .collection('budgets')
+          .doc(budget.uid)
+          .delete();
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
   Future<void> addToBudgets(Budget budget, documentId) async {
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
@@ -177,7 +192,4 @@ class BudgetRepository {
   //     throw e.toString();
   //   }
   // }
-
-
-
 }

@@ -9,15 +9,36 @@ part 'budget_event.dart';
 part 'budget_state.dart';
 
 class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
-    final BudgetRepository budgetRepository;
+  final BudgetRepository budgetRepository;
 
   BudgetBloc({required this.budgetRepository}) : super(BudgetState.initial()) {
     on<DisplayBudgetRequested>(_onDisplayBudgetRequested);
     // on<UpdateWalletRequested>(_onUpdateWalletRequested);
-    //  on<DeleteWalletRequested>(_onDeleteWaletRequested);
+    on<DeleteBudgetRequested>(_onDeleteBudgetRequested);
+  }
+  _onDeleteBudgetRequested(
+    DeleteBudgetRequested event,
+    Emitter emit,
+  )  {
+    if (state.status == BudgetStatus.loading) return;
+    emit(state.copyWith(status: BudgetStatus.loading));
+    try {
+      //todo
+      budgetRepository.deleteBudget(event.data);
+
+      emit(state.copyWith(
+        status: BudgetStatus.success,
+        success: 'deleted',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: BudgetStatus.failure,
+        error: e.toString(),
+      ));
+    }
   }
 
-   _onDisplayBudgetRequested(
+  _onDisplayBudgetRequested(
     DisplayBudgetRequested event,
     Emitter emit,
   ) async {
