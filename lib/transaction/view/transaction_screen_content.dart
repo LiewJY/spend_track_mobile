@@ -116,9 +116,9 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
                       
                     });
                     break;
-                  case 'updated':
-                    AppSnackBar.success(context, l10n.transactionUpdateSuccess);
-                    break;
+                  // case 'updated':
+                  //   AppSnackBar.success(context, l10n.transactionUpdateSuccess);
+                  //   break;
                 }
               }
               //todo for success range

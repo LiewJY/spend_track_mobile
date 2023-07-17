@@ -160,7 +160,7 @@ class _BudgetContentState extends State<BudgetContent> {
                   if (state.status == TransactionRangeStatus.success &&
                       state.success == 'loadedTransactionRange') {
                     //preselect the latest and load the data
-                    if (selectedYearMonth.isEmpty) {
+                    if (selectedYearMonth.isEmpty && content.isNotEmpty) {
                       selectedYearMonth = content.last;
                     }
                     loadSelectedMonth(selectedYearMonth.toString());
@@ -299,7 +299,7 @@ class _BudgetContentState extends State<BudgetContent> {
             Padding(
               padding: AppStyle.paddingHorizontal,
               child: Text(
-                l10n.budgetByCategory,
+                l10n.budgetVsSpendingByCategory,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),

@@ -15,29 +15,32 @@ class WalletDropDownField extends StatefulWidget {
   const WalletDropDownField({
     super.key,
     required this.onChanged,
+        //required this.onSaved,
+
     this.value,
   });
 
   final onChanged;
+   // final onSaved;
+
   final value;
 
   @override
   State<WalletDropDownField> createState() => _WalletDropDownFieldState();
 }
 
-List<DropdownMenuItem> get walletDropdownItems {
-  List<DropdownMenuItem> menuItems = [];
-  for (Wallet element in myWalltes!) {
-    menuItems.add(DropdownMenuItem(
-      value: element.toFirestore().toString(),
-      child: Text(element.customName.toString()),
-    ));
-  }
-  return menuItems;
-}
+// List<DropdownMenuItem> get walletDropdownItems {
+//   List<DropdownMenuItem> menuItems = [];
+//   for (Wallet element in myWalltes!) {
+//     menuItems.add(DropdownMenuItem(
+//       value: element.toFirestore().toString(),
+//       child: Text(element.customName.toString()),
+//     ));
+//   }
+//   return menuItems;
+// }
 
-//store category
-List<Wallet>? myWalltes;
+
 
 class _WalletDropDownFieldState extends State<WalletDropDownField> {
   @override
@@ -45,11 +48,41 @@ class _WalletDropDownFieldState extends State<WalletDropDownField> {
     super.initState();
      context.read<WalletBloc>().add(DisplayWalletRequested());
   }
+//store wallets
+List<Wallet>? myWallets;
+  Wallet? selectedValue;
+
+  List<DropdownMenuItem<Wallet>> get walletDropdownItems {
+    List<DropdownMenuItem<Wallet>> menuItems = [];
+    for (Wallet element in myWallets!) {
+      menuItems.add(DropdownMenuItem<Wallet>(
+        value: element,
+        child: Text(element.customName.toString()),
+      ));
+    }
+    return menuItems;
+  }
+
+  Wallet? selected(desiredUid) {
+    log(' df  ' + desiredUid.toString());
+    if (desiredUid != null) {
+      try {
+        return selectedValue = walletDropdownItems
+            .firstWhere(
+              (item) => item.value?.uid == desiredUid,
+            )
+            .value;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     //store data of card
-    myWalltes = context.select((WalletBloc bloc) => bloc.state.walletList);
+    myWallets = context.select((WalletBloc bloc) => bloc.state.walletList);
 
     final l10n = context.l10n;
     String? validator(value) {
@@ -61,12 +94,13 @@ class _WalletDropDownFieldState extends State<WalletDropDownField> {
     }
 
     return DropdownButtonFormField(
-      value: widget.value,
+      value: selected(widget.value),
       decoration: InputDecoration(
         labelText: l10n.selectWallet,
       ),
       items: walletDropdownItems,
       onChanged: widget.onChanged,
+      //onSaved: widget.onSaved,
       validator: validator,
     );
   }

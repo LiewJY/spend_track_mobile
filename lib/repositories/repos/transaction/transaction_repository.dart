@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:track/repositories/models/category.dart';
 import 'package:track/repositories/models/transaction.dart';
@@ -151,13 +152,40 @@ class TransactionRepository {
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
       String yearMonth = '${data.date!.year}_${data.date!.month}';
-      //todo
       await userRef
           .doc(userID)
           .collection('myTransactions')
           .doc(yearMonth)
           .collection('monthlyTransactions')
-          .doc(data.uid).delete();
+          .doc(data.uid)
+          .delete();
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<void> updateTransaction(
+      {required MyTransaction data,
+      required String uid,
+      required DateTime originalYearMonth}) async {
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+      //String yearMonth = '${data.date!.year}_${data.date!.month}';
+      String originalYM =
+          '${originalYearMonth.year}_${originalYearMonth.month}';
+
+      await userRef
+          .doc(userID)
+          .collection('myTransactions')
+          .doc(originalYM)
+          .collection('monthlyTransactions')
+          .doc(uid)
+          .update(data.toFirestore());
+
+      log('repo to iestore str');
+      log(' dd' + data.toFirestore().toString());
+
+      //.doc(data.uid)..update(data);
     } catch (e) {
       throw e.toString();
     }

@@ -44,7 +44,7 @@ class MyTransaction extends Equatable {
     return MyTransaction(
       uid: snapshot.id,
       name: data?['name'],
-      amount: data?['amount'],
+      amount: double.tryParse(data!['amount'].toString()),
       date: data?['date'].toDate(),
       note: data?['note'],
       categoryId: data?['categoryId'],

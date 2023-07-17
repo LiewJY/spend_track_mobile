@@ -30,3 +30,15 @@ class DeleteTransactionRequested extends TransactionEvent {
   List<Object> get props => [data];
 }
 
+class UpdateTransactionRequested extends TransactionEvent {
+  const UpdateTransactionRequested({
+    required this.data,
+    required this.uid,
+    required this.originalYearMonth,
+  });
+  final MyTransaction data;
+  final String uid;
+  final DateTime originalYearMonth;
+  @override
+  List<Object> get props => [data, uid];
+}

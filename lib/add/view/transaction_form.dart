@@ -16,17 +16,25 @@ import 'package:track/repositories/models/wallet.dart';
 import 'package:track/repositories/repos/category/category_repository.dart';
 import 'package:track/repositories/repos/wallet/wallet_repository.dart';
 import 'package:track/repositories/repositories.dart';
+import 'package:track/transaction/bloc/transaction_bloc.dart';
 import 'package:track/widgets/form_field/amount_field.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
 
-
-
 class TransactionForm extends StatefulWidget {
-  const TransactionForm({super.key});
+  TransactionForm({super.key, this.data, this.isEdit});
+
+  var isEdit;
+  //todo need to fix this for edit
+  final MyTransaction? data;
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
+}
+
+//todo put to util
+formatDate(DateTime dateTime) {
+  return DateFormat('dd-MM-yyyy').format(dateTime);
 }
 
 class _TransactionFormState extends State<TransactionForm> {
@@ -34,8 +42,12 @@ class _TransactionFormState extends State<TransactionForm> {
 
   String isWallet = 'wallet';
   String? _cardSelected;
-  String? _walletSelected;
-  String? _categorySelected;
+  Wallet? _walletSelected;
+  String? _walletSelectedId;
+  DateTime? _originalYearMonth; //this is used for edit only
+
+  SpendingCategory? _categorySelected;
+  String? _categorySelectedId;
   bool _isCashback = true;
   DateTime? transactionDate = DateTime.now();
   // final TextEditingController _dateInputController;
@@ -45,14 +57,34 @@ class _TransactionFormState extends State<TransactionForm> {
   TextEditingController _amountController = TextEditingController();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+        _dateInputController.text = formatDate(DateTime.now());
+    if (widget.isEdit == true) {
+      log(widget.data.toString());
+      _titleController.text = widget.data!.name.toString();
+      _amountController.text = widget.data!.amount!.toStringAsFixed(2);
+      _dateInputController.text = formatDate(widget.data!.date!);
+      transactionDate = widget.data!.date!;
+      _noteController.text = widget.data!.note!;
+      _categorySelectedId = widget.data!.categoryId.toString();
+      isWallet = widget.data!.isWallet!;
+      _walletSelectedId = widget.data!.fundSourceCustomId.toString();
+      _originalYearMonth = widget.data!.date!;
+
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    formatDate(DateTime dateTime) {
-      return DateFormat('dd-MM-yyyy').format(dateTime);
-    }
+    // if (widget.isEdit == true) {
 
-    _dateInputController.text = formatDate(DateTime.now());
+    // }
+
     return SingleChildScrollView(
       child: Form(
         key: transactionForm,
@@ -76,7 +108,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     initialDate: DateTime.now(),
                     firstDate: DateTime(2021),
                     lastDate: DateTime.now(),
-                    currentDate: DateTime.now());
+                    currentDate: transactionDate);
                 if (pick != null) {
                   _dateInputController.text = formatDate(pick!);
                   transactionDate = pick;
@@ -86,12 +118,14 @@ class _TransactionFormState extends State<TransactionForm> {
             AppStyle.sizedBoxSpace,
             NoteField(controller: _noteController),
             AppStyle.sizedBoxSpace,
-            CategoryDropDownField(onChanged: (value) {
-              log(value);
-              setState(() {
-                _categorySelected = value;
-              });
-            }),
+            CategoryDropDownField(
+                value: _categorySelectedId,
+                onChanged: (value) {
+                  log(value.toString());
+                  setState(() {
+                    _categorySelected = value;
+                  });
+                }),
             AppStyle.sizedBoxSpace,
             Container(
               width: double.infinity,
@@ -118,16 +152,28 @@ class _TransactionFormState extends State<TransactionForm> {
             ),
             AppStyle.sizedBoxSpace,
             if (isWallet == 'wallet') ...[
-              WalletDropDownField(onChanged: (value) {
-                log(value);
-                setState(() {
-                  _walletSelected = value;
-                });
-              }),
+              WalletDropDownField(
+                  value: _walletSelectedId,
+                  // onSaved: (value) => setState((
+
+                  // ) => print(value.toString())),
+
+                  //  (value) {
+                  //   log('ons ' + value.toString());
+                  //   setState(() {
+                  //     _walletSelected = value;
+                  //   });
+                  // },
+                  onChanged: (value) {
+                    log(value.toString());
+                    setState(() {
+                      _walletSelected = value;
+                    });
+                  }),
             ],
             if (isWallet == 'card') ...[
               CardDropDownField(onChanged: (value) {
-                log(value);
+                log(value.toString());
                 setState(() {
                   _cardSelected = value;
                 });
@@ -147,9 +193,12 @@ class _TransactionFormState extends State<TransactionForm> {
             FilledButton(
               style: AppStyle.fullWidthButton,
               onPressed: () {
-                addTransaction();
+                action();
+                //addTransaction();
               },
-              child: Text(l10n.addTransaction),
+              child: Text(widget.isEdit == true
+                  ? l10n.saveTransaction
+                  : l10n.addTransaction),
             ),
             OutlinedButton(
               style: AppStyle.fullWidthButton,
@@ -169,46 +218,57 @@ class _TransactionFormState extends State<TransactionForm> {
   }
 
   //action
-  addTransaction() {
+  action() {
+    var storeTransaction;
+
+    if (isWallet == 'wallet') {
+      storeTransaction = MyTransaction(
+        //uid: widget.isEdit == true ? widget.data?.uid : null,
+        name: _titleController.text,
+        amount: stringToDouble(_amountController.text),
+        date: transactionDate,
+        note: _noteController.text,
+        categoryId: _categorySelected?.uid,
+        category: _categorySelected?.name,
+        isWallet: isWallet,
+        fundSourceCustomId: _walletSelected?.uid,
+        fundSourceCustom: _walletSelected?.customName,
+      );
+
+      log('storeTransaction ' + storeTransaction.toString());
+    } else if (isWallet == 'card') {
+      CreditCard card = CreditCard.fromJson(_cardSelected);
+      storeTransaction = MyTransaction(
+        // uid: widget.isEdit == true ? widget.data?.uid : null,
+        name: _titleController.text,
+        amount: stringToDouble(_amountController.text),
+        date: transactionDate,
+        note: _noteController.text,
+        categoryId: _categorySelected?.uid,
+        category: _categorySelected?.name,
+        isWallet: isWallet,
+        // fundSourceId:
+        // fundSource:
+        fundSourceCustomId: card.uid,
+        fundSourceCustom: card.customName,
+        isCashbackEligible: _isCashback,
+      );
+    }
+
     if (transactionForm.currentState!.validate()) {
       log('11111' + transactionDate.toString());
-      SpendingCategory category = SpendingCategory.fromJson(_categorySelected);
-      log(category.toString());
-      var storeTransaction;
 
-      if (isWallet == 'wallet') {
-        Wallet wallet = Wallet.fromJson(_walletSelected);
-        storeTransaction = MyTransaction(
-          name: _titleController.text,
-          amount: stringToDouble(_amountController.text),
-          date: transactionDate,
-          note: _noteController.text,
-          categoryId: category.uid,
-          category: category.name,
-          isWallet: isWallet,
-          // fundSourceId:
-          // fundSource:
-          fundSourceCustomId: wallet.uid,
-          fundSourceCustom: wallet.customName,
-        );
-      } else if (isWallet == 'card') {
-        CreditCard card = CreditCard.fromJson(_cardSelected);
-        storeTransaction = MyTransaction(
-          name: _titleController.text,
-          amount: stringToDouble(_amountController.text),
-          date: transactionDate,
-          note: _noteController.text,
-          categoryId: category.uid,
-          category: category.name,
-          isWallet: isWallet,
-          // fundSourceId:
-          // fundSource:
-          fundSourceCustomId: card.uid,
-          fundSourceCustom: card.customName,
-          isCashbackEligible: _isCashback,
-        );
+      if (widget.isEdit == true) {
+        //todo
+        log('storeTransaction uid' + widget.data!.uid.toString());
+
+        log('storeTransaction final' + storeTransaction.toString());
+        log('storeTransaction final' + storeTransaction.toString());
+        context.read<TransactionBloc>().add(UpdateTransactionRequested(
+            data: storeTransaction, uid: widget.data!.uid.toString(), originalYearMonth: _originalYearMonth!));
+      } else {
+        context.read<AddTransactionCubit>().addTransaction(storeTransaction);
       }
-      context.read<AddTransactionCubit>().addTransaction(storeTransaction);
     }
   }
 

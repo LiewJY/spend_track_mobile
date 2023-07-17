@@ -21,11 +21,31 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<DisplayTransactionRequested>(_onDisplayTransactionRequested);
     // on<DisplayTransactionSummaryRequested>(_onDisplayTransactionSummaryRequested);
 
-    // on<UpdateWalletRequested>(_onUpdateWalletRequested);
+    on<UpdateTransactionRequested>(_onUpdateTransactionRequested);
     on<DeleteTransactionRequested>(_onDeleteTransactionRequested);
   }
 
   List<MyTransaction> transactionList = [];
+
+  _onUpdateTransactionRequested(
+    UpdateTransactionRequested event,
+    Emitter emit,
+  ) async {
+    if (state.status == TransactionStatus.loading) return;
+    emit(state.copyWith(status: TransactionStatus.loading));
+    try {
+      await transactionRepository.updateTransaction(data: event.data, uid: event.uid, originalYearMonth: event.originalYearMonth);
+      emit(state.copyWith(
+        status: TransactionStatus.success,
+        success: 'updated',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: TransactionStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
 
   _onDeleteTransactionRequested(
     DeleteTransactionRequested event,
@@ -60,7 +80,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       transactionList =
           await transactionRepository.getTransactions(event.yearMonth);
 
-      log(' ccccccc ccc' + transactionList.length.toString());
+      // log(' ccccccc ccc' + transactionList.length.toString());
 
       // List<MyTransaction> budgetList = await budgetRepository.getMyBudgets();
       emit(state.copyWith(

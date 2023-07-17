@@ -125,6 +125,7 @@
   "totalMonthlyBudget": "Total Monthly Budget",
   "monthlyBudget": "Monthly Budget",
   "budgetByCategory": "Budget By Category",
+  "budgetVsSpendingByCategory": "Budget vs Spending By Category",
   "budgetCategoryAvailable": "Budget Category Available",
   "budgetAmount": "Budget Amount",
   "addToMyBudget": "Add To My Budget",
@@ -141,6 +142,8 @@
   "monthTransaction": "Month Transaction", 
   "dailyTransaction": "Daily Transaction",
   "deletingTransaction": "Deleting {transactionName}",
+  "editTransaction": "Edit Transaction",
+  "saveTransaction": "Save Transaction",
 
 "@noDataText": {},
   "youDoNotHaveAnyCard": "You do not have any card",

@@ -20,6 +20,9 @@ class BudgetExpensesChart extends StatelessWidget {
 
     calculatePercentage(budget, actualSpending) {
       if (budget == 0) {
+        if (actualSpending == 0) {
+          return 0;
+        }
         return 110;
       } else {
         return ((actualSpending / budget) * 100);

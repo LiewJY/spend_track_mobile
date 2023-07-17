@@ -9,6 +9,7 @@ import 'package:track/repositories/models/budget.dart';
 import 'package:track/repositories/models/category.dart';
 import 'package:track/repositories/models/transaction.dart';
 import 'package:track/transaction/transaction.dart';
+import 'package:track/transaction/view/edit_transaction_screen.dart';
 import 'package:track/widgets/widgets.dart';
 
 //for dialog
@@ -27,25 +28,30 @@ class TransactionList extends StatelessWidget {
     log('edit transaction ');
     final l10n = context.l10n;
     //todo
-    if (!isDialogOpen) {
-      showDialog(
-          context: context,
-          builder: (_) {
-            return DeleteConfirmationDialog(
-                data: data,
-                description: l10n.deletingTransaction(data.name!),
-                dialogTitle: l10n.delete,
-                action: () {
-                  context
-                      .read<TransactionBloc>()
-                      .add(DeleteTransactionRequested(data: data));
-                  Navigator.of(context, rootNavigator: true).pop();
-                });
-          }).then((value) {
-        toggleDialog();
-      });
-      toggleDialog();
-    }
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => EditTransactionScreen(
+              data: data,
+            )));
+
+    // if (!isDialogOpen) {
+    //   showDialog(
+    //       context: context,
+    //       builder: (_) {
+    //         return DeleteConfirmationDialog(
+    //             data: data,
+    //             description: l10n.deletingTransaction(data.name!),
+    //             dialogTitle: l10n.delete,
+    //             action: () {
+    //               context
+    //                   .read<TransactionBloc>()
+    //                   .add(DeleteTransactionRequested(data: data));
+    //               Navigator.of(context, rootNavigator: true).pop();
+    //             });
+    //       }).then((value) {
+    //     toggleDialog();
+    //   });
+    //   toggleDialog();
+    // }
   }
 
   delete(BuildContext context, MyTransaction data) {

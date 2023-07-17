@@ -17,16 +17,6 @@ class BudgetListView extends StatelessWidget {
   // final onPressed;
   final Budget data;
 
-  //actions
-  // edit() {
-  //   log('edit budget ');
-  //   //todo
-  // }
-
-  // delete() {
-  //   log('delete budget ');
-  //   //todo
-  // }
 
   // @override
   Widget build(BuildContext context) {
@@ -39,7 +29,7 @@ class BudgetListView extends StatelessWidget {
           children: [
             Text(
                 '${l10n.monthlyBudget}: RM ${data.amount!.toStringAsFixed(2)}'),
-            if (remainingBudget <= 0) ...[
+            if (remainingBudget < 0) ...[
               Text(
                 '${l10n.remainingMonthlyBudget}: RM ${remainingBudget.toStringAsFixed(2)}',
                 style: TextStyle(

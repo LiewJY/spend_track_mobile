@@ -49,10 +49,10 @@ class SpendingByCategory extends Equatable {
   final String? color;
 
   const SpendingByCategory({
-    required this.id,
-    required this.amount,
-    required this.categoryName,
-    required this.color,
+     this.id,
+     this.amount,
+     this.categoryName,
+     this.color,
   });
 
   @override

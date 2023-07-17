@@ -28,7 +28,7 @@ class TransactionChart extends StatelessWidget {
             ),
         series: <CircularSeries>[
           DoughnutSeries<SpendingByCategory, String>(
-            // radius: '80%',
+             radius: '75%',
             innerRadius: '75%',
             dataSource: chartData,
             pointColorMapper: (SpendingByCategory data, _) =>
@@ -41,9 +41,7 @@ class TransactionChart extends StatelessWidget {
               isVisible: true,
               labelPosition: ChartDataLabelPosition.outside,
               builder: (data, point, series, pointIndex, seriesIndex) {
-                return Container(
-                  child: Text('${calculatePercentage(data.amount)}%'),
-                );
+                return Text('${calculatePercentage(data.amount)}%');
               },
             ),
           )

@@ -46,22 +46,22 @@ class Budget extends Equatable {
     };
   }
 
-  factory Budget.fromJson(dynamic jsonString) {
-    final regex = RegExp(r'(\w+)\s*:\s*([\w\s]+)');
-    final matches = regex.allMatches(jsonString);
+  // factory Budget.fromJson(dynamic jsonString) {
+  //   final regex = RegExp(r'(\w+)\s*:\s*([\w\s]+)');
+  //   final matches = regex.allMatches(jsonString);
 
-    final jsonMap = <String, String>{};
-    for (final match in matches) {
-      final key = match.group(1);
-      final value = match.group(2);
-      jsonMap[key!] = value!;
-    }
-    return Budget(
-      uid: jsonMap['uid'].toString(),
-      name: jsonMap['name'].toString(),
-      //  description: json['description'],
-    );
-  }
+  //   final jsonMap = <String, String>{};
+  //   for (final match in matches) {
+  //     final key = match.group(1);
+  //     final value = match.group(2);
+  //     jsonMap[key!] = value!;
+  //   }
+  //   return Budget(
+  //     uid: jsonMap['uid'].toString(),
+  //     name: jsonMap['name'].toString(),
+  //     //  description: json['description'],
+  //   );
+  // }
 
   @override
   List<Object?> get props => [

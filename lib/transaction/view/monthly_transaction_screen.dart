@@ -104,8 +104,8 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
                 if (state.status == TransactionRangeStatus.success &&
                     state.success == 'loadedTransactionRange') {
                   //preselect the latest and load the data
-                  if (selected.isEmpty) {
-                    selected = content.last!;
+                  if (selected.isEmpty && content.isNotEmpty) {
+                    selected = content.last;
                   }
                   loadSelectedMonth(selected.toString());
                   log("${selected}selected");
