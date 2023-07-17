@@ -22,25 +22,42 @@ class CardDropDownField extends StatefulWidget {
   State<CardDropDownField> createState() => _CardDropDownFieldState();
 }
 
-List<DropdownMenuItem> get cardDropdownItems {
-  List<DropdownMenuItem> menuItems = [];
-  for (CreditCard element in myCards!) {
-    menuItems.add(DropdownMenuItem(
-      value: element.toFirestore().toString(),
-      child: Text(element.customName.toString()),
-    ));
-  }
-  return menuItems;
-}
-
-//store category
-List<CreditCard>? myCards;
-
 class _CardDropDownFieldState extends State<CardDropDownField> {
   @override
   void initState() {
     super.initState();
     context.read<CardBloc>().add(DisplayCardRequested());
+  }
+
+//store credit card
+  List<CreditCard>? myCards;
+  CreditCard? selectedValue;
+
+  List<DropdownMenuItem<CreditCard>> get cardDropdownItems {
+    List<DropdownMenuItem<CreditCard>> menuItems = [];
+    for (CreditCard element in myCards!) {
+      menuItems.add(DropdownMenuItem(
+        value: element,
+        child: Text(element.customName.toString()),
+      ));
+    }
+    return menuItems;
+  }
+
+  CreditCard? selected(desiredUid) {
+    log(' df  ' + desiredUid.toString());
+    if (desiredUid != null) {
+      try {
+        return selectedValue = cardDropdownItems
+            .firstWhere(
+              (item) => item.value?.uid == desiredUid,
+            )
+            .value;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
   }
 
   @override
@@ -58,7 +75,7 @@ class _CardDropDownFieldState extends State<CardDropDownField> {
     }
 
     return DropdownButtonFormField(
-      value: widget.value,
+      value: selected(widget.value),
       decoration: InputDecoration(
         labelText: l10n.selectCard,
       ),

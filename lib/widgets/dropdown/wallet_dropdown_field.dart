@@ -10,18 +10,17 @@ import 'package:track/repositories/models/creditCard.dart';
 import 'package:track/repositories/models/wallet.dart';
 import 'package:track/repositories/repositories.dart';
 
-
 class WalletDropDownField extends StatefulWidget {
   const WalletDropDownField({
     super.key,
     required this.onChanged,
-        //required this.onSaved,
+    //required this.onSaved,
 
     this.value,
   });
 
   final onChanged;
-   // final onSaved;
+  // final onSaved;
 
   final value;
 
@@ -40,16 +39,15 @@ class WalletDropDownField extends StatefulWidget {
 //   return menuItems;
 // }
 
-
-
 class _WalletDropDownFieldState extends State<WalletDropDownField> {
   @override
   void initState() {
     super.initState();
-     context.read<WalletBloc>().add(DisplayWalletRequested());
+    context.read<WalletBloc>().add(DisplayWalletRequested());
   }
+
 //store wallets
-List<Wallet>? myWallets;
+  List<Wallet>? myWallets;
   Wallet? selectedValue;
 
   List<DropdownMenuItem<Wallet>> get walletDropdownItems {
