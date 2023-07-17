@@ -8,24 +8,67 @@ import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/models/budget.dart';
 import 'package:track/repositories/models/category.dart';
 import 'package:track/repositories/models/transaction.dart';
+import 'package:track/transaction/transaction.dart';
 import 'package:track/widgets/widgets.dart';
 
-class TransactionList extends StatelessWidget {
-  const TransactionList(
-      {super.key, required this.onPressed, required this.data});
+//for dialog
+bool isDialogOpen = false;
+void toggleDialog() {
+  isDialogOpen = !isDialogOpen;
+}
 
-  final onPressed;
+class TransactionList extends StatelessWidget {
+  const TransactionList({super.key, required this.data});
+
   final MyTransaction data;
 
   //actions
-  edit() {
+  edit(BuildContext context, MyTransaction data) {
     log('edit transaction ');
+    final l10n = context.l10n;
     //todo
+    if (!isDialogOpen) {
+      showDialog(
+          context: context,
+          builder: (_) {
+            return DeleteConfirmationDialog(
+                data: data,
+                description: l10n.deletingTransaction(data.name!),
+                dialogTitle: l10n.delete,
+                action: () {
+                  context
+                      .read<TransactionBloc>()
+                      .add(DeleteTransactionRequested(data: data));
+                  Navigator.of(context, rootNavigator: true).pop();
+                });
+          }).then((value) {
+        toggleDialog();
+      });
+      toggleDialog();
+    }
   }
 
-  delete() {
-    log('delete transaction ');
-    //todo
+  delete(BuildContext context, MyTransaction data) {
+    final l10n = context.l10n;
+    if (!isDialogOpen) {
+      showDialog(
+          context: context,
+          builder: (_) {
+            return DeleteConfirmationDialog(
+                data: data,
+                description: l10n.deletingTransaction(data.name!),
+                dialogTitle: l10n.delete,
+                action: () {
+                  context
+                      .read<TransactionBloc>()
+                      .add(DeleteTransactionRequested(data: data));
+                  Navigator.of(context, rootNavigator: true).pop();
+                });
+          }).then((value) {
+        toggleDialog();
+      });
+      toggleDialog();
+    }
   }
 
   @override
@@ -63,10 +106,10 @@ class TransactionList extends StatelessWidget {
           onSelected: (value) {
             switch (value) {
               case 0:
-                edit();
+                edit(context, data);
                 break;
               case 1:
-                delete();
+                delete(context, data);
                 break;
             }
           },

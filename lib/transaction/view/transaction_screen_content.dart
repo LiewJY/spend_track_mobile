@@ -61,6 +61,24 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
       }
     }
 
+    switchTitle() {
+      switch (selectedView) {
+        case 'daily':
+          log('daily');
+          return l10n.dailyTransaction;
+        case 'monthly':
+          log('monthly');
+
+          return l10n.monthTransaction;
+        case 'yearly':
+          log('yearly');
+
+          return l10n.yearlyTransaction;
+        default:
+          return l10n.monthTransaction;
+      }
+    }
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -81,6 +99,31 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
       ],
       child: MultiBlocListener(
         listeners: [
+          BlocListener<TransactionBloc, TransactionState>(
+            listener: (context, state) {
+              if (state.status == TransactionStatus.failure) {
+                switch (state.error) {
+                  case 'cannotRetrieveData':
+                    AppSnackBar.error(context, l10n.youDoNotHaveAnyTransaction);
+                    break;
+                }
+              }
+              if (state.status == TransactionStatus.success) {
+                switch (state.success) {
+                  case 'deleted':
+                    AppSnackBar.success(context, l10n.transactionDeleteSuccess);
+                    setState(() {
+                      
+                    });
+                    break;
+                  case 'updated':
+                    AppSnackBar.success(context, l10n.transactionUpdateSuccess);
+                    break;
+                }
+              }
+              //todo for success range
+            },
+          ),
           BlocListener<TransactionRangeCubit, TransactionRangeState>(
             listener: (context, state) {
               if (state.status == TransactionRangeStatus.failure) {
@@ -109,7 +152,7 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
         ],
         child: Scaffold(
             appBar: AppBar(
-              title: Text(l10n.transaction),
+              title: Text(switchTitle()),
               actions: [
                 PopupMenuButton(
                   icon: Icon(Icons.filter_list),

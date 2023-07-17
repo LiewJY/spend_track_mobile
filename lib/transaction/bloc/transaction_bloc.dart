@@ -22,10 +22,33 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     // on<DisplayTransactionSummaryRequested>(_onDisplayTransactionSummaryRequested);
 
     // on<UpdateWalletRequested>(_onUpdateWalletRequested);
-    //  on<DeleteWalletRequested>(_onDeleteWaletRequested);
+    on<DeleteTransactionRequested>(_onDeleteTransactionRequested);
   }
 
   List<MyTransaction> transactionList = [];
+
+  _onDeleteTransactionRequested(
+    DeleteTransactionRequested event,
+    Emitter emit,
+  ) async {
+    if (state.status == TransactionStatus.loading) return;
+    emit(state.copyWith(status: TransactionStatus.loading));
+    transactionList.clear();
+    try {
+      transactionRepository.deleteTransaction(data: event.data);
+
+      emit(state.copyWith(
+        status: TransactionStatus.success,
+        success: 'deleted',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: TransactionStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
+
   _onDisplayTransactionRequested(
     DisplayTransactionRequested event,
     Emitter emit,

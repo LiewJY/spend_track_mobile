@@ -146,4 +146,50 @@ class TransactionRepository {
       throw 'cannotRetrieveData';
     }
   }
+
+  Future<void> deleteTransaction({required MyTransaction data}) async {
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+      String yearMonth = '${data.date!.year}_${data.date!.month}';
+      //todo
+      await userRef
+          .doc(userID)
+          .collection('myTransactions')
+          .doc(yearMonth)
+          .collection('monthlyTransactions')
+          .doc(data.uid).delete();
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+//todo
+  Future<List<MyTransaction>> getTransactionsByDate(DateTime date) async {
+    transactions.clear();
+    try {
+      String userID = FirebaseAuth.instance.currentUser!.uid;
+      await userRef
+          .doc(userID)
+          .collection('myTransactions')
+          //todo
+          .doc(date.toString())
+          .collection('monthlyTransactions')
+          .withConverter(
+              fromFirestore: MyTransaction.fromFirestore,
+              toFirestore: (MyTransaction myTransaction, _) =>
+                  myTransaction.toFirestore())
+          // .where('date')
+          .orderBy('date', descending: true)
+          .get()
+          .then((querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          transactions.add(docSnapshot.data());
+        }
+      });
+      return transactions;
+    } catch (e) {
+      log(e.toString());
+      throw 'cannotRetrieveData';
+    }
+  }
 }

@@ -59,7 +59,7 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
   Map<String, List<MyTransaction>> groupDataByDate(dataList) {
     Map<String, List<MyTransaction>> groupedData = {};
     for (var item in dataList) {
-      String date =     formatDate(item.date);
+      String date = formatDate(item.date);
       if (!groupedData.containsKey(date)) {
         groupedData[date] = [];
       }
@@ -105,7 +105,7 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
                     state.success == 'loadedTransactionRange') {
                   //preselect the latest and load the data
                   if (selected.isEmpty) {
-                    selected = content.last;
+                    selected = content.last!;
                   }
                   loadSelectedMonth(selected.toString());
                   log("${selected}selected");
@@ -228,15 +228,12 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
                           groupedData[date]!;
                       return Column(
                         children: [
-                          Text('$date, ${DateFormat('EEEE').format(DateFormat('dd-MM-yyyy').parse(date))}'),
+                          Text(
+                              '$date, ${DateFormat('EEEE').format(DateFormat('dd-MM-yyyy').parse(date))}'),
                           Column(
                             children: groupedTransactions
                                 .map(
                                   (item) => TransactionList(
-                                    onPressed: () {
-                                      //todo
-                                      log('sadsad');
-                                    },
                                     data: item,
                                   ),
                                 )

@@ -100,6 +100,7 @@ class MyTransaction extends Equatable {
         uid,
         name,
         amount,
+        date,
         note,
         categoryId,
         category,

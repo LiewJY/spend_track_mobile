@@ -20,3 +20,13 @@ class DisplayTransactionRequested extends TransactionEvent {
   @override
   List<Object> get props => [yearMonth];
 }
+
+class DeleteTransactionRequested extends TransactionEvent {
+  const DeleteTransactionRequested({
+    required this.data,
+  });
+  final MyTransaction data;
+  @override
+  List<Object> get props => [data];
+}
+
