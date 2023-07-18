@@ -91,10 +91,12 @@ class TransactionList extends StatelessWidget {
           children: [
             Text('RM ${data.amount!.toStringAsFixed(2)}'),
             Text('${l10n.category}: ${data.category}'),
-            //add note field here
+            Text('${l10n.fundSource}: ${data.fundSourceCustom}'),
+            if( data.note!.isNotEmpty) ... [
+              Text('${l10n.note}: ${data.note}')
+            ]
           ],
         ),
-        //todo implement
         trailing: PopupMenuButton(
           icon: Icon(Icons.more_vert_rounded),
           itemBuilder: (context) {

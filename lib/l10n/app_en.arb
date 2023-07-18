@@ -145,11 +145,12 @@
   "yearlyView": "Yearly View",
   "dailyView": "Daily View",
   "yearlyTransaction": "Yearly Transaction",
-  "monthTransaction": "Month Transaction", 
+  "monthlyTransaction": "Monthly Transaction", 
   "dailyTransaction": "Daily Transaction",
   "deletingTransaction": "Deleting {transactionName}",
   "editTransaction": "Edit Transaction",
   "saveTransaction": "Save Transaction",
+  "fundSource": "Fund Source",
 
 "@noDataText": {},
   "youDoNotHaveAnyCard": "You do not have any card",

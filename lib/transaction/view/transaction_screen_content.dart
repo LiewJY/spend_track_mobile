@@ -69,13 +69,13 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
         case 'monthly':
           log('monthly');
 
-          return l10n.monthTransaction;
+          return l10n.monthlyTransaction;
         case 'yearly':
           log('yearly');
 
           return l10n.yearlyTransaction;
         default:
-          return l10n.monthTransaction;
+          return l10n.monthlyTransaction;
       }
     }
 
