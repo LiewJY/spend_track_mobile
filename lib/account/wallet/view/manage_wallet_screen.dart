@@ -146,7 +146,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                 ],
                                                 child: EditMyWalletDialog(
                                                   data: wallets[index],
-                                                  dialogTitle: l10n.editCard,
+                                                  dialogTitle: l10n.editWallet,
                                                 ),
                                               ),
                                             );

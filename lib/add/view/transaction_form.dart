@@ -207,13 +207,14 @@ class _TransactionFormState extends State<TransactionForm> {
                   ? l10n.saveTransaction
                   : l10n.addTransaction),
             ),
-            OutlinedButton(
-              style: AppStyle.fullWidthButton,
-              onPressed: () {
-                //clear();
-              },
-              child: Text(l10n.clear),
-            ),
+            if (widget.isEdit != true)
+              OutlinedButton(
+                style: AppStyle.fullWidthButton,
+                onPressed: () {
+                  //clear();
+                },
+                child: Text(l10n.clear),
+              ),
           ],
         ),
       ),
