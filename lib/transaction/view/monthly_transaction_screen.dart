@@ -221,6 +221,7 @@ class _MonthlyTransactionContentState extends State<MonthlyTransactionContent> {
                 }
                 return ListView.builder(
                     shrinkWrap: true,
+                    primary: false,
                     itemCount: groupedData.length,
                     itemBuilder: (_, index) {
                       String date = groupedData.keys.elementAt(index);

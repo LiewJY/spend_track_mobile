@@ -85,16 +85,17 @@ class TransactionList extends StatelessWidget {
     }
 
     return ListTile(
-        title: Text(data.name!),
+        title: Text(
+          data.name!,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('RM ${data.amount!.toStringAsFixed(2)}'),
             Text('${l10n.category}: ${data.category}'),
             Text('${l10n.fundSource}: ${data.fundSourceCustom}'),
-            if( data.note!.isNotEmpty) ... [
-              Text('${l10n.note}: ${data.note}')
-            ]
+            if (data.note!.isNotEmpty) ...[Text('${l10n.note}: ${data.note}')]
           ],
         ),
         trailing: PopupMenuButton(

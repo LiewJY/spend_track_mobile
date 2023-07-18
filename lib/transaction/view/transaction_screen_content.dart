@@ -11,6 +11,7 @@ import 'package:track/repositories/models/transactionSummary.dart';
 import 'package:track/repositories/repos/category/category_repository.dart';
 import 'package:track/repositories/repos/transaction/transaction_repository.dart';
 import 'package:track/transaction/bloc/transaction_bloc.dart';
+import 'package:track/transaction/cubit/daily_transaction_cubit.dart';
 import 'package:track/transaction/cubit/monthly_transaction_summary_cubit.dart';
 import 'package:track/transaction/transaction.dart';
 import 'package:track/widgets/widgets.dart';
@@ -35,7 +36,7 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
     super.initState();
   }
 
-  String selectedView = 'monthly';
+  String selectedView = 'daily';
 
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -92,6 +93,10 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
           create: (context) =>
               MonthlyTransactionSummaryCubit(transactionRepository),
         ),
+        //for daily
+        BlocProvider(
+          create: (context) => DailyTransactionCubit(transactionRepository),
+        ),
         // BlocProvider(
         //   create: (context) =>
         //       CategoryBloc(categoryRepository: categoryRepository),
@@ -112,9 +117,7 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
                 switch (state.success) {
                   case 'deleted':
                     AppSnackBar.success(context, l10n.transactionDeleteSuccess);
-                    setState(() {
-                      
-                    });
+                    setState(() {});
                     break;
                   // case 'updated':
                   //   AppSnackBar.success(context, l10n.transactionUpdateSuccess);
@@ -140,6 +143,18 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
               MonthlyTransactionSummaryState>(
             listener: (context, state) {
               if (state.status == MonthlyTransactionSummaryStatus.failure) {
+                switch (state.error) {
+                  case 'cannotRetrieveData':
+                    AppSnackBar.error(context, l10n.youDoNotHaveAnyTransaction);
+                    break;
+                }
+              }
+              //todo for success range
+            },
+          ),
+          BlocListener<DailyTransactionCubit, DailyTransactionState>(
+            listener: (context, state) {
+              if (state.status == DailyTransactionStatus.failure) {
                 switch (state.error) {
                   case 'cannotRetrieveData':
                     AppSnackBar.error(context, l10n.youDoNotHaveAnyTransaction);

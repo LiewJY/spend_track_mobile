@@ -151,6 +151,8 @@
   "editTransaction": "Edit Transaction",
   "saveTransaction": "Save Transaction",
   "fundSource": "Fund Source",
+  "categoryTotal": "Category Total",
+  "totalSpending": "Total Spending",
 
 "@noDataText": {},
   "youDoNotHaveAnyCard": "You do not have any card",

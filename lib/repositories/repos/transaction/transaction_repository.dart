@@ -196,22 +196,32 @@ class TransactionRepository {
     transactions.clear();
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
+      log('repo    ' + date.toString());
+
+      String transactionYearMonth = '${date.year}_${date.month}';
+
+      //get the start and end time (one day - 0000 to 2359)
+      DateTime startDate = DateTime(date.year, date.month, date.day);
+      DateTime endDate =
+          DateTime(date.year, date.month, date.day, 23, 59, 59, 999);
+
       await userRef
           .doc(userID)
           .collection('myTransactions')
-          //todo
-          .doc(date.toString())
+          .doc(transactionYearMonth)
           .collection('monthlyTransactions')
           .withConverter(
               fromFirestore: MyTransaction.fromFirestore,
               toFirestore: (MyTransaction myTransaction, _) =>
                   myTransaction.toFirestore())
-          // .where('date')
-          .orderBy('date', descending: true)
+          .where('date', isGreaterThanOrEqualTo: startDate)
+          .where('date', isLessThanOrEqualTo: endDate)
+          // .orderBy('date', descending: true)
           .get()
           .then((querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
           transactions.add(docSnapshot.data());
+          log(' gg   ' + transactions.toString());
         }
       });
       return transactions;

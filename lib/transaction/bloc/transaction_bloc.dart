@@ -18,9 +18,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   TransactionBloc({required this.transactionRepository})
       : super(TransactionState.initial()) {
+    //this only display monthly
     on<DisplayTransactionRequested>(_onDisplayTransactionRequested);
-    // on<DisplayTransactionSummaryRequested>(_onDisplayTransactionSummaryRequested);
-
     on<UpdateTransactionRequested>(_onUpdateTransactionRequested);
     on<DeleteTransactionRequested>(_onDeleteTransactionRequested);
   }
@@ -34,7 +33,10 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     if (state.status == TransactionStatus.loading) return;
     emit(state.copyWith(status: TransactionStatus.loading));
     try {
-      await transactionRepository.updateTransaction(data: event.data, uid: event.uid, originalYearMonth: event.originalYearMonth);
+      await transactionRepository.updateTransaction(
+          data: event.data,
+          uid: event.uid,
+          originalYearMonth: event.originalYearMonth);
       emit(state.copyWith(
         status: TransactionStatus.success,
         success: 'updated',
