@@ -53,13 +53,6 @@ class _ManageBudgetScreenState extends State<ManageBudgetScreen> {
               //todo
               if (state.status == BudgetStatus.success) {
                 switch (state.success) {
-                  case 'updated':
-                    // if (isDialogOpen) {
-                    //   Navigator.of(context, rootNavigator: true).pop();
-                    // }
-                    AppSnackBar.success(context, l10n.budgetUpdateSuccess);
-                    /// refresh();
-                    break;
                   case 'deleted':
                      AppSnackBar.success(context, l10n.budgetDeleteSuccess);
                     // refresh();
@@ -181,7 +174,7 @@ class _BudgetContentState extends State<BudgetContent> {
                     return Center(child: Text(l10n.youDoNotHaveAnyBudget));
                   }
                   return ListView.builder(
-                      itemCount: budgets.length,
+                      itemCount: budgets.length, 
                       shrinkWrap: true,
                       itemBuilder: (_, index) {
                         return BudgetList(data: budgets[index]);

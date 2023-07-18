@@ -109,6 +109,7 @@
 "@manageWalletPage": {},
   "myWallets": "My Wallets",
   "addWallet": "Add Wallet",
+  "editWallet": "Edit Wallet",
   "walletAvailable": "Wallet Available",
   "addToMyWallets": "Add To My Wallets",
   "wallet": "Wallet",
@@ -133,6 +134,9 @@
   "remainingMonthlyBudget": "Remaining Monthly Budget",
   "setMyBudget": "Set my budget",
   "deletingBudget": "Deleting {budgetName}",
+  "editingBudget": "Editing {budgetName}",
+  "editBudget": "Edit budget",
+
 
 
 "@transactionPage": {},

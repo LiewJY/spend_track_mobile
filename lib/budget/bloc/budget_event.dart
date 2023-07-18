@@ -18,13 +18,22 @@ class DisplayBudgetRequested extends BudgetEvent {
 
 class DeleteBudgetRequested extends BudgetEvent {
   const DeleteBudgetRequested({
-    required this.data,
+    required this.uid,
   });
-  final Budget data;
+  final String uid;
   @override
-  List<Object> get props => [data];
+  List<Object> get props => [uid];
 }
 
-//todo update
-
-//todo remove
+class UpdateBudgetRequested extends BudgetEvent {
+  const UpdateBudgetRequested({
+    // required this.data,
+    required this.uid,
+    required this.amount,
+  });
+  // final Budget data;
+  final String uid;
+  final double amount;
+  @override
+  List<Object> get props => [uid, amount];
+}

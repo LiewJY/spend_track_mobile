@@ -13,19 +13,38 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
 
   BudgetBloc({required this.budgetRepository}) : super(BudgetState.initial()) {
     on<DisplayBudgetRequested>(_onDisplayBudgetRequested);
-    // on<UpdateWalletRequested>(_onUpdateWalletRequested);
+    on<UpdateBudgetRequested>(_onUpdateBudgetRequested);
     on<DeleteBudgetRequested>(_onDeleteBudgetRequested);
   }
-  _onDeleteBudgetRequested(
-    DeleteBudgetRequested event,
+  _onUpdateBudgetRequested(
+    UpdateBudgetRequested event,
     Emitter emit,
-  )  {
+  ) {
     if (state.status == BudgetStatus.loading) return;
     emit(state.copyWith(status: BudgetStatus.loading));
     try {
-      //todo
-      budgetRepository.deleteBudget(event.data);
+      budgetRepository.updateBudget(
+          uid: event.uid, amount: event.amount);
+      emit(state.copyWith(
+        status: BudgetStatus.success,
+        success: 'updated',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: BudgetStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
 
+  _onDeleteBudgetRequested(
+    DeleteBudgetRequested event,
+    Emitter emit,
+  ) {
+    if (state.status == BudgetStatus.loading) return;
+    emit(state.copyWith(status: BudgetStatus.loading));
+    try {
+      budgetRepository.deleteBudget(event.uid);
       emit(state.copyWith(
         status: BudgetStatus.success,
         success: 'deleted',

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/account/card/card.dart';
 import 'package:track/account/wallet/cubit/available_wallet_cubit.dart';
+import 'package:track/budget/bloc/budget_bloc.dart';
 import 'package:track/budget/cubit/available_budget_cubit.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/models/budget.dart';
@@ -14,25 +15,25 @@ import 'package:track/widgets/form_field/amount_field.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
 
-class BudgetDialog extends StatefulWidget {
-  const BudgetDialog({
+class EditBudgetDialog extends StatefulWidget {
+  const EditBudgetDialog({
     super.key,
     required this.dialogTitle,
-    required this.actionName,
-    required this.action,
+    // required this.actionName,
+    //required this.action,
     this.data,
   });
 
   final String dialogTitle;
-  final String actionName;
-  final String action;
-  final SpendingCategory? data;
+  // final String actionName;
+  // final String action;
+  final Budget? data;
 
   @override
-  State<BudgetDialog> createState() => _BudgetDialogState();
+  State<EditBudgetDialog> createState() => _EditBudgetDialogState();
 }
 
-class _BudgetDialogState extends State<BudgetDialog> {
+class _EditBudgetDialogState extends State<EditBudgetDialog> {
   final budgetForm = GlobalKey<FormState>();
   late final String uid;
   final _amountController = TextEditingController();
@@ -47,6 +48,7 @@ class _BudgetDialogState extends State<BudgetDialog> {
     //   _nameController.text = widget.data!.name!;
     //   _descriptionController.text = widget.data!.description!;
     // }
+    _amountController.text = widget.data!.amount!.toStringAsFixed(2);
 
     return Dialog(
       child: SingleChildScrollView(
@@ -71,7 +73,7 @@ class _BudgetDialogState extends State<BudgetDialog> {
                   children: [
                     Expanded(
                       child: Text(
-                        l10n.addingBudget(widget.data!.name.toString()),
+                        l10n.editingBudget(widget.data!.name.toString()),
                         style: Theme.of(context).textTheme.bodyLarge,
                         softWrap: true,
                       ),
@@ -90,8 +92,10 @@ class _BudgetDialogState extends State<BudgetDialog> {
                 AppStyle.sizedBoxSpace,
                 FilledButton(
                   style: AppStyle.fullWidthButton,
-                  onPressed: () => action(widget.action),
-                  child: Text(widget.actionName),
+                  onPressed: () {
+                    save();
+                  },
+                  child: Text(l10n.save),
                 ),
                 //  AppStyle.sizedBoxSpace,
                 OutlinedButton(
@@ -108,26 +112,34 @@ class _BudgetDialogState extends State<BudgetDialog> {
     );
   }
 
-  double? stringToDouble(value) {
-    return double.tryParse(value);
+  double stringToDouble(value) {
+    return double.parse(value);
   }
 
-  action(type) {
-    if (budgetForm.currentState!.validate()) {
-      switch (type) {
-        case 'addToMyBudget':
-          final storeBudget = Budget(
-            name: widget.data!.name,
-            color: widget.data!.color,
-            amount: stringToDouble(_amountController.text),
-          );
-
-          context.read<AvailableBudgetCubit>().addToMyBudgets(
-                budget: storeBudget,
-                documentId: widget.data!.uid,
-              );
-          break;
-      }
-    }
+  save() {
+    log('save budget ');
+    context.read<BudgetBloc>().add(UpdateBudgetRequested(
+          uid: widget.data!.uid!,
+          amount: stringToDouble(_amountController.text),
+        ));
   }
+
+  // action(type) {
+  //   if (budgetForm.currentState!.validate()) {
+  //     switch (type) {
+  //       case 'addToMyBudget':
+  //         final storeBudget = Budget(
+  //           name: widget.data!.name,
+  //           color: widget.data!.color,
+  //           amount: stringToDouble(_amountController.text),
+  //         );
+
+  //         context.read<AvailableBudgetCubit>().addToMyBudgets(
+  //               budget: storeBudget,
+  //               documentId: widget.data!.uid,
+  //             );
+  //         break;
+  //     }
+  //   }
+  // }
 }

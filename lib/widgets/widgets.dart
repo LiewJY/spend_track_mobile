@@ -41,6 +41,7 @@ export 'dialog/wallet_dialog.dart';
 export 'dialog/edit_my_wallet_dialog.dart';
 export 'dialog/budget_dialog.dart';
 export 'dialog/delete_confirmation_dialog.dart';
+export 'dialog/edit_budget_dialog.dart';
 // export 'dialog/edit_transaction_dialog.dart';
 
 //list
