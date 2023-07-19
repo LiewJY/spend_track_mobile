@@ -36,7 +36,7 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
     super.initState();
   }
 
-  String selectedView = 'daily';
+  String selectedView = 'monthly';
 
   Widget build(BuildContext context) {
     final l10n = context.l10n;

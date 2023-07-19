@@ -12,6 +12,8 @@ class CreditCard extends Equatable {
     this.customName,
     this.lastNumber,
     //this.budget,
+    //billing cycle
+    this.billingCycleDay,
     //todo
     this.isReminder,
     this.reminderDay,
@@ -25,6 +27,7 @@ class CreditCard extends Equatable {
   final bool? isCashback;
   final String? customName;
   final String? lastNumber;
+  final String? billingCycleDay;
   final bool? isReminder;
   final String? reminderDay;
   final String? paymentDay;
@@ -44,6 +47,7 @@ class CreditCard extends Equatable {
       isCashback: data?['isCashback'],
       customName: data?['customName'],
       lastNumber: data?['lastNumber'],
+      billingCycleDay: data?['billingCycleDay'],
       isReminder: data?['isReminder'],
       reminderDay: data?['reminderDay'],
       paymentDay: data?['paymentDay'],
@@ -61,6 +65,7 @@ class CreditCard extends Equatable {
       if (isCashback != null) "isCashback": isCashback,
       if (customName != null) "customName": customName,
       if (lastNumber != null) "lastNumber": lastNumber,
+      if (billingCycleDay != null) "billingCycleDay": billingCycleDay,
       if (isReminder != null) "isReminder": isReminder,
       if (reminderDay != null) "reminderDay": reminderDay,
       if (paymentDay != null) "paymentDay": paymentDay,
@@ -95,7 +100,9 @@ class CreditCard extends Equatable {
         isCashback,
         customName,
         lastNumber,
+        billingCycleDay,
         isReminder,
+        reminderDay,
         paymentDay,
         //budget,
       ];

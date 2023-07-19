@@ -126,6 +126,7 @@ class _ManageCardScreenState extends State<ManageCardScreen> {
                               shrinkWrap: true,
                               itemCount: cards.length,
                               itemBuilder: (_, index) {
+                                log(cards[index].toString());
                                 return CardsCard(
                                   data: cards[index],
                                   edit: () {

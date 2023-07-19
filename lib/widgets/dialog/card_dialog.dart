@@ -37,6 +37,7 @@ class _CardDialogState extends State<CardDialog> {
   //for payment reminder
   String reminderDay = '1';
   bool _isReminder = false;
+  String? _billingCycleDay;
   String? _paymentDay;
 
   @override
@@ -80,12 +81,14 @@ class _CardDialogState extends State<CardDialog> {
                   label: l10n.last4DigitOfCard,
                 ),
                 AppStyle.sizedBoxSpace,
-                PaymentDayDropDownField(onChanged: (value) {
-                  log(value);
-                  setState(() {
-                    _paymentDay = value;
-                  });
-                }),
+                DayDropDownField(
+                    labelText: l10n.selectBillingCycleDay,
+                    onChanged: (value) {
+                      log(value);
+                      setState(() {
+                        _billingCycleDay = value;
+                      });
+                    }),
                 AppStyle.sizedBoxSpace,
 
                 SwitchField(
@@ -132,6 +135,15 @@ class _CardDialogState extends State<CardDialog> {
                       ],
                     ),
                   ),
+                  AppStyle.sizedBoxSpace,
+                  DayDropDownField(
+                      labelText: l10n.selectPaymentDay,
+                      onChanged: (value) {
+                        log(value);
+                        setState(() {
+                          _paymentDay = value;
+                        });
+                      }),
                 ],
 
                 // AppStyle.sizedBoxSpace,
@@ -168,6 +180,7 @@ class _CardDialogState extends State<CardDialog> {
                 card: widget.data,
                 customName: _nameController.text,
                 lastNumber: _cardNumberController.text,
+                billingCycleDay: _billingCycleDay,
                 isReminder: _isReminder,
                 reminderDay: reminderDay,
                 paymentDay: _paymentDay,

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:track/l10n/l10n.dart';
 
-class PaymentDayDropDownField extends StatefulWidget {
-  const PaymentDayDropDownField({
+class DayDropDownField extends StatefulWidget {
+  const DayDropDownField({
     super.key,
     required this.onChanged,
     this.value,
+    required this.labelText,
   });
 
   final onChanged;
   final value;
+  final String labelText;
 
   @override
-  State<PaymentDayDropDownField> createState() =>
-      _PaymentDayDropDownFieldState();
+  State<DayDropDownField> createState() =>
+      _DayDropDownFieldState();
 }
 
 //dropdown
@@ -30,7 +32,7 @@ List<DropdownMenuItem> get dayDropdownItems {
   return menuItems;
 }
 
-class _PaymentDayDropDownFieldState extends State<PaymentDayDropDownField> {
+class _DayDropDownFieldState extends State<DayDropDownField> {
   // gen() {
   //   for (var i = 1; i < 31; i++) {
   //     de const DropdownMenuItem(value: 'Everyday', child: Text('Everyday'));
@@ -51,7 +53,7 @@ class _PaymentDayDropDownFieldState extends State<PaymentDayDropDownField> {
     return DropdownButtonFormField(
       value: widget.value,
       decoration: InputDecoration(
-        labelText: l10n.selectPaymentDay,
+        labelText: widget.labelText,
       ),
       items: dayDropdownItems,
       onChanged: widget.onChanged,

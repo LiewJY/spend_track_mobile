@@ -139,6 +139,7 @@ class CardRepository {
     required String uid,
     required String customName,
     required String lastNumber,
+    required String billingCycleDay,
     required String reminderDay,
     required bool isReminder,
     required String paymentDay,
@@ -150,6 +151,7 @@ class CardRepository {
       await userRef.doc(userID).collection('myCards').doc(uid).update({
         'customName': customName,
         'lastNumber': lastNumber,
+        'billingCycleDay': billingCycleDay,
         //'budget': budget,
         'isReminder': isReminder,
         'paymentDay': paymentDay,

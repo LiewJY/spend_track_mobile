@@ -32,6 +32,7 @@ class CardBloc extends Bloc<CardEvent, CardState> {
         uid: event.uid,
         customName: event.customName,
         lastNumber: event.lastNumber,
+        billingCycleDay: event.billingCycleDay,
         //budget: event.budget,
         isReminder: event.isReminder,
         paymentDay: event.paymentDay,

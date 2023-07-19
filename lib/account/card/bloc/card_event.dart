@@ -36,6 +36,7 @@ class UpdateCardRequested extends CardEvent {
     required this.uid,
     required this.customName,
     required this.lastNumber,
+    required this.billingCycleDay,
     // required this.budget,
     required this.reminderDay,
     required this.isReminder,
@@ -46,6 +47,7 @@ class UpdateCardRequested extends CardEvent {
   final String customName;
   final String lastNumber;
   //final double budget;
+  final String billingCycleDay;
   final String reminderDay;
   final bool isReminder;
   final String paymentDay;
@@ -54,6 +56,7 @@ class UpdateCardRequested extends CardEvent {
         uid,
         customName,
         lastNumber,
+        billingCycleDay,
         reminderDay,
         isReminder,
         paymentDay,

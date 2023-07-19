@@ -315,6 +315,7 @@ class _BudgetContentState extends State<BudgetContent> {
                   return ListView.builder(
                       itemCount: monthlyBudget.length,
                       shrinkWrap: true,
+                       primary: false,
                       itemBuilder: (_, index) {
                         log('ddddd   ' + monthlyBudget[index].toString());
                         return BudgetListView(data: monthlyBudget[index]);

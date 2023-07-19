@@ -41,15 +41,18 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
   String reminderDay = '1';
   bool _isReminder = true;
   String? _paymentDay;
+  String? _billingCycleDay;
 
   List<Cashback> cashbacks = [];
   @override
   void initState() {
     super.initState();
+    log(widget.data.toString());
     context.read<CardCashbackCubit>().getCardDetails(widget.data!.uid!);
     _isReminder = widget.data!.isReminder!;
     reminderDay = widget.data!.reminderDay!;
-    _paymentDay = widget.data!.paymentDay!;
+     _billingCycleDay = widget.data!.billingCycleDay;
+    _paymentDay = widget.data!.paymentDay;
     //todo payment day
   }
 
@@ -105,12 +108,13 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
                     controller: _cardNumberController,
                     label: l10n.last4DigitOfCard),
                 AppStyle.sizedBoxSpace,
-                PaymentDayDropDownField(
-                    value: _paymentDay,
+                DayDropDownField(
+                    labelText: l10n.selectBillingCycleDay,
+                    value: _billingCycleDay,
                     onChanged: (value) {
                       log(value);
                       setState(() {
-                        _paymentDay = value;
+                        _billingCycleDay = value;
                       });
                     }),
                 AppStyle.sizedBoxSpace,
@@ -164,6 +168,16 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
                       ],
                     ),
                   ),
+                  AppStyle.sizedBoxSpace,
+                  DayDropDownField(
+                      labelText: l10n.selectPaymentDay,
+                      value: _paymentDay,
+                      onChanged: (value) {
+                        log(value);
+                        setState(() {
+                          _paymentDay = value;
+                        });
+                      }),
                 ],
                 //card details
                 AppStyle.sizedBoxSpace,
@@ -219,6 +233,7 @@ class _EditMyCardDialogState extends State<EditMyCardDialog> {
             uid: widget.data!.uid!,
             customName: _nameController.text,
             lastNumber: _cardNumberController.text,
+            billingCycleDay: _billingCycleDay.toString(),
             isReminder: _isReminder,
             paymentDay: _paymentDay.toString(),
             reminderDay: reminderDay.toString(),

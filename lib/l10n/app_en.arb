@@ -16,6 +16,7 @@
   "selectWallet": "Select Wallet",
   "isCashbackEligible": "Is eligible for cashback?",
   "selectPaymentDay": "Select payment day",
+  "selectBillingCycleDay": "Select billing cycle day",
 
 "@textfield validation": {},
   "invalidEmail": "Invalid email address",
