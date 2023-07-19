@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,41 +49,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCJloItz28KY-A2zqdIdPVlD53vrUHvjmE',
-    appId: '1:93249083635:web:25379303a6874c785c7f86',
-    messagingSenderId: '93249083635',
-    projectId: 'track-efe9f',
-    authDomain: 'track-efe9f.firebaseapp.com',
-    storageBucket: 'track-efe9f.appspot.com',
-    measurementId: 'G-J1YRNWZ2QX',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA2_sRN7YUhJn71ykmk77k2gu9gN72sHHc',
-    appId: '1:93249083635:android:d167dbb642a84b105c7f86',
-    messagingSenderId: '93249083635',
-    projectId: 'track-efe9f',
-    storageBucket: 'track-efe9f.appspot.com',
+    apiKey: 'AIzaSyCleHEJe7DXPFZNpgrcdi5rRhQMZ6Uv14Q',
+    appId: '1:507351825430:android:8f62adcaaeebdb212cc937',
+    messagingSenderId: '507351825430',
+    projectId: 'jy-fyp',
+    storageBucket: 'jy-fyp.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBHylgMrlfxI0LNvUIKb-t8QnLifNq_8u4',
-    appId: '1:93249083635:ios:a55dc121da9f9fb05c7f86',
-    messagingSenderId: '93249083635',
-    projectId: 'track-efe9f',
-    storageBucket: 'track-efe9f.appspot.com',
-    iosClientId: '93249083635-dvoaagt3aib6g3tul0t6vbrmp5f23rdk.apps.googleusercontent.com',
-    iosBundleId: 'com.example.track',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBHylgMrlfxI0LNvUIKb-t8QnLifNq_8u4',
-    appId: '1:93249083635:ios:a55dc121da9f9fb05c7f86',
-    messagingSenderId: '93249083635',
-    projectId: 'track-efe9f',
-    storageBucket: 'track-efe9f.appspot.com',
-    iosClientId: '93249083635-dvoaagt3aib6g3tul0t6vbrmp5f23rdk.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCkJ73Oyilb_aO8_tXxxZcQ_zVp86DrlYY',
+    appId: '1:507351825430:ios:d8596f09228198932cc937',
+    messagingSenderId: '507351825430',
+    projectId: 'jy-fyp',
+    storageBucket: 'jy-fyp.appspot.com',
+    iosClientId: '507351825430-f5tg66607vbhajls22vhlaj2p542ptje.apps.googleusercontent.com',
     iosBundleId: 'com.example.track',
   );
 }
