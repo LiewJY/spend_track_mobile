@@ -48,6 +48,7 @@ class _TransactionFormState extends State<TransactionForm> {
   String? _walletSelectedId;
 
   DateTime? _originalYearMonth; //this is used for edit only
+  bool isEdit = false; //this is used for edit only
 
   SpendingCategory? _categorySelected;
   String? _categorySelectedId;
@@ -61,7 +62,6 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _dateInputController.text = formatDate(DateTime.now());
     if (widget.isEdit == true) {
@@ -77,6 +77,7 @@ class _TransactionFormState extends State<TransactionForm> {
       _walletSelectedId = widget.data!.fundSourceCustomId.toString();
       _cardSelectedId = widget.data!.fundSourceCustomId.toString();
       _originalYearMonth = widget.data!.date!;
+      isEdit = true;
 
       setState(() {});
     }
@@ -143,11 +144,13 @@ class _TransactionFormState extends State<TransactionForm> {
                 },
                 segments: [
                   ButtonSegment(
+                    enabled: !isEdit,
                     value: 'wallet',
                     label: Text(l10n.wallet),
                     icon: Icon(Icons.wallet),
                   ),
                   ButtonSegment(
+                    enabled: !isEdit,
                     value: 'card',
                     label: Text(l10n.card),
                     icon: Icon(Icons.credit_card),
@@ -186,14 +189,31 @@ class _TransactionFormState extends State<TransactionForm> {
                     });
                   }),
               AppStyle.sizedBoxSpace,
-              SwitchField(
-                  label: l10n.isCashbackEligible,
-                  switchState: _isCashback,
-                  onChanged: (value) {
-                    setState(() {
-                      _isCashback = value;
-                    });
-                  }),
+              if (!isEdit) ...[
+                SwitchField(
+                    label: l10n.isCashbackEligible,
+                    switchState: _isCashback,
+                    onChanged: (value) {
+                      setState(() {
+                        _isCashback = value;
+                      });
+                    }),
+              ] else ...[
+                Row(
+                  children: [
+                    Text(
+                      l10n.isCashbackEligible,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    //todo place into style file
+                    SizedBox(width: 10),
+                    Text(
+                      _isCashback ? l10n.yes : l10n.no,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
+                )
+              ],
             ],
             AppStyle.sizedBoxSpace,
             //action buttons
@@ -243,7 +263,7 @@ class _TransactionFormState extends State<TransactionForm> {
         fundSourceCustom: _walletSelected?.customName,
       );
 
-      log('storeTransaction ' + storeTransaction.toString());
+      // log('storeTransaction ' + storeTransaction.toString());
     } else if (isWallet == 'card') {
       // CreditCard card = CreditCard.fromJson(_cardSelected);
       storeTransaction = MyTransaction(
@@ -255,8 +275,6 @@ class _TransactionFormState extends State<TransactionForm> {
         categoryId: _categorySelected?.uid,
         category: _categorySelected?.name,
         isWallet: isWallet,
-        // fundSourceId:
-        // fundSource:
         fundSourceCustomId: _cardSelected?.uid,
         fundSourceCustom: _cardSelected?.customName,
         isCashbackEligible: _isCashback,
@@ -265,8 +283,8 @@ class _TransactionFormState extends State<TransactionForm> {
 
     if (transactionForm.currentState!.validate()) {
       log('11111' + transactionDate.toString());
-
       if (widget.isEdit == true) {
+        //? edit
         //todo
         log('storeTransaction uid' + widget.data!.uid.toString());
 
@@ -277,6 +295,7 @@ class _TransactionFormState extends State<TransactionForm> {
             uid: widget.data!.uid.toString(),
             originalYearMonth: _originalYearMonth!));
       } else {
+        //? add
         context.read<AddTransactionCubit>().addTransaction(storeTransaction);
       }
     }

@@ -91,15 +91,25 @@ class _WalletDropDownFieldState extends State<WalletDropDownField> {
       }
     }
 
-    return DropdownButtonFormField(
-      value: selected(widget.value),
-      decoration: InputDecoration(
-        labelText: l10n.selectWallet,
-      ),
-      items: walletDropdownItems,
-      onChanged: widget.onChanged,
-      //onSaved: widget.onSaved,
-      validator: validator,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DropdownButtonFormField(
+          value: selected(widget.value),
+          decoration: InputDecoration(
+            labelText: l10n.selectWallet,
+          ),
+          items: walletDropdownItems,
+          onChanged: widget.onChanged,
+          //onSaved: widget.onSaved,
+          validator: validator,
+        ),
+        if (myWallets!.isEmpty) ...[
+          Text(l10n.noWalletAvailable,
+          style: TextStyle(color: Theme.of(context).colorScheme.error),
+          ),
+        ]
+      ],
     );
   }
 }

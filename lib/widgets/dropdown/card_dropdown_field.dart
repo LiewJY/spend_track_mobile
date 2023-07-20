@@ -74,14 +74,25 @@ class _CardDropDownFieldState extends State<CardDropDownField> {
       }
     }
 
-    return DropdownButtonFormField(
-      value: selected(widget.value),
-      decoration: InputDecoration(
-        labelText: l10n.selectCard,
-      ),
-      items: cardDropdownItems,
-      onChanged: widget.onChanged,
-      validator: validator,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DropdownButtonFormField(
+          value: selected(widget.value),
+          decoration: InputDecoration(
+            labelText: l10n.selectCard,
+          ),
+          items: cardDropdownItems,
+          onChanged: widget.onChanged,
+          validator: validator,
+        ),
+        if (myCards!.isEmpty) ...[
+          Text(
+            l10n.noCardAvailable,
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
+          ),
+        ]
+      ],
     );
   }
 }

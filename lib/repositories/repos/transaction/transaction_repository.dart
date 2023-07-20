@@ -9,15 +9,8 @@ import 'package:track/repositories/models/transactionSummary.dart';
 
 class TransactionRepository {
   //firestore instance
-  // final ref = FirebaseFirestore.instance
-  //     .collection('transactions')
-  //     .withConverter(
-  //         fromFirestore: MyTransaction.fromFirestore,
-  //         toFirestore: (MyTransaction myTransaction, _) =>
-  //             myTransaction.toFirestore());
   final userRef = FirebaseFirestore.instance.collection('users');
 
-  // List<SpendingCategory> categories = [];
   List<MyTransaction> transactions = [];
   List<String> transactionRange = [];
 

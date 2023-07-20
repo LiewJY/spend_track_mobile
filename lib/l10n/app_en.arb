@@ -154,6 +154,8 @@
   "fundSource": "Fund Source",
   "categoryTotal": "Category Total",
   "totalSpending": "Total Spending",
+  "noCardAvailable": "No card available, please add at account",
+  "noWalletAvailable": "No wallet available, please add at account",
 
 "@noDataText": {},
   "youDoNotHaveAnyCard": "You do not have any card",

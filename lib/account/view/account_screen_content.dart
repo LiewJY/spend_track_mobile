@@ -61,7 +61,7 @@ class AccountScreenContent extends StatelessWidget {
           ListTile(
             //todo add image here
             //leading: NetworkImage(user),
-            leading: Icon(Icons.circle),
+            // leading: Icon(Icons.circle),
             title: Text(
               user.name ?? l10n.name,
               style: Theme.of(context).textTheme.titleMedium,
