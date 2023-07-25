@@ -12,57 +12,60 @@ class ManageAccountBloc extends Bloc<ManageAccountEvent, ManageAccountState> {
 
   ManageAccountBloc({required this.authRepository})
       : super(ManageAccountState.initial()) {
-    //UpdateNameRequested
-    on<UpdateNameRequested>((event, emit) async {
-      if (state.status == ManageAccountStatus.loading) return;
-      emit(state.copyWith(status: ManageAccountStatus.loading));
-      try {
-        await authRepository.updateName(name: event.name);
-        emit(state.copyWith(
-            status: ManageAccountStatus.success, success: 'nameUpdated'));
-      } catch (e) {
-        emit(state.copyWith(
-          status: ManageAccountStatus.failure,
-          error: e.toString(),
-        ));
-      }
-    });
+    on<UpdateNameRequested>(_onUpdateNameRequested);
+    on<ResetPasswordRequested>(_onResetPasswordRequested);
 
     //ReAuthRequested
     //todo in UI, now not in use
-    on<ReAuthRequested>((event, emit) async {
-      if (state.status == ManageAccountStatus.loading) return;
-      emit(state.copyWith(status: ManageAccountStatus.loading));
-      try {
-        //await authRepository.updateName(name: event.name);
-        // await authRepository.toString
-        emit(state.copyWith(
-            status: ManageAccountStatus.success, success: 'emailChanged'));
-      } catch (e) {
-        emit(state.copyWith(
-          status: ManageAccountStatus.failure,
-          error: e.toString(),
-        ));
-      }
-    });
+    // on<ReAuthRequested>((event, emit) async {
+    //   if (state.status == ManageAccountStatus.loading) return;
+    //   emit(state.copyWith(status: ManageAccountStatus.loading));
+    //   try {
+    //     //await authRepository.updateName(name: event.name);
+    //     // await authRepository.toString
+    //     emit(state.copyWith(
+    //         status: ManageAccountStatus.success, success: 'emailChanged'));
+    //   } catch (e) {
+    //     emit(state.copyWith(
+    //       status: ManageAccountStatus.failure,
+    //       error: e.toString(),
+    //     ));
+    //   }
+    // });
+  }
 
-    //ResetPasswordRequested
-    on<ResetPasswordRequested>((event, emit) async {
-      if (state.status == ManageAccountStatus.loading) return;
-      emit(state.copyWith(status: ManageAccountStatus.loading));
-      try {
-        //await authRepository.updateName(name: event.name);
-        await authRepository.sendResetPasswordEmail(email: event.email);
-        emit(state.copyWith(
-          status: ManageAccountStatus.success,
-          success: 'resetPasswordEmailSent',
-        ));
-      } catch (e) {
-        emit(state.copyWith(
-          status: ManageAccountStatus.failure,
-          error: e.toString(),
-        ));
-      }
-    });
+  //UpdateNameRequested
+  _onUpdateNameRequested(UpdateNameRequested event, Emitter emit) async {
+    if (state.status == ManageAccountStatus.loading) return;
+    emit(state.copyWith(status: ManageAccountStatus.loading));
+    try {
+      await authRepository.updateName(name: event.name);
+      emit(state.copyWith(
+          status: ManageAccountStatus.success, success: 'nameUpdated'));
+    } catch (e) {
+      emit(state.copyWith(
+        status: ManageAccountStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
+
+  //ResetPasswordRequested
+  _onResetPasswordRequested(ResetPasswordRequested event, Emitter emit) async {
+    if (state.status == ManageAccountStatus.loading) return;
+    emit(state.copyWith(status: ManageAccountStatus.loading));
+    try {
+      //await authRepository.updateName(name: event.name);
+      await authRepository.sendResetPasswordEmail(email: event.email);
+      emit(state.copyWith(
+        status: ManageAccountStatus.success,
+        success: 'resetPasswordEmailSent',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: ManageAccountStatus.failure,
+        error: e.toString(),
+      ));
+    }
   }
 }

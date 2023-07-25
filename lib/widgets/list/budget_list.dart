@@ -10,13 +10,8 @@ import 'package:track/repositories/models/category.dart';
 import 'package:track/repositories/repos/budget/budget_repository.dart';
 import 'package:track/widgets/widgets.dart';
 
-//for dialog
-bool isBudgetListDialogOpen = false;
-void toggleBudgetListDialog() {
-  isBudgetListDialogOpen = !isBudgetListDialogOpen;
-}
 
-class BudgetList extends StatelessWidget {
+class BudgetList extends StatefulWidget {
   const BudgetList({
     super.key,
     required this.data,
@@ -25,11 +20,19 @@ class BudgetList extends StatelessWidget {
   // final onPressed;
   final Budget data;
 
+  @override
+  State<BudgetList> createState() => _BudgetListState();
+}
+
+//for dialog
+bool isBudgetListDialogOpen = false;
+void toggleBudgetListDialog() {
+  isBudgetListDialogOpen = !isBudgetListDialogOpen;
+}
+
+class _BudgetListState extends State<BudgetList> {
   // BudgetRepository budgetRepository;
-  //actions
   edit(BuildContext context, Budget dat) {
-    log('edit budget ');
-    //todo
     final l10n = context.l10n;
     if (!isBudgetListDialogOpen) {
       showDialog(
@@ -40,18 +43,10 @@ class BudgetList extends StatelessWidget {
               child: BlocProvider.value(
                 value: BlocProvider.of<BudgetBloc>(context),
                 child:
-                    EditBudgetDialog(dialogTitle: l10n.editBudget, data: data),
+                    EditBudgetDialog(dialogTitle: l10n.editBudget, data: widget.data),
               ),
             );
-            // return DeleteConfirmationDialog(
-            //     data: data,
-            //     description: 'weeewrewrwe',
-            //     dialogTitle: l10n.delete,
-            //     action: () {
-            //       context
-            //           .read<BudgetBloc>().add(DeleteBudgetRequested(uid: data.uid!));
-            //       Navigator.of(context, rootNavigator: true).pop();
-            //     });
+
           }).then((value) {
         toggleBudgetListDialog();
       });
@@ -91,9 +86,9 @@ class BudgetList extends StatelessWidget {
         if (state.status == BudgetStatus.success) {
           switch (state.success) {
             case 'updated':
-              if (isBudgetListDialogOpen) {
-                Navigator.of(context, rootNavigator: true).pop();
-              }
+              // if (isBudgetListDialogOpen) {
+              //   Navigator.of(context, rootNavigator: true).pop();
+              // }
               AppSnackBar.success(context, l10n.budgetUpdateSuccess);
               /// refresh();
               break;
@@ -102,12 +97,12 @@ class BudgetList extends StatelessWidget {
         }
       },
       child: ListTile(
-          title: Text(data.name!),
+          title: Text(widget.data.name!),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  '${l10n.monthlyBudget}: RM ${data.amount!.toStringAsFixed(2)}'),
+                  '${l10n.monthlyBudget}: RM ${widget.data.amount!.toStringAsFixed(2)}'),
             ],
           ),
           //todo make this into dropdown that allow delete and edit
@@ -129,10 +124,10 @@ class BudgetList extends StatelessWidget {
             onSelected: (value) {
               switch (value) {
                 case 0:
-                  edit(context, data);
+                  edit(context, widget.data);
                   break;
                 case 1:
-                  delete(context, data);
+                  delete(context, widget.data);
                   break;
               }
             },

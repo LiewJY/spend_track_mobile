@@ -53,10 +53,10 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
           log('monthly');
 
           return MonthlyTransactionContent();
-        case 'yearly':
-          log('yearly');
+        // case 'yearly':
+        //   log('yearly');
 
-          return YearlyTransactionScreen();
+        //   return YearlyTransactionScreen();
         default:
           return DailyTransactionScreen();
       }
@@ -182,10 +182,10 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
                         value: 1,
                         child: Text(l10n.monthlyView),
                       ),
-                      PopupMenuItem(
-                        value: 2,
-                        child: Text(l10n.yearlyView),
-                      ),
+                      // PopupMenuItem(
+                      //   value: 2,
+                      //   child: Text(l10n.yearlyView),
+                      // ),
                     ];
                   },
                   onSelected: (value) {
@@ -200,11 +200,11 @@ class _TransactionScreenContentState extends State<TransactionScreenContent> {
                           selectedView = 'monthly';
                         });
                         break;
-                      case 2:
-                        setState(() {
-                          selectedView = 'yearly';
-                        });
-                        break;
+                      // case 2:
+                      //   setState(() {
+                      //     selectedView = 'yearly';
+                      //   });
+                      //   break;
                     }
                   },
                 )

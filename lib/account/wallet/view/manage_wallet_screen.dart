@@ -22,14 +22,13 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
   @override
   initState() {
     context.read<WalletBloc>().add(DisplayWalletRequested());
-
     super.initState();
     //initial call
   }
 
-  reload() {
-    context.read<WalletBloc>().add(DisplayWalletRequested());
-  }
+  // reload() {
+  //   context.read<WalletBloc>().add(DisplayWalletRequested());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
       isDialogOpen = !isDialogOpen;
     }
 
-    refresh() {
+    refresh() async{
       //call load data function
       context.read<WalletBloc>().add(DisplayWalletRequested());
     }
@@ -68,13 +67,17 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                       isScrollControlled: true,
                       builder: (BuildContext context) {
                         return AddWalletModal(
-                          actionLeft: () {
+                          actionLeft: () async {
                             //close bottom sheet then open list
                             if (isBottomSheetOpen) {
                               Navigator.pop(context);
                             }
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => WalletListScreen()));
+                            var nav = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => WalletListScreen()));
+                            if (nav == 'return') {
+                              refresh();
+                            }
                           },
                         );
                       }).then((value) {
@@ -118,61 +121,93 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
         child: SafeArea(
             child: Padding(
                 padding: AppStyle.paddingHorizontal,
-                child: BlocBuilder<WalletBloc, WalletState>(
-                  builder: (context, state) {
-                    if (state.status == WalletStatus.success &&
-                        state.success == 'loadedData') {
-                      return wallets.isNotEmpty
-                          ? ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: wallets.length,
-                              itemBuilder: (_, index) {
-                                return WalletsCard(
-                                  data: wallets[index],
-                                  edit: () {
-                                    if (!isDialogOpen) {
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) {
-                                            return RepositoryProvider(
-                                              create: (context) =>
-                                                  WalletRepository(),
-                                              child: MultiBlocProvider(
-                                                providers: [
-                                                  BlocProvider.value(
-                                                    value: BlocProvider.of<
-                                                        WalletBloc>(context),
-                                                  ),
-                                                ],
-                                                child: EditMyWalletDialog(
-                                                  data: wallets[index],
-                                                  dialogTitle: l10n.editWallet,
-                                                ),
-                                              ),
-                                            );
-                                          }).then((value) {
-                                        toggleDialog();
-                                      });
-                                      toggleDialog();
-                                    }
-                                  },
-                                  delete: () {
-                                    context.read<WalletBloc>().add(
-                                        DeleteWalletRequested(
-                                            uid:
-                                                wallets[index].uid.toString()));
-                                  },
-                                );
-                              })
-                          : Center(child: Text(l10n.youDoNotHaveAnyCard));
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: 5,
-                        ),
-                      );
-                    }
+                child: RefreshIndicator(
+                  onRefresh: () {
+                    return refresh();
                   },
+                  child: BlocBuilder<WalletBloc, WalletState>(
+                    builder: (context, state) {
+                      if (state.status == WalletStatus.success &&
+                          state.success == 'loadedData') {
+                        return wallets.isNotEmpty
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: wallets.length,
+                                itemBuilder: (_, index) {
+                                  return WalletsCard(
+                                    data: wallets[index],
+                                    edit: () {
+                                      if (!isDialogOpen) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return RepositoryProvider(
+                                                create: (context) =>
+                                                    WalletRepository(),
+                                                child: MultiBlocProvider(
+                                                  providers: [
+                                                    BlocProvider.value(
+                                                      value: BlocProvider.of<
+                                                          WalletBloc>(context),
+                                                    ),
+                                                  ],
+                                                  child: EditMyWalletDialog(
+                                                    data: wallets[index],
+                                                    dialogTitle:
+                                                        l10n.editWallet,
+                                                  ),
+                                                ),
+                                              );
+                                            }).then((value) {
+                                          toggleDialog();
+                                        });
+                                        toggleDialog();
+                                      }
+                                    },
+                                    delete: () {
+                                      if (!isDialogOpen) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return DeleteConfirmationDialog(
+                                                  // data: data,
+                                                  description:
+                                                      l10n.deletingBudget(
+                                                          wallets[index]
+                                                              .customName!),
+                                                  dialogTitle: l10n.delete,
+                                                  action: () {
+                                                    context.read<WalletBloc>().add(
+                                                        DeleteWalletRequested(
+                                                            uid: wallets[index]
+                                                                .uid
+                                                                .toString()));
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop();
+                                                  });
+                                            }).then((value) {
+                                          toggleDialog();
+                                        });
+                                        toggleDialog();
+                                      }
+                                      // context.read<WalletBloc>().add(
+                                      //     DeleteWalletRequested(
+                                      //         uid:
+                                      //             wallets[index].uid.toString()));
+                                    },
+                                  );
+                                })
+                            : Center(child: Text(l10n.youDoNotHaveAnyWallet));
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: 5,
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ))),
       ),
     );

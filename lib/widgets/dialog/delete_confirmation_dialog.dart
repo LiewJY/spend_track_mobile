@@ -15,7 +15,7 @@ class DeleteConfirmationDialog extends StatefulWidget {
     required this.dialogTitle,
     required this.description,
      required this.action,
-    required this.data,
+     this.data,
   });
 
   final String dialogTitle;

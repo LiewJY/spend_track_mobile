@@ -54,12 +54,13 @@ class _ManageBudgetScreenState extends State<ManageBudgetScreen> {
               if (state.status == BudgetStatus.success) {
                 switch (state.success) {
                   case 'deleted':
-                     AppSnackBar.success(context, l10n.budgetDeleteSuccess);
+                    AppSnackBar.success(context, l10n.budgetDeleteSuccess);
                     // refresh();
+                    setState(() {});
+
                     break;
                   case 'loadedData':
                     //reload the data table when data is loaded
-                    setState(() {});
                     break;
                 }
               }
@@ -102,93 +103,136 @@ class _BudgetContentState extends State<BudgetContent> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     budgets = context.select((BudgetBloc bloc) => bloc.state.budgetList);
+    refresh() async {
+      //call load data function
+      context.read<BudgetBloc>().add(DisplayBudgetRequested());
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.myBudget),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              var nav = await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => BudgetListScreen()),
               );
+              if (nav == 'return') {
+                refresh();
+              }
             },
             icon: Icon(Icons.add),
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: AppStyle.paddingHorizontal,
-              child: BlocBuilder<BudgetBloc, BudgetState>(
-                builder: (context, state) {
-                  if (state.status == BudgetStatus.success &&
-                      state.success == 'loadedData') {
-                    double totalMonthlyBudget = 0;
-                    for (var budget in budgets) {
-                      totalMonthlyBudget = totalMonthlyBudget + budget.amount!;
-                    }
-                    return Column(
-                      children: [
-                        BudgetChart(
-                          data: budgets,
-                          totalBudget: totalMonthlyBudget,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: BlocListener<BudgetBloc, BudgetState>(
+        listener: (context, state) {
+          if (state.status == BudgetStatus.failure) {
+            switch (state.error) {
+              case 'cannotRetrieveData':
+                AppSnackBar.error(context, l10n.cannotRetrieveData);
+                break;
+            }
+          }
+          //todo
+          if (state.status == BudgetStatus.success) {
+            switch (state.success) {
+              case 'deleted':
+                AppSnackBar.success(context, l10n.budgetDeleteSuccess);
+                // refresh();
+                refresh();
+
+                break;
+              case 'updated':
+                refresh();
+                break;
+            }
+          }
+        },
+        child: RefreshIndicator(
+          onRefresh: () {
+            return refresh();
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: AppStyle.paddingHorizontal,
+                  child: BlocBuilder<BudgetBloc, BudgetState>(
+                    builder: (context, state) {
+                      if (state.status == BudgetStatus.success &&
+                          state.success == 'loadedData') {
+                        double totalMonthlyBudget = 0;
+                        for (var budget in budgets) {
+                          totalMonthlyBudget =
+                              totalMonthlyBudget + budget.amount!;
+                        }
+                        return Column(
                           children: [
-                            Text(
-                              l10n.totalMonthlyBudget,
-                              style: Theme.of(context).textTheme.titleMedium,
+                            BudgetChart(
+                              data: budgets,
+                              totalBudget: totalMonthlyBudget,
                             ),
-                            Text(
-                              'RM${totalMonthlyBudget.toStringAsFixed(2)}',
-                              style: Theme.of(context).textTheme.titleMedium,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  l10n.totalMonthlyBudget,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                                Text(
+                                  'RM${totalMonthlyBudget.toStringAsFixed(2)}',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                              ],
                             ),
                           ],
+                        );
+                      } else {
+                        return Center(child: Text(l10n.youDoNotHaveAnyBudget));
+                      }
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: AppStyle.paddingHorizontal,
+                  child: Text(
+                    l10n.budgetByCategory,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                BlocBuilder<BudgetBloc, BudgetState>(
+                  builder: (context, state) {
+                    if (state.status == BudgetStatus.success &&
+                        state.success == 'loadedData') {
+                      if (budgets.isEmpty) {
+                        //if empty return empty text
+                        return Center(child: Text(l10n.youDoNotHaveAnyBudget));
+                      }
+                      return ListView.builder(
+                          itemCount: budgets.length,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemBuilder: (_, index) {
+                            return BudgetList(data: budgets[index]);
+                          });
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: 5,
                         ),
-                      ],
-                    );
-                  } else {
-                    return Center(child: Text(l10n.youDoNotHaveAnyBudget));
-                  }
-                },
-              ),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
-            Padding(
-              padding: AppStyle.paddingHorizontal,
-              child: Text(
-                l10n.budgetByCategory,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            BlocBuilder<BudgetBloc, BudgetState>(
-              builder: (context, state) {
-                if (state.status == BudgetStatus.success &&
-                    state.success == 'loadedData') {
-                  if (budgets.isEmpty) {
-                    //if empty return empty text
-                    return Center(child: Text(l10n.youDoNotHaveAnyBudget));
-                  }
-                  return ListView.builder(
-                      itemCount: budgets.length, 
-                      shrinkWrap: true,
-                      itemBuilder: (_, index) {
-                        return BudgetList(data: budgets[index]);
-                      });
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: 5,
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -17,8 +17,7 @@ class BudgetListScreen extends StatefulWidget {
   const BudgetListScreen({super.key});
 
   @override
-  State<BudgetListScreen> createState() =>
-      _BudgetListScreenState();
+  State<BudgetListScreen> createState() => _BudgetListScreenState();
 }
 
 class _BudgetListScreenState extends State<BudgetListScreen> {
@@ -29,7 +28,7 @@ class _BudgetListScreenState extends State<BudgetListScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pop(context, 'return'),
         ),
         //automaticallyImplyLeading: false,
         // actions: [
@@ -108,34 +107,41 @@ class _AvailableCardListState extends State<AvailableBudgetCategoryList> {
     categories = context.select((AvailableBudgetCubit bloc) =>
         bloc.state.availableSpendingCategoryList);
 
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: categories.length,
-        itemBuilder: (_, index) {
-          return CategoryList(
-            data: categories[index],
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (_) {
-                    return BlocProvider.value(
-                      value: BlocProvider.of<AvailableBudgetCubit>(context),
-                      child: BudgetDialog(
-                        dialogTitle: l10n.addToMyBudget,
-                        actionName: l10n.addToMyBudget,
-                        action: 'addToMyBudget',
-                        data: categories[index],
-                      ),
-                    );
-                  }).then((value) {
-                toggleDialog();
-              });
-              
-              toggleDialog();
-              // }
-            },
-          );
-        });
+    return BlocBuilder<AvailableBudgetCubit, AvailableBudgetState>(
+      builder: (context, state) {
+        return categories.isNotEmpty
+            ? ListView.builder(
+                shrinkWrap: true,
+                itemCount: categories.length,
+                itemBuilder: (_, index) {
+                  return CategoryList(
+                    data: categories[index],
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (_) {
+                            return BlocProvider.value(
+                              value: BlocProvider.of<AvailableBudgetCubit>(
+                                  context),
+                              child: BudgetDialog(
+                                dialogTitle: l10n.addToMyBudget,
+                                actionName: l10n.addToMyBudget,
+                                action: 'addToMyBudget',
+                                data: categories[index],
+                              ),
+                            );
+                          }).then((value) {
+                        toggleDialog();
+                      });
+
+                      toggleDialog();
+                      // }
+                    },
+                  );
+                })
+            : Center(child: Text(l10n.youDoNotHaveAnyBudget));
+      },
+    );
     // wallets = context
     //     .select((AvailableWalletCubit bloc) => bloc.state.availableWalletList);
     // return wallets.isNotEmpty

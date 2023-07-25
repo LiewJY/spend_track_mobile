@@ -27,9 +27,9 @@ class _ManageCardScreenState extends State<ManageCardScreen> {
     context.read<CardBloc>().add(DisplayCardRequested());
   }
 
-  reload() {
-    context.read<CardBloc>().add(DisplayCardRequested());
-  }
+  // reload() {
+  //   context.read<CardBloc>().add(DisplayCardRequested());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _ManageCardScreenState extends State<ManageCardScreen> {
       isDialogOpen = !isDialogOpen;
     }
 
-    refresh() {
+    refresh() async {
       //call load data function
       context.read<CardBloc>().add(DisplayCardRequested());
     }
@@ -67,13 +67,17 @@ class _ManageCardScreenState extends State<ManageCardScreen> {
                       isScrollControlled: true,
                       builder: (BuildContext context) {
                         return AddCardModal(
-                          actionLeft: () {
+                          actionLeft: () async {
                             //close bottom sheet then open list
                             if (isBottomSheetOpen) {
                               Navigator.pop(context);
                             }
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => CardListScreen()));
+                            var nav = await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => CardListScreen()));
+                            if (nav == 'return') {
+                              refresh();
+                            }
                           },
                         );
                       }).then((value) {
@@ -117,67 +121,98 @@ class _ManageCardScreenState extends State<ManageCardScreen> {
         child: SafeArea(
             child: Padding(
                 padding: AppStyle.paddingHorizontal,
-                child: BlocBuilder<CardBloc, CardState>(
-                  builder: (context, state) {
-                    if (state.status == CardStatus.success &&
-                        state.success == 'loadedData') {
-                      return cards.isNotEmpty
-                          ? ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: cards.length,
-                              itemBuilder: (_, index) {
-                                log(cards[index].toString());
-                                return CardsCard(
-                                  data: cards[index],
-                                  edit: () {
-                                    if (!isDialogOpen) {
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) {
-                                            return RepositoryProvider(
-                                              create: (context) =>
-                                                  CardRepository(),
-                                              child: MultiBlocProvider(
-                                                providers: [
-                                                  BlocProvider(
-                                                    create: (context) =>
-                                                        CardCashbackCubit(
-                                                            context.read<
-                                                                CardRepository>()),
-                                                  ),
-                                                  BlocProvider.value(
-                                                    value: BlocProvider.of<
-                                                        CardBloc>(context),
-                                                  ),
-                                                ],
-                                                child: EditMyCardDialog(
-                                                  data: cards[index],
-                                                  dialogTitle: l10n.editCard,
-                                                ),
-                                              ),
-                                            );
-                                          }).then((value) {
-                                        toggleDialog();
-                                      });
-                                      toggleDialog();
-                                    }
-                                  },
-                                  delete: () {
-                                    context.read<CardBloc>().add(
-                                        DeleteCardRequested(
-                                            uid: cards[index].uid.toString()));
-                                  },
-                                );
-                              })
-                          : Center(child: Text(l10n.youDoNotHaveAnyCard));
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: 5,
-                        ),
-                      );
-                    }
+                child: RefreshIndicator(
+                  onRefresh: () {
+                    return refresh();
                   },
+                  child: BlocBuilder<CardBloc, CardState>(
+                    builder: (context, state) {
+                      if (state.status == CardStatus.success &&
+                          state.success == 'loadedData') {
+                        return cards.isNotEmpty
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: cards.length,
+                                itemBuilder: (_, index) {
+                                  log(cards[index].toString());
+                                  return CardsCard(
+                                    data: cards[index],
+                                    edit: () {
+                                      if (!isDialogOpen) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return RepositoryProvider(
+                                                create: (context) =>
+                                                    CardRepository(),
+                                                child: MultiBlocProvider(
+                                                  providers: [
+                                                    BlocProvider(
+                                                      create: (context) =>
+                                                          CardCashbackCubit(
+                                                              context.read<
+                                                                  CardRepository>()),
+                                                    ),
+                                                    BlocProvider.value(
+                                                      value: BlocProvider.of<
+                                                          CardBloc>(context),
+                                                    ),
+                                                  ],
+                                                  child: EditMyCardDialog(
+                                                    data: cards[index],
+                                                    dialogTitle: l10n.editCard,
+                                                  ),
+                                                ),
+                                              );
+                                            }).then((value) {
+                                          toggleDialog();
+                                        });
+                                        toggleDialog();
+                                      }
+                                    },
+                                    delete: () {
+                                      if (!isDialogOpen) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return DeleteConfirmationDialog(
+                                                  // data: data,
+                                                  description:
+                                                      l10n.deletingBudget(
+                                                          cards[index].name!),
+                                                  dialogTitle: l10n.delete,
+                                                  action: () {
+                                                    context.read<CardBloc>().add(
+                                                        DeleteCardRequested(
+                                                            uid: cards[index]
+                                                                .uid
+                                                                .toString()));
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop();
+                                                  });
+                                            }).then((value) {
+                                          toggleDialog();
+                                        });
+                                        toggleDialog();
+                                      }
+
+                                      // context.read<CardBloc>().add(
+                                      //     DeleteCardRequested(
+                                      //         uid: cards[index].uid.toString()));
+                                    },
+                                  );
+                                })
+                            : Center(child: Text(l10n.youDoNotHaveAnyCard));
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: 5,
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ))),
       ),
     );

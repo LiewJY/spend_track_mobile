@@ -57,6 +57,13 @@
   "account": "Account",
   "overview": "Overview",
 
+"@home": {},
+  "hi": "Hi {name},",
+  "overallSpendingForMonth": "Overall Spending for {month}",
+  "validUntil": "ValidUntil",
+  "saved": "Saved",
+  "remaining": "Remaining",
+
 
 "@loginPage": {},
   "forgetPassword": "Forget Password",
@@ -105,6 +112,7 @@
   "three": "3 days before",
   "seven": "7 days before",
   "cardDetails": "Card Details",
+  "cardNotAvailable": "Card Not Available",
 
 
 "@manageWalletPage": {},

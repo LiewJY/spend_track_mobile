@@ -17,12 +17,12 @@ class SignUpScreen extends StatelessWidget {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        surfaceTintColor: Theme.of(context).colorScheme.background,
+        // automaticallyImplyLeading: false,
+        // backgroundColor: Theme.of(context).colorScheme.background,
+        // surfaceTintColor: Theme.of(context).colorScheme.background,
         title: Text(
           l10n.signUp,
-          style: Theme.of(context).textTheme.headlineLarge,
+          // style: Theme.of(context).textTheme.headlineLarge,
           textAlign: TextAlign.left,
         ),
       ),

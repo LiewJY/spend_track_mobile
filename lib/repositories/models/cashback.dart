@@ -19,6 +19,10 @@ class Cashback extends Equatable {
     //END
     this.isCapped, //bool
     this.cappedAt, //double - RM - ONLY WHEN isCapped == TRUE
+    //for home page use
+    this.totalSpend,
+    //only use locally
+    this.totalSave,
   });
 
   final String? uid;
@@ -34,6 +38,8 @@ class Cashback extends Equatable {
   final double? cashback;
   final bool? isCapped;
   final double? cappedAt;
+  final double? totalSpend;
+  final double? totalSave;
 
   // convert firestore format into object
   factory Cashback.fromFirestore(
@@ -55,6 +61,7 @@ class Cashback extends Equatable {
       cashback: double.tryParse(data['cashback'].toString()),
       isCapped: data['isCapped'],
       cappedAt: double.tryParse(data['cappedAt'].toString()),
+      totalSpend: double.tryParse(data['totalSpend'].toString()),
     );
   }
 
@@ -74,6 +81,7 @@ class Cashback extends Equatable {
       if (cashback != null) "cashback": cashback,
       if (isCapped != null) "isCapped": isCapped,
       if (cappedAt != null) "cappedAt": cappedAt,
+      if (totalSpend != null) "totalSpending": totalSpend,
     };
   }
 
@@ -90,6 +98,7 @@ class Cashback extends Equatable {
         minSpendNotAchieved,
         cashback,
         isCapped,
-        cappedAt
+        cappedAt,
+        totalSpend,
       ];
 }

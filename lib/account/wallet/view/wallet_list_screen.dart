@@ -1,8 +1,8 @@
 import 'dart:developer';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track/account/wallet/bloc/wallet_bloc.dart';
 import 'package:track/account/wallet/cubit/available_wallet_cubit.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/repositories/models/wallet.dart';
@@ -25,7 +25,9 @@ class _WalletListScreenState extends State<WalletListScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.pop(context, 'return');
+          },
         ),
         //automaticallyImplyLeading: false,
         // actions: [
@@ -42,9 +44,17 @@ class _WalletListScreenState extends State<WalletListScreen> {
         padding: AppStyle.paddingHorizontal,
         child: RepositoryProvider(
           create: (context) => WalletRepository(),
-          child: BlocProvider(
-            create: (context) =>
-                AvailableWalletCubit(context.read<WalletRepository>()),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) =>
+                    AvailableWalletCubit(context.read<WalletRepository>()),
+              ),
+              BlocProvider(
+                create: (context) => WalletBloc(
+                    walletRepository: context.read<WalletRepository>()),
+              ),
+            ],
             child: BlocListener<AvailableWalletCubit, AvailableWalletState>(
               listener: (context, state) {
                 switch (state.success) {
@@ -57,7 +67,7 @@ class _WalletListScreenState extends State<WalletListScreen> {
                   default:
                 }
               },
-              child: AvailableCardsList(),
+              child: AvailableWalletList(),
             ),
           ),
         ),
@@ -72,14 +82,14 @@ void toggleDialog() {
   isDialogOpen = !isDialogOpen;
 }
 
-class AvailableCardsList extends StatefulWidget {
-  const AvailableCardsList({super.key});
+class AvailableWalletList extends StatefulWidget {
+  const AvailableWalletList({super.key});
 
   @override
-  State<AvailableCardsList> createState() => _AvailableCardListState();
+  State<AvailableWalletList> createState() => _AvailableCardListState();
 }
 
-class _AvailableCardListState extends State<AvailableCardsList> {
+class _AvailableCardListState extends State<AvailableWalletList> {
   List<Wallet> wallets = [];
 
   @override
@@ -99,10 +109,6 @@ class _AvailableCardListState extends State<AvailableCardsList> {
             shrinkWrap: true,
             itemCount: wallets.length,
             itemBuilder: (_, index) {
-
-
-
-
               return AddWalletCard(
                 title: wallets[index].name.toString(),
                 subtitle: wallets[index].description.toString(),
@@ -112,7 +118,8 @@ class _AvailableCardListState extends State<AvailableCardsList> {
                         context: context,
                         builder: (_) {
                           return BlocProvider.value(
-                            value: BlocProvider.of<AvailableWalletCubit>(context),
+                            value:
+                                BlocProvider.of<AvailableWalletCubit>(context),
                             child: WalletDialog(
                               dialogTitle: l10n.addToMyWallets,
                               actionName: l10n.addToMyWallets,

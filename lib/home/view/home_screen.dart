@@ -21,10 +21,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   //bottom navigation bar
   //fixme
-  int currentPageIndex = 1;
+  int currentPageIndex = 0;
 
   //repos
   final authRepository = AuthRepository();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         selectedIndex: currentPageIndex,
-        destinations:  <Widget>[
+        destinations: <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.home_filled),
             icon: Icon(Icons.home_outlined),
@@ -67,17 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: const <Widget>[
-        SafeArea(
-            child: Padding(
-          padding: AppStyle.paddingHorizontal,
-          child: HomeScreenContent(),
-        )),
-        SafeArea(
-            child: TransactionScreenContent()),
-        SafeArea(
-            child: AddScreenContent()),
-        SafeArea(
-            child: BudgetScreenContent()),
+        SafeArea(child: HomeScreenContent()),
+        SafeArea(child: TransactionScreenContent()),
+        SafeArea(child: AddScreenContent()),
+        SafeArea(child: BudgetScreenContent()),
         SafeArea(
             child: Padding(
           padding: AppStyle.paddingHorizontal,

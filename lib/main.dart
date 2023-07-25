@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 
 import 'app/app.dart';
@@ -17,10 +18,11 @@ Future<void> main() async {
   );
 
   //for testing local cloud funciton
-  FirebaseFunctions.instanceFor(region: 'us-central1')
-      .useFunctionsEmulator('localhost', 5001);
-  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  // FirebaseFunctions.instanceFor(region: 'us-central1')
+  //     .useFunctionsEmulator('localhost', 5001);
+  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+
 
   runApp(const App());
 }

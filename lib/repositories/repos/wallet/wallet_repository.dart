@@ -52,7 +52,7 @@ class WalletRepository {
     }
   }
 
-  Future<void> addToMyWallets(Wallet card) async {
+  Future<void> addToMyWallets(Wallet wallet) async {
     try {
       String userID = FirebaseAuth.instance.currentUser!.uid;
       await userRef
@@ -61,7 +61,7 @@ class WalletRepository {
           .withConverter(
               fromFirestore: Wallet.fromFirestore,
               toFirestore: (Wallet wallet, _) => wallet.toFirestore())
-          .add(card)
+          .add(wallet)
           .onError((e, _) => throw e.toString());
     } catch (e) {
       log(e.toString());

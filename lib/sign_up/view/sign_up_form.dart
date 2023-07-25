@@ -21,10 +21,10 @@ class _SignUpFormState extends State<SignUpForm> {
   final signUpForm = GlobalKey<FormState>();
 
   //text field controllers
-  final _nameController = TextEditingController(text: "name");
-  final _emailController = TextEditingController(text: "test@mail.com");
-  final _passwordController = TextEditingController(text: "123456");
-  final _confirmPasswordController = TextEditingController(text: "123456");
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

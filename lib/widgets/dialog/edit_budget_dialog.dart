@@ -117,11 +117,12 @@ class _EditBudgetDialogState extends State<EditBudgetDialog> {
   }
 
   save() {
-    log('save budget ');
+    // log('save budget ' + widget.data.toString());
     context.read<BudgetBloc>().add(UpdateBudgetRequested(
           uid: widget.data!.uid!,
           amount: stringToDouble(_amountController.text),
         ));
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   // action(type) {

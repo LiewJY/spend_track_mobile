@@ -30,7 +30,9 @@ class _CardListScreenState extends State<CardListScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.pop(context, 'return');
+          },
         ),
         //automaticallyImplyLeading: false,
         // actions: [
@@ -99,62 +101,129 @@ class _AvailableCardListState extends State<AvailableCardsList> {
     final l10n = context.l10n;
     cards = context
         .select((AvailableCardCubit bloc) => bloc.state.availableCardList);
-    return cards.isNotEmpty
-        ? ListView.builder(
-            shrinkWrap: true,
-            itemCount: cards.length,
-            itemBuilder: (_, index) {
-              return AddCardsCard(
-                title: cards[index].name.toString(),
-                subtitle: '${cards[index].cardType}, ${cards[index].bank}',
-                buttonPressed: () {
-                  context
-                      .read<AvailableCardCubit>()
-                      .getCardDetails(cards[index].uid.toString());
-                  if (!isDialogOpen) {
-                    showDialog(
-                        context: context,
-                        builder: (_) {
-                          return BlocProvider.value(
-                            value: BlocProvider.of<AvailableCardCubit>(context),
-                            child: CardDetailsDialog(
-                              dialogTitle: cards[index].name.toString(),
-                              data: cards[index],
-                            ),
-                          );
-                        }).then((value) {
-                      toggleDialog();
-                    });
-                    toggleDialog();
-                  }
-                },
-                iconPressed: () {
-                  if (!isDialogOpen) {
-                    showDialog(
-                        context: context,
-                        builder: (_) {
-                          return BlocProvider.value(
-                            value: BlocProvider.of<AvailableCardCubit>(context),
-                            child: CardDialog(
-                              dialogTitle: l10n.addToMyCards,
-                              actionName: l10n.addToMyCards,
-                              action: 'addToMyCard',
-                              data: cards[index],
-                            ),
-                          );
-                        }).then((value) {
-                      toggleDialog();
-                    });
-                    toggleDialog();
-                  }
-                },
-                // content: cards[index].bank.toString(),
-              );
-            })
-        : Center(
-            child: CircularProgressIndicator(
-              value: 5,
-            ),
-          );
+    log(' sfsfs' + cards.length.toString());
+    cards.forEach((element) {
+      log(element.toString());
+    });
+    return BlocBuilder<AvailableCardCubit, AvailableCardState>(
+      builder: (context, state) {
+        //fixme cannot do the reload thing
+        return cards.isNotEmpty
+            ? ListView.builder(
+                shrinkWrap: true,
+                itemCount: cards.length,
+                itemBuilder: (_, index) {
+                  return AddCardsCard(
+                    title: cards[index].name.toString(),
+                    subtitle: '${cards[index].cardType}, ${cards[index].bank}',
+                    buttonPressed: () {
+                      context
+                          .read<AvailableCardCubit>()
+                          .getCardDetails(cards[index].uid.toString());
+                      if (!isDialogOpen) {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return BlocProvider.value(
+                                value: BlocProvider.of<AvailableCardCubit>(
+                                    context),
+                                child: CardDetailsDialog(
+                                  dialogTitle: cards[index].name.toString(),
+                                  data: cards[index],
+                                ),
+                              );
+                            }).then((value) {
+                          toggleDialog();
+                        });
+                        toggleDialog();
+                      }
+                    },
+                    iconPressed: () {
+                      if (!isDialogOpen) {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return BlocProvider.value(
+                                value: BlocProvider.of<AvailableCardCubit>(
+                                    context),
+                                child: CardDialog(
+                                  dialogTitle: l10n.addToMyCards,
+                                  actionName: l10n.addToMyCards,
+                                  action: 'addToMyCard',
+                                  data: cards[index],
+                                ),
+                              );
+                            }).then((value) {
+                          toggleDialog();
+                        });
+                        toggleDialog();
+                      }
+                    },
+                    // content: cards[index].bank.toString(),
+                  );
+                })
+            : Center(child: Text(l10n.cardNotAvailable));
+      },
+    );
+
+    // if (cards.isNotEmpty) {
+    //   return ListView.builder(
+    //       shrinkWrap: true,
+    //       itemCount: cards.length,
+    //       itemBuilder: (_, index) {
+    //         return AddCardsCard(
+    //           title: cards[index].name.toString(),
+    //           subtitle: '${cards[index].cardType}, ${cards[index].bank}',
+    //           buttonPressed: () {
+    //             context
+    //                 .read<AvailableCardCubit>()
+    //                 .getCardDetails(cards[index].uid.toString());
+    //             if (!isDialogOpen) {
+    //               showDialog(
+    //                   context: context,
+    //                   builder: (_) {
+    //                     return BlocProvider.value(
+    //                       value: BlocProvider.of<AvailableCardCubit>(context),
+    //                       child: CardDetailsDialog(
+    //                         dialogTitle: cards[index].name.toString(),
+    //                         data: cards[index],
+    //                       ),
+    //                     );
+    //                   }).then((value) {
+    //                 toggleDialog();
+    //               });
+    //               toggleDialog();
+    //             }
+    //           },
+    //           iconPressed: () {
+    //             if (!isDialogOpen) {
+    //               showDialog(
+    //                   context: context,
+    //                   builder: (_) {
+    //                     return BlocProvider.value(
+    //                       value: BlocProvider.of<AvailableCardCubit>(context),
+    //                       child: CardDialog(
+    //                         dialogTitle: l10n.addToMyCards,
+    //                         actionName: l10n.addToMyCards,
+    //                         action: 'addToMyCard',
+    //                         data: cards[index],
+    //                       ),
+    //                     );
+    //                   }).then((value) {
+    //                 toggleDialog();
+    //               });
+    //               toggleDialog();
+    //             }
+    //           },
+    //           // content: cards[index].bank.toString(),
+    //         );
+    //       });
+    // } else {
+    //   return Center(
+    //     child: CircularProgressIndicator(
+    //       value: 5,
+    //     ),
+    //   );
+    // }
   }
 }
