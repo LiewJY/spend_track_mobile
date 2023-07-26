@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/l10n/l10n.dart';
@@ -25,7 +29,33 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //repos
   final authRepository = AuthRepository();
-  
+  fcm() async {
+    // final fcmToken = await FirebaseMessaging.instance.getToken();
+    //   log('toke dddd' + fcmToken.toString());
+    // final fcmToken = await FirebaseMessaging.instance.getToken();
+    // FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(currentUser.id)
+    //     .set({'token': fcmToken}, SetOptions(merge: true));
+
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+      // TODO: If necessary send token to application server.
+      log('toke ' + fcmToken.toString());
+
+      // Note: This callback is fired at each app startup and whenever a new
+      // token is generated.
+    }).onError((err) {
+      // Error getting token.
+    });
+  }
+
+  @override
+  initState() {
+    fcm();
+    
+    super.initState();
+    //initial call
+  }
 
   @override
   Widget build(BuildContext context) {

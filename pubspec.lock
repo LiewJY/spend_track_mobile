@@ -405,14 +405,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
-  infinite_scroll_pagination:
-    dependency: "direct main"
-    description:
-      name: infinite_scroll_pagination
-      sha256: "9517328f4e373f08f57dbb11c5aac5b05554142024d6b60c903f3b73476d52db"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.0"
   intl:
     dependency: "direct main"
     description:
@@ -562,14 +554,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  sliver_tools:
-    dependency: transitive
-    description:
-      name: sliver_tools
-      sha256: ccdc502098a8bfa07b3ec582c282620031481300035584e1bb3aca296a505e8c
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.10"
   sortedmap:
     dependency: transitive
     description:
@@ -655,10 +639,10 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: cb4afcecef01f8db4deb9b5e44068eab03650d2f
+      resolved-ref: ecc1755c865371bb537fd3a3293aa0d77dfb4e6d
       url: "https://github.com/LiewJY/track_theme.git"
     source: git
-    version: "0.0.2"
+    version: "0.0.3"
   typed_data:
     dependency: transitive
     description:

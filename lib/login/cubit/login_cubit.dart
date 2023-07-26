@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:track/repositories/repos/auth/auth_repository.dart';
@@ -29,3 +27,4 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 }
+

@@ -141,72 +141,193 @@ class _BudgetContentState extends State<BudgetContent> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //todo monthly transaction list thing same
+      body: RefreshIndicator(
+        onRefresh: () {
+          return context.read<TransactionRangeCubit>().getTransactionRange();
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //todo monthly transaction list thing same
 
-            //todo make into component
-            SizedBox(
-              height: 8,
-            ),
-            //horizontal list for transaction month selection
-            SizedBox(
-              width: double.infinity,
-              height: 35,
-              child: BlocBuilder<TransactionRangeCubit, TransactionRangeState>(
-                builder: (context, state) {
-                  if (state.status == TransactionRangeStatus.success &&
-                      state.success == 'loadedTransactionRange') {
-                    //preselect the latest and load the data
-                    if (selectedYearMonth.isEmpty && content.isNotEmpty) {
-                      selectedYearMonth = content.last;
+              //todo make into component
+              SizedBox(
+                height: 8,
+              ),
+              //horizontal list for transaction month selection
+              SizedBox(
+                width: double.infinity,
+                height: 35,
+                child:
+                    BlocBuilder<TransactionRangeCubit, TransactionRangeState>(
+                  builder: (context, state) {
+                    if (state.status == TransactionRangeStatus.success &&
+                        state.success == 'loadedTransactionRange') {
+                      //preselect the latest and load the data
+                      if (selectedYearMonth.isEmpty && content.isNotEmpty) {
+                        selectedYearMonth = content.last;
+                      }
+                      loadSelectedMonth(selectedYearMonth.toString());
+                      // log("${selectedYearMonth}selected");
+                      return ListView.builder(
+                          //reverse: true,
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemCount: content.length,
+                          itemBuilder: (_, index) {
+                            bool isSelected =
+                                selectedYearMonth == content[index];
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: isSelected
+                                  ? FilledButton(
+                                      onPressed: () {
+                                        log(content[index]);
+                                        setState(() {
+                                          selectedYearMonth = content[index];
+                                        });
+                                        log("${selectedYearMonth}selected wewe");
+                                        loadSelectedMonth(
+                                            selectedYearMonth.toString());
+                                      },
+                                      child: Text(
+                                        translateYYYY_MM(content[index]),
+                                      ),
+                                    )
+                                  : OutlinedButton(
+                                      onPressed: () {
+                                        log(content[index]);
+                                        setState(() {
+                                          selectedYearMonth = content[index];
+                                        });
+                                        log("${selectedYearMonth}selected wewe");
+                                        loadSelectedMonth(
+                                            selectedYearMonth.toString());
+                                      },
+                                      child: Text(
+                                        translateYYYY_MM(content[index]),
+                                      ),
+                                    ),
+                            );
+                          });
+                    } else {
+                      //todo make into conponent
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: 5,
+                        ),
+                      );
                     }
-                    loadSelectedMonth(selectedYearMonth.toString());
-                    // log("${selectedYearMonth}selected");
+                  },
+                ),
+              ),
+              Padding(
+                padding: AppStyle.paddingHorizontal,
+                child:
+                    BlocBuilder<ViewMonthlyBudgetCubit, ViewMonthlyBudgetState>(
+                  builder: (context, state) {
+                    if (state.status == ViewMonthlyBudgetStatus.success &&
+                        state.success == 'loadedData') {
+                      double totalMonthlyBudget = 0;
+                      double overBudget = 0;
+
+                      for (var budget in monthlyBudget) {
+                        totalMonthlyBudget =
+                            totalMonthlyBudget + budget.amount!;
+                      }
+                      overBudget =
+                          totalMonthlyBudget - state.monthlySpendingTotal;
+
+                      return Column(
+                        children: [
+                          BudgetExpensesChart(
+                            data: monthlyBudget,
+                            totalBudget: totalMonthlyBudget,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                l10n.totalMonthlyBudget,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              Text(
+                                'RM${totalMonthlyBudget.toStringAsFixed(2)}',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                l10n.remainingMonthlyBudget,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              if (overBudget <= 0) ...[
+                                Text(
+                                  'RM ${overBudget.toStringAsFixed(2)}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.merge(
+                                        TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .error,
+                                        ),
+                                      ),
+                                ),
+                              ] else ...[
+                                Text(
+                                  'RM ${overBudget.toStringAsFixed(2)}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.merge(
+                                        TextStyle(
+                                          color: Colors.green.shade800,
+                                        ),
+                                      ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Center(child: Text(l10n.youDoNotHaveAnyBudget));
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: AppStyle.paddingHorizontal,
+                child: Text(
+                  l10n.budgetVsSpendingByCategory,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              //todo budget and its expenses
+              BlocBuilder<ViewMonthlyBudgetCubit, ViewMonthlyBudgetState>(
+                builder: (context, state) {
+                  if (state.status == ViewMonthlyBudgetStatus.success &&
+                      state.success == 'loadedData') {
+                    if (monthlyBudget.isEmpty) {
+                      //if empty return empty text
+                      return Center(child: Text(l10n.youDoNotHaveAnyBudget));
+                    }
                     return ListView.builder(
-                        //reverse: true,
-                        scrollDirection: Axis.horizontal,
+                        itemCount: monthlyBudget.length,
                         shrinkWrap: true,
-                        itemCount: content.length,
+                        primary: false,
                         itemBuilder: (_, index) {
-                          bool isSelected = selectedYearMonth == content[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: isSelected
-                                ? FilledButton(
-                                    onPressed: () {
-                                      log(content[index]);
-                                      setState(() {
-                                        selectedYearMonth = content[index];
-                                      });
-                                      log("${selectedYearMonth}selected wewe");
-                                      loadSelectedMonth(
-                                          selectedYearMonth.toString());
-                                    },
-                                    child: Text(
-                                      translateYYYY_MM(content[index]),
-                                    ),
-                                  )
-                                : OutlinedButton(
-                                    onPressed: () {
-                                      log(content[index]);
-                                      setState(() {
-                                        selectedYearMonth = content[index];
-                                      });
-                                      log("${selectedYearMonth}selected wewe");
-                                      loadSelectedMonth(
-                                          selectedYearMonth.toString());
-                                    },
-                                    child: Text(
-                                      translateYYYY_MM(content[index]),
-                                    ),
-                                  ),
-                          );
+                          log('ddddd   ' + monthlyBudget[index].toString());
+                          return BudgetListView(data: monthlyBudget[index]);
                         });
                   } else {
-                    //todo make into conponent
                     return Center(
                       child: CircularProgressIndicator(
                         value: 5,
@@ -215,121 +336,8 @@ class _BudgetContentState extends State<BudgetContent> {
                   }
                 },
               ),
-            ),
-
-            //todo graph
-            Padding(
-              padding: AppStyle.paddingHorizontal,
-              child:
-                  BlocBuilder<ViewMonthlyBudgetCubit, ViewMonthlyBudgetState>(
-                builder: (context, state) {
-                  if (state.status == ViewMonthlyBudgetStatus.success &&
-                      state.success == 'loadedData') {
-                    double totalMonthlyBudget = 0;
-                    double overBudget = 0;
-
-                    for (var budget in monthlyBudget) {
-                      totalMonthlyBudget = totalMonthlyBudget + budget.amount!;
-                    }
-                    overBudget =
-                        totalMonthlyBudget - state.monthlySpendingTotal;
-
-                    return Column(
-                      children: [
-                        BudgetExpensesChart(
-                          data: monthlyBudget,
-                          totalBudget: totalMonthlyBudget,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              l10n.totalMonthlyBudget,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text(
-                              'RM${totalMonthlyBudget.toStringAsFixed(2)}',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              l10n.totalMonthlyTransaction,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            if (overBudget <= 0) ...[
-                              Text(
-                                'RM ${overBudget.toStringAsFixed(2)}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.merge(
-                                      TextStyle(
-                                        color:
-                                            Theme.of(context).colorScheme.error,
-                                      ),
-                                    ),
-                              ),
-                            ] else ...[
-                              Text(
-                                'RM ${overBudget.toStringAsFixed(2)}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.merge(
-                                      TextStyle(
-                                        color: Colors.green.shade800,
-                                      ),
-                                    ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Center(child: Text(l10n.youDoNotHaveAnyBudget));
-                  }
-                },
-              ),
-            ),
-            Padding(
-              padding: AppStyle.paddingHorizontal,
-              child: Text(
-                l10n.budgetVsSpendingByCategory,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            //todo budget and its expenses
-            BlocBuilder<ViewMonthlyBudgetCubit, ViewMonthlyBudgetState>(
-              builder: (context, state) {
-                if (state.status == ViewMonthlyBudgetStatus.success &&
-                    state.success == 'loadedData') {
-                  if (monthlyBudget.isEmpty) {
-                    //if empty return empty text
-                    return Center(child: Text(l10n.youDoNotHaveAnyBudget));
-                  }
-                  return ListView.builder(
-                      itemCount: monthlyBudget.length,
-                      shrinkWrap: true,
-                       primary: false,
-                      itemBuilder: (_, index) {
-                        log('ddddd   ' + monthlyBudget[index].toString());
-                        return BudgetListView(data: monthlyBudget[index]);
-                      });
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: 5,
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

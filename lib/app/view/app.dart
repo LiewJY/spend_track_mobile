@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -48,6 +51,26 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //     log('Got a message whilst in the foreground!');
+  //     log('Message data: ${message.data}');
+
+  //     if (message.notification != null) {
+  //       log('Message also contained a notification: ${message.notification}');
+  //     }
+  //   });
+  // }
+
   //set app theme
   ThemeMode themeMode = ThemeMode.system;
 
@@ -75,7 +98,7 @@ class _AppViewState extends State<AppView> {
   Widget build(BuildContext context) {
     return MaterialApp(
       //todo uncomment when complete
-      //debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       title: 'track',
       //todo change to changeble --> themeMode
       themeMode: ThemeMode.light,

@@ -9,20 +9,24 @@ import 'package:flutter/widgets.dart';
 
 import 'app/app.dart';
 import 'firebase_options.dart';
-
+Future<void> _messageHandler(RemoteMessage message) async {
+  print('background message ${message.notification!.body}');
+}
 Future<void> main() async {
   //firebase integration code
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
 
-  //for testing local cloud funciton
-  // FirebaseFunctions.instanceFor(region: 'us-central1')
-  //     .useFunctionsEmulator('localhost', 5001);
-  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-  // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-
+  FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    print("message recieved");
+    print(event.notification!.body);
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    print('Message clicked!');
+  });
 
   runApp(const App());
 }

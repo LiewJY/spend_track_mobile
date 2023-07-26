@@ -65,7 +65,7 @@ dependencies:
       url: https://github.com/LiewJY/track_theme.git
       ref: main
   firebase_analytics: ^10.4.1
-  infinite_scroll_pagination: ^3.2.0
+  # infinite_scroll_pagination: ^3.2.0
   syncfusion_flutter_charts: ^22.1.38
   firebase_messaging: ^14.6.5
 

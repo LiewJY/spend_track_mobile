@@ -112,18 +112,39 @@ class _HomeContentState extends State<HomeContent> {
                   LinearProgressIndicator(
                     value: spendingPercent,
                     minHeight: 25,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  Text(
+                    ' ${(spendingPercent * 100).toStringAsFixed(2)}%',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
                     '${l10n.budget}: RM ${state.budget.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
+                  if (spendingPercent > 1) ...[
+                    Text(
+                      '${l10n.totalSpending}: RM ${state.spending.toStringAsFixed(2)}',
+                      style: Theme.of(context).textTheme.titleMedium?.merge(
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                    ),
+                  ] else ...[
+                    Text(
+                      '${l10n.totalSpending}: RM ${state.spending.toStringAsFixed(2)}',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                  AppStyle.sizedBoxSpace,
                   Text(
-                    '${l10n.totalSpending}: RM ${state.spending.toStringAsFixed(2)}',
+                    l10n.cashback,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  AppStyle.sizedBoxSpace,
-
-                  //todo
+                  SizedBox(
+                    height: 8,
+                  ),
                   ListView.builder(
                       shrinkWrap: true,
                       primary: false,

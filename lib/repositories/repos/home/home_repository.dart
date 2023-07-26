@@ -48,7 +48,7 @@ class HomeRepository {
     return amount;
   }
 
-  getBudgetAmount() async {
+  getSpendingAmount() async {
     try {
       double spending;
 
@@ -80,7 +80,7 @@ class HomeRepository {
     }
   }
 
-  getSpendingAmount() async {
+  getBudgetAmount() async {
     try {
       double budget;
 
