@@ -13,7 +13,6 @@ import 'package:track/repositories/models/creditCard.dart';
 import 'package:track/repositories/repositories.dart';
 import 'package:track/widgets/widgets.dart';
 import 'package:track_theme/track_theme.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CardListScreen extends StatefulWidget {
   const CardListScreen({super.key});
