@@ -47,6 +47,8 @@ dependencies:
   firebase_core: ^2.9.0
   cloud_firestore: ^4.5.2
   cloud_firestore_odm: ^1.0.0-dev.54
+  cloud_functions: ^4.3.1
+  firebase_admin: ^0.2.0-dev.7
 
   # for bloc ==
   equatable: ^2.0.5
@@ -57,9 +59,20 @@ dependencies:
   intl:
     any
 
+  # theme from github
+  track_theme: 
+    git: 
+      url: https://github.com/LiewJY/track_theme.git
+      ref: main
+  firebase_analytics: ^10.4.5
+  # infinite_scroll_pagination: ^3.2.0
+  syncfusion_flutter_charts: ^22.1.38
+  firebase_messaging: ^14.6.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -68,6 +81,10 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
+flutter_icons:
+    android: "launcher_icon"
+    ios: true
+    image_path: "asset/icons/app_icon.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

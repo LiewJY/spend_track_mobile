@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/login/login.dart';
 import 'package:track/sign_up/sign_up.dart';
-import 'package:track/uitls/constant.dart';
+import 'package:track_theme/track_theme.dart';
 import 'package:track/widgets/widgets.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -21,10 +21,10 @@ class _SignUpFormState extends State<SignUpForm> {
   final signUpForm = GlobalKey<FormState>();
 
   //text field controllers
-  final _nameController = TextEditingController(text: "name");
-  final _emailController = TextEditingController(text: "test@mail.com");
-  final _passwordController = TextEditingController(text: "123456");
-  final _confirmPasswordController = TextEditingController(text: "123456");
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,23 +33,23 @@ class _SignUpFormState extends State<SignUpForm> {
       key: signUpForm,
       child: Column(
         children: [
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           NameField(controller: _nameController),
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           EmailField(controller: _emailController),
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           PasswordField(controller: _passwordController),
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           ConfirmPasswordField(
               controller: _confirmPasswordController, password: _passwordController),
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           FilledButton(
-            style: Constant.fullWidthButton,
+            style: AppStyle.fullWidthButton,
             onPressed: () => signUp(),
             child: Text(l10n.signUp),
           ),
           OutlinedButton(
-            style: Constant.fullWidthButton,
+            style: AppStyle.fullWidthButton,
             onPressed: () => Navigator.pop(context),
             child: Text(l10n.cancel),
           ),

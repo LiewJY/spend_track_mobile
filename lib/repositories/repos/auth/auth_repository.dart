@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:track/repositories/models/user.dart';
 
 class AuthRepository {
@@ -23,6 +25,7 @@ class AuthRepository {
       final currentUser =
           firebaseUser == null ? User.empty : firebaseUser.toUser;
       //return the mapped user
+
       return currentUser;
     });
   }
@@ -32,16 +35,30 @@ class AuthRepository {
       {required String email,
       required String password,
       required String name}) async {
-    //firebase_auth.UserCredential authRegisterResult;
     try {
       var authRegisterResult = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-      await authRegisterResult.user?.updateDisplayName(name).whenComplete(() => authRegisterResult.user?.reload());
+      await authRegisterResult.user
+          ?.updateDisplayName(name)
+          .whenComplete(() => authRegisterResult.user?.reload());
+      putFcmToken();
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw e.code;
     } catch (_) {
       throw "unknown";
     }
+  }
+
+  //update fcm token
+  putFcmToken() async {
+    String userID = _firebaseAuth.currentUser!.uid;
+
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .set({'token': fcmToken}, SetOptions(merge: true));
+    log('asdsadas');
   }
 
   //login
@@ -50,13 +67,14 @@ class AuthRepository {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+      putFcmToken();
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw e.code;
     } catch (_) {
       throw "unknown";
     }
   }
-
+//   liewjunyoung@gmail.com
   //logout
   Future<void> logout() async {
     try {
@@ -66,6 +84,44 @@ class AuthRepository {
       throw Exception(e);
     }
   }
+
+  //update name
+  Future<void> updateName({required String name}) async {
+    try {
+      await _firebaseAuth.currentUser?.updateDisplayName(name);
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw e.code;
+    } catch (_) {
+      throw "unknown";
+    }
+  }
+
+  //reauth
+  //todo now not in use
+  Future<void> reAuth({required String email, required String password}) async {
+    try {
+      final credential = firebase_auth.EmailAuthProvider.credential(
+          email: email, password: password);
+      await _firebaseAuth.currentUser?.reauthenticateWithCredential(credential);
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw e.code;
+    } catch (_) {
+      throw "unknown";
+    }
+  }
+
+  Future<void> sendResetPasswordEmail({required String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw e.code;
+    } catch (_) {
+      throw "unknown";
+    }
+  }
+
+  //todo
+  //update profile
 
   //todo google login and link with account
   //google login

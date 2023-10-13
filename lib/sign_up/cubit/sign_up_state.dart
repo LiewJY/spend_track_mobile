@@ -2,8 +2,8 @@ part of 'sign_up_cubit.dart';
 
 enum SignUpStatus { initial, loading, success, failure }
 
- class SignUpState extends Equatable {
-    final SignUpStatus status;
+class SignUpState extends Equatable {
+  final SignUpStatus status;
   final String error;
 
   const SignUpState({
@@ -12,7 +12,7 @@ enum SignUpStatus { initial, loading, success, failure }
   });
 
   //initializing
-    factory SignUpState.initial() {
+  factory SignUpState.initial() {
     return const SignUpState(
       status: SignUpStatus.initial,
       error: '',
@@ -22,16 +22,13 @@ enum SignUpStatus { initial, loading, success, failure }
   @override
   List<Object> get props => [status, error];
 
-
-    SignUpState copyWith({
+  SignUpState copyWith({
     SignUpStatus? status,
-    String ? error,
+    String? error,
   }) {
     return SignUpState(
       status: status ?? this.status,
       error: error ?? this.error,
     );
   }
-
-
 }

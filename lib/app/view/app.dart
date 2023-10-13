@@ -1,14 +1,18 @@
+import 'dart:developer';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track/account/account.dart';
 import 'package:track/app/bloc/app_bloc.dart';
 import 'package:track/repositories/repos/auth/auth_repository.dart';
 import 'package:track/bloc_observer.dart';
 import 'package:track/login/login.dart';
 import '../../home/home.dart';
 import '../../l10n/l10n.dart';
-import '../../theme/app_theme.dart';
+import 'package:track_theme/track_theme.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -23,9 +27,17 @@ class App extends StatelessWidget {
 
     return RepositoryProvider.value(
       value: authRepository,
-      child: BlocProvider(
-        create: (_) => AppBloc(authRepository: authRepository),
-        child: const AppView(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AppBloc(authRepository: authRepository),
+          ),
+          BlocProvider(
+            create: (context) =>
+                ManageAccountBloc(authRepository: authRepository),
+          ),
+        ],
+        child: AppView(),
       ),
     );
   }
@@ -39,6 +51,26 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //     log('Got a message whilst in the foreground!');
+  //     log('Message data: ${message.data}');
+
+  //     if (message.notification != null) {
+  //       log('Message also contained a notification: ${message.notification}');
+  //     }
+  //   });
+  // }
+
   //set app theme
   ThemeMode themeMode = ThemeMode.system;
 
@@ -66,7 +98,7 @@ class _AppViewState extends State<AppView> {
   Widget build(BuildContext context) {
     return MaterialApp(
       //todo uncomment when complete
-      //debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       title: 'track',
       //todo change to changeble --> themeMode
       themeMode: ThemeMode.light,

@@ -32,3 +32,4 @@ class LoginState extends Equatable {
     );
   }
 }
+

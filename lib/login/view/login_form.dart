@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track/forget_password/forget_password.dart';
 import 'package:track/l10n/l10n.dart';
 import 'package:track/login/login.dart';
 import 'package:track/sign_up/sign_up.dart';
-import 'package:track/uitls/constant.dart';
+import 'package:track_theme/track_theme.dart';
 import 'package:track/widgets/widgets.dart';
 
 class LoginForm extends StatefulWidget {
@@ -24,9 +25,9 @@ class _LoginFormState extends State<LoginForm> {
 
   //text field controllers
   //fixme remove setted value
-  final _emailController = TextEditingController(text: "test@mail.com");
+  final _emailController = TextEditingController();
 
-  final _passwordController = TextEditingController(text: "123456");
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +41,26 @@ class _LoginFormState extends State<LoginForm> {
             controller: _emailController,
             textInputAction: 'next',
           ),
-          Constant.sizedBoxSpace,
+          AppStyle.sizedBoxSpace,
           PasswordField(controller: _passwordController),
-          Constant.sizedBoxSpace,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ForgetPasswordScreen()),
+                ),
+                child: Text(l10n.forgetPassword),
+              ),
+            ],
+          ),
           FilledButton(
-            style: Constant.fullWidthButton,
+            style: AppStyle.fullWidthButton,
             onPressed: () => login(),
             child: Text(l10n.login),
           ),
           OutlinedButton(
-            style: Constant.fullWidthButton,
+            style: AppStyle.fullWidthButton,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => SignUpScreen()),
             ),
