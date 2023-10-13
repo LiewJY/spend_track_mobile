@@ -1,6 +1,10 @@
-# track
+# spend_track_mobile
 
-A new Flutter project.
+A flutter-based project for FYP. Mobile app built for Android and IOS and built with bloc, & firebase.
+
+## Key features
+Expenses tracking for credit card (with cashback calculation), cash, and e-wallet. 
+
 
 ## Getting Started
 
